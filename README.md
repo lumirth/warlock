@@ -21,7 +21,7 @@ If things get finicky and your changes aren't being reflected, you can `docker c
 
 ## Testing
 
-- `docker-compose exec backend python pytest`
+- `docker-compose exec backend  pytest`
 
 Testing is with pytest. [FastAPI's testing documentation](https://fastapi.tiangolo.com/tutorial/testing/) gives more details.
 

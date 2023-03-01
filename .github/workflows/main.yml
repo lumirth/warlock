@@ -1,0 +1,27 @@
+name: Build and Run Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build and run only backend container
+      run: docker-compose up --build -d backend
+
+    - name: Wait for services to start
+      run: docker-compose ps && sleep 5
+
+    - name: Run Pytest tests
+      run: docker-compose exec -T backend pytest
+
+    - name: Stop and remove containers
+      run: docker-compose down
