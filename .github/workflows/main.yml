@@ -1,5 +1,4 @@
-name: Build and Run Tests
-
+name: Run Backend Pytest Tests
 on:
   push:
     branches: [ main ]
@@ -11,17 +10,21 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4 
+      with:
+        python-version: 3.9
+        cache: 'pip' # caching pip dependencies
+    - name: Open backend folder
+      run: cd backend
+    # update pip
+    - name: Update pip
+      run: python -m pip install --upgrade pip
+    # install dependencies
+    - name: Install dependencies
+      run: pip install -r **/requirements.txt
+    # run tests
+    - name: Run tests
+      run: pytest
 
-    - name: Build and run only backend container
-      run: docker-compose up --build -d backend
 
-    - name: Wait for services to start
-      run: docker-compose ps && sleep 5
-
-    - name: Run Pytest tests
-      run: docker-compose exec -T backend pytest
-
-    - name: Stop and remove containers
-      run: docker-compose down
