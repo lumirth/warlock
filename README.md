@@ -4,31 +4,36 @@
 
 - Docker. See [Docker installation](https://docs.docker.com/install/).
 
+Everything else should install accordingly through the docker setup.
+
 ## Installation
 
 1. Clone the repository
 2. Open in IDE
-3. `docker-compose up`
+3. `docker-compose up --build`
 
 ## Usage
 
-- Frontend is on `localhost:8000`
-- Backend is on `localhost:8080`
+- Frontend is on `localhost:8080`
+- Backend is on `localhost:8000`
+
+If things get finicky and your changes aren't being reflected, you can `docker compose down` or `docker compose rm` then `docker compose up --build` again, should fix it.
 
 ## Testing
 
-- `docker-compose exec backend python manage.py test`
+- `docker-compose exec backend python pytest`
+
+Testing is with pytest. [FastAPI's testing documentation](https://fastapi.tiangolo.com/tutorial/testing/) gives more details.
 
 # Structure
 
-- `backend` - Django backend
-  - Django: a web framework. See [Django documentation](https://docs.djangoproject.com/en/3.1/)
-  - Django REST Framework: a REST API framework. See [DRF documentation](https://www.django-rest-framework.org/)
+- `backend` - FastAPI backend
+  - FastAPI: a web framework. See [documentation](https://fastapi.tiangolo.com/)
 - `frontend` - Svelte/Vite frontend
-  - Svelte: a UI framework. See [Svelte documentation](https://svelte.dev/docs)
-  - Vite: a build tool. See [Vite documentation](https://vitejs.dev/guide/)
+  - Svelte: a UI framework. See [documentation](https://svelte.dev/docs)
+  - Vite: a build tool. See [documentation](https://vitejs.dev/guide/)
 
-The idea is simple. You have a Svelte app deployed as a static site, and a Django REST framework API providing data to the frontend. The frontend is served from a CDN, and the backend is served from a web server(that is, when finally deployed).
+The idea is simple. You have a Svelte app deployed as a static site, and a FastAPI backend REST API providing data to the frontend. The frontend is served from a CDN, and the backend is served from a web server(that is, when finally deployed).
 
 The backend is used to grab data from the [University's Course API](https://courses.illinois.edu/cisdocs/api), [RateMyProfessor](https://www.npmjs.com/package/@mtucourses/rate-my-professors), and [Waf's GPA Datasets](https://github.com/wadefagen/datasets). 
 
