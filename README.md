@@ -88,7 +88,9 @@ The assumption is that these two fixes apply to all the API endpoints, meaning t
 
 As another note, you can add `mode=cascade` to the URL parameters to not just show the courses/terms/departments, but all the pieces that exist inside them. Meaning, instead of just getting a list of courses inside a department, you'll also get all the sections within those courses within the same XML. This means less requests are required.
 
-As of 2023-03-22, I have not yet received the XML schema. The link to it on the Data Explorer app page is broken, and there exist no archives of it, as far as I can tell. Until we receive this schema, it's better to **work on other portions of the project**, as waiting until we have the schema will make the implementation of the project much easier.
+As of 2023-03-22 16:00, I have not yet received the XML schema. The link to it on the Data Explorer app page is broken, and there exist no archives of it, as far as I can tell. Until we receive this schema, it's better to **work on other portions of the project**, as waiting until we have the schema will make the implementation of the project much easier.
+
+Update: As of 2023-03-22 17:40, I have received the XML schema. Right now I've hosted it  at [mirth.cc/fix-cisapi/cisapi.xsd](https://mirth.cc/fix-cisapi/cisapi.xsd).
 
 <details>
 
