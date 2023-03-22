@@ -107,5 +107,7 @@ You'll have to programatically find the information you need within the XML resp
 ## On RateMyProfessor
 The RateMyProfessor NPM module I linked is, of course, a Node module. Thus, we'll have to figure out a way to use JS in Python, because this module looks actively maintained and fulfills our use-case spectacularly. I'm not sure how to do this, but I'm sure it's possible.
 
+Update: I've figured out how to do this. There's a working example on commit [6058e61e0faa378468c3eafd1694c083570bd535](https://github.com/CS222-UIUC/course-warlock/commit/6058e61e0faa378468c3eafd1694c083570bd535) in the `lukas-rmp` branch.
+
 ## On Waf's GPA Datasets
 Waf's GPA Datasets are a CSV file that contains the GPA of every course offered at the University of Illinois. It's updated every semester. We'll need some system for updating this neatly.
