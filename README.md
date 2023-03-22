@@ -110,4 +110,4 @@ The RateMyProfessor NPM module I linked is, of course, a Node module. Thus, we'l
 Update: I've figured out how to do this. There's a working example on commit [6058e61e0faa378468c3eafd1694c083570bd535](https://github.com/CS222-UIUC/course-warlock/commit/6058e61e0faa378468c3eafd1694c083570bd535) in the `lukas-rmp` branch.
 
 ## On Waf's GPA Datasets
-Waf's GPA Datasets are a CSV file that contains the GPA of every course offered at the University of Illinois. It's updated every semester. We'll need some system for updating this neatly.
+[Waf's GPA Datasets](https://github.com/wadefagen/datasets/blob/master/gpa/README.md) are a CSV file that contains the GPA of every course offered at the University of Illinois. It's updated every semester. We'll need some system for updating this neatly.
