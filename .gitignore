@@ -1,5 +1,53 @@
-**/.DS_Store
-**/__pycache__/**
-**/node_modules/
-**/.vscode/**
-/backend/__pycache__
+# .gitignore
+
+# Ignore Python cache files and directories
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore Docker-related files
+.dockerignore
+
+# Ignore Node.js dependencies
+node_modules/
+
+# Ignore Svelte/Vite build output
+public/build/
+dist/
+
+# Ignore TypeScript build output
+*.js
+*.js.map
+*.d.ts
+
+# Ignore macOS metadata files
+.DS_Store
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+
+# Ignore log files
+*.log
+
+# Ignore environment files
+.env
+
+# Ignore other common files and directories
+*.swp
+*.swo
+*.bak
+*.tmp
+*.temp
+*.lock
+*.egg-info/
+*.egg
+*.venv
+*.virtualenv
+*.envrc
+*.direnv
+*.pid
+*.pid.lock
+
+# Add any other files or directories you want to exclude here
