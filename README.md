@@ -84,13 +84,13 @@ https://courses.illinois.edu/cisapp/explorer/schedule/courses.xml?year=2012&term
 
 Take a look at it [here](https://courses.illinois.edu/cisapp/explorer/schedule/courses.xml?year=2012&term=spring&§ionTypeCode=LEC§ionTypeCode=Q&collegeCode=KV&creditHours=3&subject=CHEM&sessionId=1&gened=NAT&qp=atomic+structure). If you're in your browser, you can hit `F12` to open developer tools and examine the XML.
 
-The assumption is that these two fixes apply to all the API endpoints, meaning that using these fixes we can access the entirety of the API and utilize the examples. **I've made a tool to do this automatically**: [mirth.cc/fix-cisapi/](https://mirth.cc/fix-cisapi). Note that it is not outside the realm of possibility for there to be more errors.
+The assumption is that these two fixes apply to all the API endpoints, meaning that using these fixes we can access the entirety of the API and utilize the examples. **I've made a tool to do this automatically**: [mirth.cc/cisurls-web/](https://mirth.cc/cisurls-web). Note that it is not outside the realm of possibility for there to be more errors.
 
 As another note, you can add `mode=cascade` to the URL parameters to not just show the courses/terms/departments, but all the pieces that exist inside them. Meaning, instead of just getting a list of courses inside a department, you'll also get all the sections within those courses within the same XML. This means less requests are required.
 
 As of 2023-03-22 16:00, I have not yet received the XML schema. The link to it on the Data Explorer app page is broken, and there exist no archives of it, as far as I can tell. Until we receive this schema, it's better to **work on other portions of the project**, as waiting until we have the schema will make the implementation of the project much easier.
 
-Update: As of 2023-03-22 17:40, I have received the XML schema. Right now I've hosted it  at [mirth.cc/fix-cisapi/cisapi.xsd](https://mirth.cc/fix-cisapi/cisapi.xsd).
+Update: As of 2023-03-22 17:40, I have received the XML schema. Right now I've hosted it  at [mirth.cc/cisurls-web/cisapi.xsd](https://mirth.cc/cisurls-web/cisapi.xsd).
 
 <details>
 
