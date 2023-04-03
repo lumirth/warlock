@@ -5,6 +5,20 @@ Changes include:
 - New "On Data Formatting" section under "Structure"
 ```
 
+# Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Getting started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Testing](#testing)
+- [Structure](#structure)
+  - [On Data Formatting](#on-data-formatting)
+  - [On the course API](#on-the-course-api)
+  - [On RateMyProfessor](#on-ratemyprofessor)
+  - [On Waf's GPA Datasets](#on-wafs-gpa-datasets)
+
 # Getting started
 
 ## Prerequisites
