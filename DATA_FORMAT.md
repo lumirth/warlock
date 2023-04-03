@@ -90,7 +90,7 @@ Data for a single course will be formatted as follows\*:
 
 These gened codes match the banner registration system.
 
-| Name                                                             | Code    | Display Tag |
+| Name                                                             | Code    | Proposed Display Tag |
 | ---------------------------------------------------------------- | ------- | ----------- |
 | Composition I                                                    | `COMP1` | `COMP`      |
 | Advanced Composition                                             | `1CLL`  | `ADVCOMP`   |
