@@ -43,18 +43,18 @@ Data for a list of courses will be formatted as follows:
 }
 ```
 
-Data for a single course will be formatted as follows*:
+Data for a single course will be formatted as follows\*:
 
-*= This is not the final format, but a work in progress. Space needs to be allotted for more detailed information about GPA and professor ratings. Maybe Reddit comments and posts as well.
+\*= This is not the final format, but a work in progress. Space needs to be allotted for more detailed information about GPA and professor ratings. Maybe Reddit comments and posts as well.
 
 ```json
 {
   "id": "CS 222",
   "href": "https://courses.illinois.edu/schedule/2023/fall/CS/222",
   "label": "Software Design Lab",
-  "credit": 1, 
+  "credit": 1,
   "semester": "Spring",
-  "year": "2023", 
+  "year": "2023",
   "avgProf": "1.2",
   "avgGPA": "3.2",
   "description": "Design and implementation of novel software solutions. Problem identification and [...]",
@@ -76,28 +76,43 @@ Data for a single course will be formatted as follows*:
         {
           "name": "Woodley, M",
           "rating": "1.2",
-          "gpa": "3.2",
+          "gpa": "3.2"
         }
       ]
     }
     // ...
-  ],
+  ]
   // more goes here after sections? should we send detailed GPA data over the wire? we could try it and then split detailed GPA data into another endpoint so the user can load it on demand.
 }
 ```
 
 ## GenEd Codes
 
-| Name                                                             | Code    |
-| ---------------------------------------------------------------- | ------- |
-| Composition I                                                    | `COM`   |
-| Advanced Composition                                             | `ADV`   |
-| Humanities and the Arts: Literature & the Arts                   | `H-LIT` |
-| Humanities and the Arts: Historical & Philosophical Perspectives | `H-HIS` |
-| Natural Sciences and Technology: Life Science                    | `N-LS`  |
-| Natural Sciences and Technology: Physical Science                | `N-PS`  |
-| Quantitative Reasoning                                           | `QR`    |
-| Social and Behavioral Sciences                                   | `SOC`   |
-| Cultural Studies: Western/Comparative Cultures                   | `C-WCC` |
-| Cultural Studies: Non-Western Cultures                           | `C-NWC` |
-| Cultural Studies: US Minority Cultures                           | `C-MIN` |
+These gened codes match the banner registration system.
+
+| Name                                                             | Code    | Display Tag |
+| ---------------------------------------------------------------- | ------- | ----------- |
+| Composition I                                                    | `COMP1` | `COMP`      |
+| Advanced Composition                                             | `1CLL`  | `ADVCOMP`   |
+| Humanities and the Arts: Literature & the Arts                   | `1LA`   | `HUM-LA`    |
+| Humanities and the Arts: Historical & Philosophical Perspectives | `1HP`   | `HUM-HP`    |
+| Natural Sciences and Technology: Life Science                    | `1LS`   | `NST-LS`    |
+| Natural Sciences and Technology: Physical Science                | `1PS`   | `NST-PS`    |
+| Quantitative Reasoning I                                         | `1QR1`  | `QR-I`      |
+| Quantitative Reasoning II                                        | `1QR2`  | `QR-II`     |
+| Social and Behavioral Sciences: Social Science                   | `1SS`   | `SBS-SS`    |
+| Social and Behavioral Sciences: Behavioral Science               | `1BSC`  | `SBS-BS`    |
+| Cultural Studies: Western/Comparative Cultures                   | `1WCC`  | `CUL-WCC`   |
+| Cultural Studies: Non-Western Cultures                           | `1NW`   | `CUL-NW`    |
+| Cultural Studies: US Minority Cultures                           | `1US`   | `CUL-US`    |
+
+Other attributes and their codes:
+
+| Name                                | Code    | Display Tag |
+| ----------------------------------- | ------- | ----------- |
+| Grand Challenge - Health & Wellness | `1GC1`  | `GC-HW`     |
+| Grand Challenge - Inequality        | `1GC2`  | `GC-IN`     |
+| Grand Challenge - Sustainability    | `1GC3`  | `GC-SU`     |
+| James Scholar                       | `1055`  | `JS`        |
+| Campus Honors/Chancellor's Scholar  | `1CH`   | `CH`        |
+| Teacher Certification               | UNKNOWN | `TC`        |
