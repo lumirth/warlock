@@ -1,4 +1,9 @@
-`Last updated on 2023-03-29`
+```
+Last updated on 2023-04-02
+
+Changes include:
+- New "On Data Formatting" section under "Structure"
+```
 
 # Getting started
 
@@ -48,6 +53,10 @@ Note:
 | Waf's GPA Datasets | Every semester |
 
 Thus, it may be advantageous to store Waf's GPA Datasets in a database, and update it every semester, but query the Course API and RateMyProfessor every time the frontend is loaded.
+
+## On Data Formatting
+
+A basic idea of the format for the frontend to receive the data in(and for the backend to construct the data into) can be seen in the [DATA_FORMAT.md](DATA_FORMAT.md) file.
 
 ## On the course API
 
