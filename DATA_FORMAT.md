@@ -100,8 +100,8 @@ These gened codes match the banner registration system.
 | Natural Sciences and Technology: Physical Science                | `1PS`   | `NST-PS`    |
 | Quantitative Reasoning I                                         | `1QR1`  | `QR-I`      |
 | Quantitative Reasoning II                                        | `1QR2`  | `QR-II`     |
-| Social and Behavioral Sciences: Social Science                   | `1SS`   | `SBS-SS`    |
-| Social and Behavioral Sciences: Behavioral Science               | `1BSC`  | `SBS-BS`    |
+| Social and Behavioral Sciences: Social Science                   | `1SS`   | `SOC-SS`    |
+| Social and Behavioral Sciences: Behavioral Science               | `1BSC`  | `SOC-BS`    |
 | Cultural Studies: Western/Comparative Cultures                   | `1WCC`  | `CUL-WCC`   |
 | Cultural Studies: Non-Western Cultures                           | `1NW`   | `CUL-NW`    |
 | Cultural Studies: US Minority Cultures                           | `1US`   | `CUL-US`    |
