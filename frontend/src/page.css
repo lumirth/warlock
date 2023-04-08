@@ -1,0 +1,33 @@
+nav {
+    display: flex;
+    justify-content: center;
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+  }
+  
+  nav li {
+    margin: 0 10px;
+  }
+  
+  nav button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+  }
+  
+  nav a {
+    color: #333;
+    text-decoration: none;
+    padding: 8px 16px;
+  }
+  
+  nav a:hover {
+    background-color: #ddd;
+  }
+  

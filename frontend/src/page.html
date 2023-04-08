@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>My Webpage</title>
+    <link rel="stylesheet" href="test.css">
+    <style>
+      /* Add CSS styles */
+      .container {
+        margin: 30px;
+        margin-bottom: 10px;
+        padding-bottom: 10px; 
+      }
+      .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #f5f5f5;
+        text-align: center;
+        padding: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><button>Test</button></li>
+      </ul>
+    </nav>
+    <div class="container">
+      <form>
+        <label for="course-name">Course Name:</label>
+        <input type="text" id="course-name" placeholder="Enter course name..." />
+        <button type="submit">Search</button>
+        <div>
+          <label for="advanced-search">Advanced Search:</label>
+          <input type="checkbox" id="advanced-search" />
+        </div>
+        <div id="advanced-search-fields" style="display: none;">
+          <!-- Add your advanced search fields here -->
+        </div>
+      </form>
+      <!-- Add your page content here -->
+    </div>
+    <footer class="footer">
+      <p>Copyright &copy; 2023 
+      </p>
+    </footer>
+  </body>
+</html>
