@@ -2,3 +2,4 @@ fastapi
 uvicorn # required by fastapi
 pytest # https://fastapi.tiangolo.com/tutorial/testing/
 httpx # required for testing
+fuzzywuzzy # for fuzzy gened matching
