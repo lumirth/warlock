@@ -11,7 +11,7 @@ DEFAULT_SEMESTER = 'fall' if time.localtime().tm_mon > 3 else 'spring'
 FUZZ_THRESH = 50
 
 # unpickle unchanging data
-PICKLES_DIR = 'pickles'
+PICKLES_DIR = '../pickles'
 GEN_EDS = pickle.load(open(os.path.join(PICKLES_DIR, 'gen_eds.pkl'), 'rb'))
 GEN_ED_CODES = pickle.load(open(os.path.join(PICKLES_DIR, 'gen_ed_codes.pkl'), 'rb'))
 YEARS = pickle.load(open(os.path.join(PICKLES_DIR, 'years.pkl'), 'rb'))
