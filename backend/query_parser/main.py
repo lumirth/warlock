@@ -65,6 +65,11 @@ class WarlockQuery:
         pattern = re.compile(r'\s*([a-zA-Z]{2,4})\s*(\d{0,3})\s*')
         if pattern.match(token) and not ':' in token:
             self.subject, self.course_id = pattern.match(token).groups()
+            # If subject was ever valid across all years, it will be in SUBJECTS
+            # We could theoretically check if valid by year, but that would be
+            # a lot of work for little gain
+            if self.subject.upper not in SUBJECTS:
+                raise ValueError('Invalid subject: {}'.format(self.subject))
             self.subject = self.subject.upper()
             return True
         return False
