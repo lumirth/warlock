@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from query_parser import WarlockQuery
+from query_parser.main import WarlockQuery
 
 app = FastAPI()
 
@@ -24,3 +24,6 @@ def read_root():
 def read_item(item_id: int, q: str = None):
     return {"item_id": item_id, "q": q}
 
+if __name__ == '__main__':
+    query = WarlockQuery('math 257, year:2021, semester:fall, is:online, is:open')
+    print(query)

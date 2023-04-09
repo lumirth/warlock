@@ -68,7 +68,7 @@ class WarlockQuery:
             # If subject was ever valid across all years, it will be in SUBJECTS
             # We could theoretically check if valid by year, but that would be
             # a lot of work for little gain
-            if self.subject.upper not in SUBJECTS:
+            if self.subject.upper() not in SUBJECTS:
                 raise ValueError('Invalid subject: {}'.format(self.subject))
             self.subject = self.subject.upper()
             return True
