@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from query_parser.main import WarlockQuery
+from api.query_parser import WarlockQuery
 
 app = FastAPI()
 
