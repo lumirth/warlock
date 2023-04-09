@@ -10,6 +10,11 @@ DEFAULT_SEMESTER = 'fall' if time.localtime().tm_mon > 3 else 'spring'
 
 FUZZ_THRESH = 50
 
+# change directory to the directory of this file
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+
 # unpickle unchanging data
 PICKLES_DIR = '../pickles'
 GEN_EDS = pickle.load(open(os.path.join(PICKLES_DIR, 'gen_eds.pkl'), 'rb'))
