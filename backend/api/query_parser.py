@@ -3,6 +3,7 @@ import re
 import pickle
 from fuzzywuzzy import fuzz, process
 import os
+from models import Query, AdvancedSearchParameters
 
 DEBUG = True
 DEFAULT_YEAR = time.localtime().tm_year
@@ -16,7 +17,7 @@ dname = os.path.dirname(abspath)
 os.chdir(dname)
 
 # unpickle unchanging data
-PICKLES_DIR = '../pickles'
+PICKLES_DIR = './pickles'
 GEN_EDS = pickle.load(open(os.path.join(PICKLES_DIR, 'gen_eds.pkl'), 'rb'))
 GEN_ED_CODES = pickle.load(open(os.path.join(PICKLES_DIR, 'gen_ed_codes.pkl'), 'rb'))
 YEARS = pickle.load(open(os.path.join(PICKLES_DIR, 'years.pkl'), 'rb'))
@@ -24,8 +25,9 @@ SUBJECTS = pickle.load(open(os.path.join(PICKLES_DIR, 'subjects.pkl'), 'rb'))
 TERMS = pickle.load(open(os.path.join(PICKLES_DIR, 'terms.pkl'), 'rb'))
 
 class WarlockQuery:
-    def __init__(self, query):
-        self.query = query
+    def __init__(self, query: Query):
+        self.query = query.simple_query or ''
+        self.advanced_query = query.advanced_query
 
         self.year = DEFAULT_YEAR
         self.semester = DEFAULT_SEMESTER
@@ -41,7 +43,25 @@ class WarlockQuery:
         self.open_flag = None
         self.keywords = None
 
-        self._parse()
+        if self.advanced_query:
+            self._parse_advanced_query()
+        else:
+            self._parse()
+
+    def _parse_advanced_query(self):
+        adv_query = self.advanced_query
+        self.year = adv_query.year or self.year
+        self.semester = adv_query.semester or self.semester
+        self.subject = adv_query.subject
+        self.course_id = adv_query.course_id
+        self.crn = adv_query.crn
+        self.hours = adv_query.hours
+        self.instructor = adv_query.instructor
+        self.gen_ed = adv_query.gen_ed
+        self.online_flag = adv_query.online
+        self.campus_flag = adv_query.on_campus
+        self.open_flag = adv_query.open_sections
+        self.keywords = adv_query.keyword
         
     def __str__(self) -> str:
         string = 'Query: \'{}\'\n'.format(self.query)
@@ -190,10 +210,10 @@ class WarlockQuery:
 
 
 def main():
-    query = WarlockQuery('math 257, year:2021, semester:fall, is:online, is:open')
+    query = Query(simple_query='math 257, year:2021, semester:fall, is:online, is:open')
+    warlock_query = WarlockQuery(query)
     print('==============================')
-    print(query)
-
+    print(warlock_query)
 
 if __name__ == '__main__':
     main()

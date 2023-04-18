@@ -1,0 +1,1894 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+  targetNamespace="http://rest.cis.illinois.edu"
+  xmlns:cis="http://rest.cis.illinois.edu"
+  jaxb:version="2.0">
+
+  <!-- Best Resource: http://jaxb.dev.java.net/tutorial/ -->
+
+  <xsd:annotation>
+    <xsd:appinfo>
+      <jaxb:schemaBindings>
+        <jaxb:package name="edu.illinois.cis.api" />
+      </jaxb:schemaBindings>
+    </xsd:appinfo>
+  </xsd:annotation>
+
+  <xsd:element name="errorMessage" type="xsd:string" />
+
+  <xsd:complexType name="DescriptiveLink">
+    <xsd:annotation>
+      <xsd:documentation>Describes a hyperlinked resource in the CIS.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:annotation>
+        <xsd:documentation>The value of a DescriptiveLink is the text that would appear in a hyperlink.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="id" type="xsd:string" use="required">
+          <xsd:annotation>
+            <xsd:documentation>Unique identifier for this resource.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="href" type="xsd:anyURI">
+          <xsd:annotation>
+            <xsd:documentation>An HTTP URI to the resource.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="OptionType">
+    <xsd:annotation>
+      <xsd:documentation>Displays an option's ID, name and value.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="name" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The name for this option. Option names must be unique.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="value" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The value for this option.</xsd:documentation>
+        </xsd:annotation>        
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>The id for this option.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  
+  <xsd:element name="option" type="cis:OptionType">
+    <xsd:annotation>
+      <xsd:documentation>An option element.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  
+  <xsd:complexType name="OptionsType">
+    <xsd:choice>
+      <xsd:element ref="cis:option" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>0 to many option elements.</xsd:documentation>
+          <xsd:appinfo>
+            <jaxb:property name="optionTypes"/>
+          </xsd:appinfo>
+        </xsd:annotation>       
+      </xsd:element>
+      <xsd:element name="option" type="cis:DescriptiveLink" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>0 to many DescriptiveLinks to a specific Option.</xsd:documentation>
+          <xsd:appinfo>
+            <jaxb:property name="optionLinks"/>
+          </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:choice>
+  </xsd:complexType>
+  
+  <xsd:element name="options" type="cis:OptionsType">
+    <xsd:annotation>
+      <xsd:documentation>Container for OptionType or DescriptiveLink elements.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  
+  <xsd:complexType name="ParentsType">
+    <xsd:annotation>
+      <xsd:documentation>
+      A ParentsType is included with anything that is linked from another 
+      resource. It is a container of DescriptiveLinks named for the parent 
+      resource and is linked to that parent resource.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="calendarYear" type="cis:DescriptiveLink">
+        <xsd:annotation>
+          <xsd:documentation>A DescriptiveLink to the YearsType parent.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="term" type="cis:DescriptiveLink" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>A DescriptiveLink to the TermType parent.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="subject" type="cis:DescriptiveLink" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>A DescriptiveLink to the SubjectType parent.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="course" type="cis:DescriptiveLink" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>A DescriptiveLink to the CourseType parent.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="category" type="cis:DescriptiveLink" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>A DescriptiveLink to the CategoryType parent.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="YearsType">
+    <xsd:annotation>
+      <xsd:documentation>A YearsType is the base for the catalog, gened and schedule modules.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="label" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Some label text, suitable as text for a hyperlink.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="calendarYears">
+        <xsd:annotation>
+          <xsd:documentation>A container of DescriptiveLinks to the YearType for a given year.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:choice>
+            <xsd:element name="calendarYear" type="cis:DescriptiveLink"
+              minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>A DescriptiveLink to a YearType.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="calendarYearSummary" type="cis:YearType"
+              minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>A YearType containing a TermDetail.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            </xsd:choice>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:all>
+  </xsd:complexType>
+
+  <xsd:element name="schedule" type="cis:YearsType">
+    <xsd:annotation>
+      <xsd:documentation>A YearsType. This is the base element for the CIS schedule, catalog and genEd modules.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+  <xsd:complexType name="TermDetailType">
+    <xsd:annotation>
+      <xsd:documentation>Describes the details for a given term.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="label" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Text suitable for text in a hyperlink.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="publicIndicator" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The value of this field is either Y (term is publicly available and queryable) or N (term is not publicly available or queryable).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="archiveIndicator" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The value of this field is either Y (term is archived) or N (term is not archived).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="attendingTerm" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>If this element is present in a TermDetailType, then it's value is Y (the term is the attending term).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="defaultTerm" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>If this element is present in a TermDetailType, then it's value is Y (the term is the default term).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="enrollingTerm" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>If this element is present in a TermDetailType, then it's value is Y (the term is the enrolling term).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="href" type="xsd:anyURI">
+      <xsd:annotation>
+        <xsd:documentation>An HTTP URI to the term.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="id" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>Unique identifier for this term (the term code as it appears in Banner).</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:element name="termDetail" type="cis:TermDetailType">
+    <xsd:annotation>
+      <xsd:documentation>A standalone TermDetailType, also referenced elsewhere in this schema.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  
+  <xsd:complexType name="TermDetailsType">
+    <xsd:annotation>
+        <xsd:documentation>A container used to transport TermDetailType elements for administration functionality.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="cis:termDetail" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>The TermDetailType that shows more information about the term.</xsd:documentation>
+          <xsd:appinfo>
+            <jaxb:property name="termDetailTypes"/>
+          </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:element name="termDetails" type="cis:TermDetailsType">
+    <xsd:annotation>
+        <xsd:documentation>TermDetailsType used to hold TermDetailType elements.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  
+  <xsd:complexType name="YearType">
+    <xsd:annotation>
+      <xsd:documentation>A container of DescriptiveLinks to the available TermType(s) for a given year.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="label" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The text describing a year (e.g. 20xx), suitable as text for a hyperlink.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="terms">
+        <xsd:annotation>
+          <xsd:documentation>Container of DescriptiveLinks or TermDetailTypes. This container has either one or the other but not both.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:choice>
+              <xsd:element name="term" type="cis:DescriptiveLink"
+                minOccurs="0" maxOccurs="unbounded">
+                <xsd:annotation>
+                  <xsd:documentation>A DescriptiveLink to the TermType for the given year and term.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element ref="cis:termDetail" minOccurs="0" maxOccurs="unbounded">
+                <xsd:annotation>
+                  <xsd:documentation>The TermDetailType that shows more information about the term.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+            </xsd:choice>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:all>
+    <xsd:attribute name="id" type="xsd:int">
+      <xsd:annotation>
+        <xsd:documentation>A unique identifier for the given year.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="href" type="xsd:anyURI" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>URI to detailed term.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:element name="calendarYear" type="cis:YearType" >
+    <xsd:annotation>
+      <xsd:documentation>A YearType element that lists the terms available for a given year.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+  <xsd:complexType name="TermType">
+    <xsd:annotation>
+      <xsd:documentation>
+      A TermType always contains a ParentsType and a label. It can contain any
+      of the following container elements:
+      * subjects: a container element that holds DescriptiveLinks to subject
+        information in the CIS.
+      * cascadingSubjects: a container element that holds Subject information
+        in the CIS. This Subject information may include either DescriptiveLinks
+        to Course information or a full CourseType.
+      * categories: a container that contains DescriptiveLinks to GenEd 
+        categories for the given year and term. 
+        
+      These container elements are mutually exclusive from each other. In
+      other words, only 1 of these containers will ever be returned by a 
+      single request.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="parents" type="cis:ParentsType">
+        <xsd:annotation>
+          <xsd:documentation>ParentsType for this TermType which should contain a calendarYear element only.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="label" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Text for this term (e.g. Spring 20xx), suitable as text for a hyperlink.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="subjects">
+        <xsd:annotation>
+          <xsd:documentation>A container of DescriptiveLinks to subject information in the CIS.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="subject" type="cis:DescriptiveLink"
+              minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>A DescriptiveLink to specific subject information in the CIS.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="cascadingSubjects">
+        <xsd:annotation>
+          <xsd:documentation>
+          A container element for SubjectType information in the CIS. This 
+          subject information may include either DescriptiveLinks to course 
+          information or a full CourseType.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="cascadingSubject" type="cis:SubjectType" minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>
+                A SubjectType with either DescriptiveLinks to or full CourseType 
+                elements of specific courses offered by that subject.
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="categories">
+        <xsd:annotation>
+          <xsd:documentation>
+          A container of DescriptiveLinks to GenEd categories for the given
+          year and term.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="category" type="cis:DescriptiveLink"
+              minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>A DescriptiveLink to a specific GenEd category in the CIS.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>  
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:all>
+    <xsd:attribute name="id" type="xsd:int">
+      <xsd:annotation>
+        <xsd:documentation>Unique identifier for this TermType whose value is the Banner term code.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:element name="term" type="cis:TermType">
+    <xsd:annotation>
+      <xsd:documentation>A TermType for the requested year and term.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  
+  <xsd:complexType name="SubjectType">
+    <xsd:annotation>
+      <xsd:documentation>
+      Information about a subject in the CIS. A subject will have courses 
+      associated with it and it can be returned 2 different ways:
+      * courses: a container element of DescriptiveLinks to information about
+        courses offered in this subject.
+      * cascadingCourses: a container element of CourseType elements that contain
+        all information about the courses offered in this subject.
+        
+      The courses and cascadingCourses container elements are mutually
+      exclusive from each other. In other words, only 1 of these containers 
+      will ever be returned by a single request.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="parents" type="cis:ParentsType">
+        <xsd:annotation>
+          <xsd:documentation>ParentsType for this SubjectType which should contain calendarYear and term elements only.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="label" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The full name for this subject, suitable as text for a hyperlink.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="collegeCode" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>The Banner college code.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="departmentCode" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>The Banner department code.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="unitName" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>The name of the unit that owns this subject.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="contactName" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          The name of the person in the department to contact about this subject.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="contactTitle" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>The title of the person named in the contactName field.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="addressLine1" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>The first line of the postal address for the unit.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="addressLine2" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>The second line of the postal address for the unit.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="phoneNumber" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>The phone number for the unit.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="webSiteURL" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>The URL for the unit.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="subjectComment" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Additional text about this subject.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="collegeDepartmentDescription" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Additional text about the colleg, department, or unit offering this subject.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="courses">
+        <xsd:annotation>
+          <xsd:documentation>A container of DescriptiveLinks to specific CourseTypes in the CIS offered by this subject.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="course" type="cis:DescriptiveLink" minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>A DescriptiveLink to a specific CourseType in the CIS.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="cascadingCourses">
+        <xsd:annotation>
+          <xsd:documentation>A container of all the CourseType information in the CIS for all courses offered by this subject.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="cascadingCourse" type="cis:CourseType" minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>A specific CourseType offered by this subject.</xsd:documentation>
+              </xsd:annotation>            
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:all>
+    <xsd:attribute name="id" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>Unique identifier for this subject whose value is the subject code.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:element name="subject" type="cis:SubjectType">
+    <xsd:annotation>
+      <xsd:documentation>
+      A subject element is a SubjectType for the requested year, term and 
+      subject code.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+  <xsd:complexType name="GenEdAttributeType">
+    <xsd:annotation>
+      <xsd:documentation>
+      Describes a GenEd attribute. The value of this type is the label for the 
+      GenEd attribute as it appears in Banner.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="code" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>The GenEd code as it appears in Banner.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  
+  <xsd:complexType name="GenEdAttributesType">
+    <xsd:annotation>
+      <xsd:documentation>
+      A container of 1 or more GenEdAttributeType elements. Some courses will
+      satisfy more than 1 general education requirement.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="genEdAttribute" type="cis:GenEdAttributeType" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>A GenEdAttributeType in this container.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:element name="genEdAttributes" type="cis:GenEdAttributesType">
+    <xsd:annotation>
+      <xsd:documentation>
+      A genEdAttributes element is a GenEdAttributesType. This element is 
+      referenced in multiple places in this schema.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  
+  <xsd:complexType name="GenEdCategoryType">
+    <xsd:annotation>
+      <xsd:documentation>
+      A GenEdCategoryType groups together related GenEd attributes. It can
+      contain a category element or be empty.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="category" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>A grouping of related GenEd attributes.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="description" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation>A text description for this category.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="cis:genEdAttributes">
+              <xsd:annotation>
+                <xsd:documentation>The genEdAttributes element defined above.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="id" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Unique identifier for this category whose value is a category code.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:element name="sections" type="cis:DescriptiveLink"/>
+  
+  <xsd:complexType name="CourseType">
+    <xsd:annotation>
+      <xsd:documentation>
+      Information about a course in the CIS for the given year, term, subject,
+      and course number. When returned by the schedule module, a course will 
+      have sections associated with it that are returned 2 different ways:
+      * sections: a container element of DescriptiveLinks to information about
+        sections offered by this course.
+      * detailedSections: a container element of SectionType elements that contain
+        all information about the sections offered by this course.
+        
+      The sections and detailedSections container elements are mutually
+      exclusive from each other. In other words, only 1 of these containers 
+      will ever be returned by a single request.
+
+      When returned by the catalog or gened modules, a course will have a 
+      container of DescriptiveLinks to a specific CourseType in the schedule
+      called termsOffered.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="parents" type="cis:ParentsType">
+        <xsd:annotation>
+          <xsd:documentation>ParentsType for this CourseType which should contain calendarYear, term, and subject elements only.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="label" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The title for this course, suitable as text for a hyperlink.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="description" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>A summary of the topics for this course.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="creditHours" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          The credit hours for the course. The values are usually in the form 
+          'n Hours.' where n is obviously the number of hours. Not all courses 
+          have credit hours assigned to them.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="generalEducationCategory" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          This field is deprecated in favor of the previously described
+          genEdAttributes element and should not be used or expected to
+          be returned by the CIS.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionDateRange" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          The date range that sections for this course will meet. This is 
+          usually in the format 'Meets dd-MMM-yy - dd-MMM-yy.'.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="courseSectionInformation" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Text describing the course as it relates to its sections.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionRegistrationNotes" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Text describing registration requirements.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionDegreeAttributes" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Text describing general education requirements this course meets.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionCappArea" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Text describing course restrictions.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionApprovalCode" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Text describing any approvals needed for registering for this course.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="courseCoRequisite" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Text describing any concurrent enrollment requirements for this course.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="classScheduleInformation" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Text describing any schedule requirements for this course.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionDescription" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Text describing information about the sections offered for this course.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionFeeAmount" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Text describing any fees associated with this course. There is no standard format for this text.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionDeptRestriction" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Text describing any departmental restrictions associated with this course.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionCohortRestriction" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>This field is not currently used.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="cis:genEdAttributes" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Any General Education attributes that are not associated with a General Education category appear here.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="genEdCategories" minOccurs="0" type="cis:GenEdCategoryType">
+        <xsd:annotation>
+          <xsd:documentation></xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sections">
+        <xsd:annotation>
+          <xsd:documentation>
+          A container of DescriptiveLinks to information about the sections 
+          offered in this course. This container is returned by the schedule 
+          module only and is never returned in the same CourseType as a
+          detailedSections container.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="section" type="cis:DescriptiveLink" minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>A DescriptiveLink to a specific section offered by this course.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="detailedSections">
+        <xsd:annotation>
+          <xsd:documentation>
+          A container of SectionTypes that contain all information about all 
+          sections offered in this course. This container is returned by the 
+          schedule module only and is never returned in the same CourseType as
+          a sections container.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="detailedSection" type="cis:SectionType" minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>A SectionType for a specific section offered by this course.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="termsOffered">
+        <xsd:annotation>
+          <xsd:documentation>
+          A container of DescriptiveLinks to the CourseType in the schedule 
+          module for a specific year and term. This container is returned by 
+          the catalog module only.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="course" type="cis:DescriptiveLink" minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>A DescriptiveLink to a CourseType in the schedule module for the given year and term.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element ref="cis:sections">
+        <xsd:annotation>
+          <xsd:documentation>A DescriptiveLink with no text that has a link to this course in the schedule. This element can appear on non-schedule CourseTypes.</xsd:documentation>
+          <xsd:appinfo>
+            <jaxb:property name="scheduleLink"/>
+          </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:all>
+    <xsd:attribute name="id" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>Unique identifier for this CourseType whose value is the subject code and course number.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="href" type="xsd:anyURI">
+      <xsd:annotation>
+        <xsd:documentation>URI to this CourseType that's included in a cascadingSubject container as described in the SubjectType.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:element name="course" type="cis:CourseType">
+    <xsd:annotation>
+      <xsd:documentation>
+      A course element is a CourseType. This is returned by the modules in the 
+      CIS.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  
+  <xsd:complexType name="FinalExamsType">
+      <xsd:sequence>
+        <xsd:element ref="cis:finalExam" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:element name="finalExams" type="cis:FinalExamsType">
+    <xsd:annotation>
+      <xsd:documentation>
+         Holds a collection of finalExamType
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  
+  <xsd:complexType name="FinalExamType">
+      <xsd:sequence>
+          <xsd:element name="subjectCode" type="xsd:string" />
+          <xsd:element name="courseNumber" type="xsd:string" />
+          <xsd:element name="finalExamEvent" type="cis:FinalExamEventType" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string"/>
+      <xsd:attribute name="href" type="xsd:anyURI">
+        <xsd:annotation>
+          <xsd:documentation>An HTTP URI to the resource.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>   
+  </xsd:complexType>
+  
+  <xsd:element name="finalExam" type="cis:FinalExamType">     
+    <xsd:annotation>
+      <xsd:documentation>
+        A finalExam element is a finalExamType.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  
+  <xsd:complexType name="FinalExamEventType">
+      <xsd:all>
+          <xsd:element name="sectionId" type="xsd:string" />
+          <xsd:element name="crn" type="xsd:string" />
+          <xsd:element name="date" type="xsd:string" />
+          <xsd:element name="day" type="xsd:string" />
+          <xsd:element name="startTime" type="xsd:string" />
+          <xsd:element name="endTime" type="xsd:string" />
+          <xsd:element name="location" type="xsd:string" />
+          <xsd:element name="examType" type="xsd:string" />
+      </xsd:all>
+  </xsd:complexType>
+  
+  <xsd:element name="finalExamEvent" type="cis:FinalExamEventType">
+    <xsd:annotation>
+      <xsd:documentation>
+        Information about the date, time, and location of a final exam
+        for a course.  There may be multiple final exam events per
+        for each course.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+  <xsd:complexType name="FinalExamTermType">
+      <xsd:sequence>
+          <xsd:element name="activeIndicator" type="xsd:string" />
+          <xsd:element name="publicIndicator" type="xsd:string" />
+          <xsd:element name="archiveIndicator" type="xsd:string" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string"/>
+      <xsd:attribute name="href" type="xsd:anyURI">
+        <xsd:annotation>
+          <xsd:documentation>An HTTP URI to the resource.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>   
+  </xsd:complexType>
+  
+  <xsd:element name="finalExamTerm" type="cis:FinalExamTermType">
+    <xsd:annotation>
+      <xsd:documentation>
+        A finalExamTerm element is a finalExamTermType.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+  <xsd:complexType name="FinalExamTermsType">
+      <xsd:sequence>
+        <xsd:element ref="cis:finalExamTerm" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:element name="finalExamTerms" type="cis:FinalExamTermsType">
+    <xsd:annotation>
+      <xsd:documentation>
+         Holds a collection of finalExamTermType
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+  <xsd:complexType name="SectionType">
+    <xsd:annotation>
+      <xsd:documentation>
+      Information about a section in the CIS. Some of the fields in a 
+      SectionType have the same name as their CourseType. These fields could
+      contain different values than the corresponding fields in the CourseType.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="parents" type="cis:ParentsType">
+        <xsd:annotation>
+          <xsd:documentation>ParentsType for this SectionType which should contain calendarYear, term, subject, and course elements only.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionNumber" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+          Identifier for this SectionType. This is unique to this section 
+          offered by the parent course but not unique to all sections in all
+          courses (other courses may use this identifier for their sections).
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionTitle" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Title applying to this section only.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionDateRange" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+          The date range that sections for this course will meet. This is 
+          usually in the format 'Meets dd-MMM-yy - dd-MMM-yy.'. The value of
+          this field may be different (applicable to this section only) from
+          the corresponding field in this section's CourseType.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="description" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Text describing the type of section (usually pertaining to Online or Interactive Video).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="comment" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>This field is not currently used.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="creditHours" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+          The credit hours given for this section. The values are usually in 
+          the form 'n Hours.' where n is the number of hours. The value of this
+          field may be different from the corresponding value of the 
+          creditHours field in the CourseType. 
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="statusCode" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+          Values for this field are either 'A' (active), or 'P' (pending). This
+          value is informational only and should not be used to determine 
+          availability of a section.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="courseAttribute" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>This field is not currently used.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionText" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          Text describing additional information about this section that does 
+          not apply to other fields in this SectionType.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionNotes" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Text describing addtional restrictions as they apply to this section.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionDegreeAttributes" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          Text describing general education requirements this section meets. 
+          The value for this field could be different from the corresponding
+          sectionDegreeAttributes in the CourseType.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionCappArea" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          Text describing restrictions on this section. The value of this field
+          could be different from the sectionCappArea in the CourseType.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionApprovalCode" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>This field is not currently used.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionCoRequest" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          Text describing any section concurrent enrollment requirements for
+          this section. The value of this field could be different from the
+          courseCoRequisite field in the CourseType.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionFeeAmount" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          Text describing any fees associated with this section. The value of
+          this field could be different from the sectionFeeAmount field in the
+          CourseType.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="partOfTerm" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          Text code describing the part of term this section will be offered. 
+          See the SessionType for more information about the codes used in this
+          field.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionDeptRestriction" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          Text describing any departmental restrictions to enrolling this section.
+          The value of this field could be different from the 
+          sectionDeptRestriction field in the CourseType.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionCohortRestriction" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>This field is not currently used.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sectionStatusCode" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          Values for this field are either 'A' (active), or 'P' (pending). This
+          value is informational only and should not be used to determine 
+          availability of a section. This is a duplicate of the statusCode
+          field.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="enrollmentStatus" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          Text describing section availability. This field is volatile and its
+          value should not be cached.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="startDate" type="xsd:date" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          The official start date for this section. The value for this field
+          could be different from the start date in the sectionDateRange
+          field.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="endDate" type="xsd:date" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          The official end date for this section. The value for this field
+          could be different from the end date in the sectionDateRange field.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="specialApproval">
+        <xsd:annotation>
+          <xsd:documentation>
+          Text describing any approvals needed to gain enrollment into this 
+          section. The value of this field could be different from the 
+          sectionApprovalCode in the CourseType.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+              <xsd:attribute name="code" type="xsd:string">
+                <xsd:annotation>
+                  <xsd:documentation>The special approval code.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:attribute>
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="meetings">
+        <xsd:annotation>
+          <xsd:documentation>
+          A container of MeetingType elements. See the description of
+          MeetingType for more details.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="meeting" type="cis:MeetingType" minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>A MeetingType for this section.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:all>
+    <xsd:attribute name="id" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>
+        Identifier for this section whose value is the Course Registration 
+        Number (CRN) as it appears in Banner. This value is not unique across
+        terms and can be used by other sections in other terms.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="href" type="xsd:anyURI">
+      <xsd:annotation>
+        <xsd:documentation>
+        URI to this SectionType. This attribute is included in a 
+        detailedSections container only. 
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+ 
+  <xsd:complexType name="MeetingType">
+    <xsd:annotation>
+      <xsd:documentation>
+      Information regarding meeting details. A SectionType has at least 1 
+      MeetingType, but could have many.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="type">
+        <xsd:annotation>
+          <xsd:documentation>
+          The type of meeting (e.g. Discussion, Lab, Lecture, etc.).
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+              <xsd:attribute name="code" type="xsd:string">
+                <xsd:annotation>
+                  <xsd:documentation>The code associated with this type.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:attribute>
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="start" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+          The start time for this meeting. The format is usually
+          'hh:mm PM'.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="end" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+          The end time for this meeting. The format is usually
+          'hh:mm PM'.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="daysOfTheWeek" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+          Text string of the days of the week this meeting will take place.
+          The days are in 1 string without spaces. A meeting on Monday and
+          Wednesday will look like 'MW'. The standard 1-letter abbreviations
+          are used for each day (M for Monday, T for Tuesday, W for Wednesday,
+          R for Thursday and F for Friday).
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="roomNumber" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The room number this meeting will take place in.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="meetingDateRange" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The meeting may have a specified section date range.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="buildingName" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The building number this meeting will take place in.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="instructors">
+        <xsd:annotation>
+          <xsd:documentation>A container of BasicInstructors.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="instructor" type="cis:BasicInstructor"
+              minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>A BasicInstructor for this MeetingType.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:all>
+    <xsd:attribute name="id" type="xsd:int">
+      <xsd:annotation>
+        <xsd:documentation>
+        Synthetic identifier for this MeetingType as it relates to its SectionType.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  
+  <xsd:element name="section" type="cis:SectionType">
+    <xsd:annotation>
+      <xsd:documentation>
+      A section element is a SectionType. This is returned by the schedule 
+      module in the CIS.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+  <xsd:complexType name="ResourceLinksType">
+    <xsd:annotation>
+      <xsd:documentation>
+      A container for elements that describe a resource in the CIS. This type 
+      is currently not used.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="link" type="xsd:anyURI" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>URI to a resource in the CIS.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="ResourceLinks" type="cis:ResourceLinksType">
+    <xsd:annotation>
+      <xsd:documentation>A ResourceLinks element is a ResourceLinks type.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+  <xsd:complexType name="InstructorType">
+    <xsd:annotation>
+      <xsd:documentation>
+      Information about an instructor and links to the courses they are
+      assigned to. This type is currently not used.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="name" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The instructor's name.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="coursesAssigned" type="cis:ResourceLinksType">
+        <xsd:annotation>
+          <xsd:documentation>URIs to the CourseTypes that this instructore is teaching.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:all>
+  </xsd:complexType>
+
+  <xsd:element name="instructor" type="cis:InstructorType">
+    <xsd:annotation>
+      <xsd:documentation>
+      An instructor element is an InstructorType. This element is currently not
+      used.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+  <xsd:complexType name="BasicInstructor">
+    <xsd:annotation>
+      <xsd:documentation>Basic information avaliable for an instructor.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="lastName" type="xsd:string" use="required"/>
+        <xsd:attribute name="firstName" type="xsd:string" />
+        <xsd:attribute name="uin" type="xsd:int" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="SearchParameterType">
+    <xsd:annotation>
+      <xsd:documentation>Parameter information used in search queries.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="name" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>Search parameter name.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="value" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>Search parameter value.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:complexType name="SearchParametersType">
+    <xsd:annotation>
+      <xsd:documentation>A container of SearchParameterType elements.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="parameter" type="cis:SearchParameterType" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>A SearchParameterType.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="SearchResultType">
+    <xsd:annotation>
+      <xsd:documentation>
+      Container of results obtained from a search in the CIS. Search results
+      will contain either courses or sections but not both.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="parameters" type="cis:SearchParametersType">
+      <xsd:annotation>
+        <xsd:documentation>The search parameters provided on the request.</xsd:documentation>
+      </xsd:annotation>
+      </xsd:element>
+      <xsd:choice>
+        <xsd:element name="courses">
+          <xsd:annotation>
+            <xsd:documentation>A container of CourseType elements found by the search request.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="course" type="cis:CourseType" minOccurs="0" maxOccurs="unbounded">
+                <xsd:annotation>
+                  <xsd:documentation>Specific CourseType found by the search.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="sections">
+          <xsd:annotation>
+            <xsd:documentation>A container of SectionType elements found by the search request.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="section" type="cis:SectionType" minOccurs="0" maxOccurs="unbounded">
+                <xsd:annotation>
+                  <xsd:documentation>Specific SectionType found by the search.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="finalExams">
+          <xsd:annotation>
+            <xsd:documentation>A container of FinalExam elements found by the search request.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="finalExam" type="cis:FinalExamType" minOccurs="0" maxOccurs="unbounded">
+                <xsd:annotation>
+                  <xsd:documentation>Specific SectionType found by the search.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="type" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>The type of search performed (course or section).</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:element name="search" type="cis:SearchResultType">
+    <xsd:annotation>
+      <xsd:documentation>A search element is a SearchResultType.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  
+  <xsd:complexType name="PartOfTermType">
+    <xsd:annotation>
+      <xsd:documentation>Describes the part of term.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Description for this part of term.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:attribute name="id" type="xsd:string" use="required">
+          <xsd:annotation>
+            <xsd:documentation>The code for this part of term.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  
+  <xsd:complexType name="SessionType">
+    <xsd:annotation>
+      <xsd:documentation>
+      Information about a session. Sessions are subdivisions of a term. A 
+      course and section offered during these subdivisions. The value of the
+      partOfTerm field in a SectionType is the code that is the session it
+      is offered in.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="term" type="cis:DescriptiveLink">
+        <xsd:annotation>
+          <xsd:documentation>DescriptiveLink to the TermType for this SessionType.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="partOfTerm" type="cis:PartOfTermType">
+        <xsd:annotation>
+          <xsd:documentation>PartOfTermType describing the name and code for this SessionType.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="startDate" type="xsd:dateTime">
+        <xsd:annotation>
+          <xsd:documentation>The start date for this session.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="endDate" type="xsd:dateTime">
+        <xsd:annotation>
+          <xsd:documentation>The end date for this session.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="SessionsType">
+    <xsd:annotation>
+      <xsd:documentation>A container of SessionType elements for a given year and term.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="session" type="cis:SessionType" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>A specific SessionType for a given year and term.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:element name="sessions" type="cis:SessionsType">
+    <xsd:annotation>
+      <xsd:documentation>A sessions element is a SessionsType.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  
+  <xsd:complexType name="SubCategoryType">
+    <xsd:annotation>
+      <xsd:documentation>
+      Information about courses offered as a General Education requirement. A 
+      SubCategoryType will either return DescriptiveLinks to CourseType 
+      elements or CourseType elements that show the terms they are offered.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="parents" type="cis:ParentsType">
+        <xsd:annotation>
+          <xsd:documentation>ParentsType for this SubCategoryType which should contain calendarYear, term, and category elements only.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="label" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Formal name for this SubCategoryType, suitable as text for a hyperlink.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="catalogCourses" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>
+          Container of DescriptiveLink elements to a specific CourseType in the 
+          CIS catalog that has this General Education requirement.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="course" type="cis:DescriptiveLink" minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>DescriptiveLink to a CourseType in the CIS catalog.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="courseDetails" minOccurs="0" maxOccurs="1">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="course" type="cis:CourseType" minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>CourseType from the CIS catalog.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>Identifier for this SubCategoryType whose value is the General Education attribute code.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  
+  <xsd:element name="subCategories" type="cis:SubCategoryType">
+    <xsd:annotation>
+      <xsd:documentation>A subCategories element is a SubCategoryType.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  
+  <xsd:complexType name="CategoryType">
+    <xsd:annotation>
+      <xsd:documentation>
+      Information about courses offered under a General Education requirement. 
+      A CategoryType will either return DescriptiveLink elements to specific
+      SubCategoryType elements or SubCategoryType elements with full CourseType
+      elements.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="parents" type="cis:ParentsType">
+        <xsd:annotation>
+          <xsd:documentation>ParentsType for this CategoryType which should contain calendarYear, and term elements only.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="label" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Formal name for this CategoryType, suitable as text for a hyperlink.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="subcategories" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>
+          Container of DescriptiveLink elements to a specific SubCategoryType
+          elements.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="subcategory" type="cis:DescriptiveLink" minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>DescriptiveLink to a SubCategoryType.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>  
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="subcategoriesDetails" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>
+          Container of SubCategoryType elements that contain full CourseType
+          elements.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="subcategory" type="cis:SubCategoryType" minOccurs="0" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>SubCategoryType for this CategoryType containing full CourseType as described by the courseDetails field.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:string" />
+  </xsd:complexType>
+  
+  <xsd:element name="categories" type="cis:CategoryType">
+    <xsd:annotation>
+      <xsd:documentation>A categories element is a CategoryType.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  
+  <xsd:complexType name="ModuleListingType">
+    <xsd:annotation>
+      <xsd:documentation>
+      A ModuleListingType is a container of DescriptiveLinks to the available 
+      modules.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="module" type="cis:DescriptiveLink" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>
+          A DescriptiveLink to a module contained in the CIS.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="ApplicationRootType">
+    <xsd:annotation>
+      <xsd:documentation>
+      The root level of the application. Contains a ModuleListingType that 
+      makes the modules of this application self-discoverable via 
+      DescriptiveLinks to the resources for those modules.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="label" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+          The label for this application.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="modules" type="cis:ModuleListingType">
+        <xsd:annotation>
+          <xsd:documentation>
+          The ModuleListingType for this application.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:element name="cisapi" type="cis:ApplicationRootType">
+    <xsd:annotation>
+      <xsd:documentation>
+      This is the element returned when the request is made to the API at the 
+      root.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+  <xsd:complexType name="IdentifiableTextType">
+    <xsd:annotation>
+      <xsd:documentation>A simple element with an id attribute.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="id" type="xsd:string" use="required">
+          <xsd:annotation>
+            <xsd:documentation>Unique identifier for this type.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  
+  <xsd:complexType name="TermCodeRangeType">
+    <xsd:annotation>
+      <xsd:documentation>A range expressed in term codes. A term code is a 6-digit field where the first is the campus code (1, 2, or 4), the next 4 digits is the 4-digit year, and the last digit is the semester code (1, 5, or 8). This range type has a beginning and an end.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="start" type="cis:IdentifiableTextType">
+        <xsd:annotation>
+          <xsd:documentation>The starting term code in the range.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="end" type="cis:IdentifiableTextType">
+        <xsd:annotation>
+          <xsd:documentation>The ending term code in the range.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="TermCodeRangesType">
+    <xsd:annotation>
+      <xsd:documentation>A container for TermCodeRangeType types.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="termCodeRange" type="cis:TermCodeRangeType" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>The TermCodeRangeType elements.</xsd:documentation>
+          <xsd:appinfo>
+            <jaxb:property name="termCodeRangeTypes"/>
+          </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="AttributeType">
+    <xsd:annotation>
+      <xsd:documentation>Describes a General Education Attribute. This is different from the GenEdAttributeType above as this is element is only used in batch processing, not exposed by the web API.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="description" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Text description of this attribute.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="termCodeRanges" type="cis:TermCodeRangesType">
+        <xsd:annotation>
+          <xsd:documentation>Container for the ranges that this attribute was in effect.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="code" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>The attribute code.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  
+  <xsd:complexType name="AttributesType">
+    <xsd:annotation>
+      <xsd:documentation>A container for AttributeType types.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="attribute" type="cis:AttributeType" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>The AttributeType elements.</xsd:documentation>
+          <xsd:appinfo>
+            <jaxb:property name="attributeTypes"/>
+          </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="GenEdCourseCategoryType">
+    <xsd:annotation>
+      <xsd:documentation>Describes a General Education Category. This is different from the GenEdCategoryType above as this is element is only used in batch processing, not exposed by the web API.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="description" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Text description of this category.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="attributes" type="cis:AttributesType">
+        <xsd:annotation>
+          <xsd:documentation>Container for the attributes for this Category.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="code" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>The category code.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  
+  <xsd:complexType name="CategoriesType">
+    <xsd:annotation>
+      <xsd:documentation>A container for GenEdCourseCategoryType types.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="category" type="cis:GenEdCourseCategoryType" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>The CategoryType elements.</xsd:documentation>
+          <xsd:appinfo>
+            <jaxb:property name="genEdCourseCategoryTypes"/>
+          </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="CrossListGenEdCourseType">
+    <xsd:annotation>
+      <xsd:documentation>Describes a cross listed GenEd course. Consists of the subject code and the course number.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="subject" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The subject code for the cross listed GenEd course.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="courseNumber" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The course number for the cross listed GenEd course.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="CrossListGenEdCoursesType">
+    <xsd:annotation>
+      <xsd:documentation>A Container of CrossListGenEdCourseType elements.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="crossListCourse" type="cis:CrossListGenEdCourseType" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>A collection of CrossListCourseType elements.</xsd:documentation>
+          <xsd:appinfo>
+            <jaxb:property name="crossListGenEdCourseTypes"/>
+          </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>    
+  </xsd:complexType>
+  
+  <xsd:complexType name="GenEdCourseType">
+    <xsd:annotation>
+      <xsd:documentation>An element for a GenEdCourse. This element has a subject code, categories, and cross listed courses.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="subject" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The subject code for the GenEd course.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="label" type="xsd:string">
+      	<xsd:annotation>
+      	  <xsd:documentation>The full name of a subject, suitable as text for a hyperlink.</xsd:documentation>
+      	</xsd:annotation>
+      </xsd:element>
+      <xsd:element name="courseNumber" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The course number for the GenEd course.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="creditHours" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>The credit hours for the GenEd course.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="categories" type="cis:CategoriesType">
+        <xsd:annotation>
+          <xsd:documentation>The categories for the GenEd course.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="crossListCourses" type="cis:CrossListGenEdCoursesType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>The cross listed courses for the GenEd course.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="GenEdCoursesType">
+    <xsd:annotation>
+      <xsd:documentation>The container of GenEdCourseType elements.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="genEdCourse" type="cis:GenEdCourseType" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>The GenEdCourseType elements.</xsd:documentation>
+          <xsd:appinfo>
+            <jaxb:property name="genEdCourseTypes"/>
+          </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:element name="genEdCourses" type="cis:GenEdCoursesType">
+    <xsd:annotation>
+      <xsd:documentation>The root element for the GenEd courses. This element is not exposed by the web API and is used in batch processing only.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  
+</xsd:schema>

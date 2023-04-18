@@ -4,3 +4,9 @@ pytest # https://fastapi.tiangolo.com/tutorial/testing/
 httpx # required for testing
 python-Levenshtein # for fuzzywuzzy
 fuzzywuzzy # for fuzzy gened matching
+pandas # for dataframes
+polars # for dataframes
+pyarrow # for feather files
+pydantic # for data models
+javascript # for npm in python
+xmlschema # for xml validation

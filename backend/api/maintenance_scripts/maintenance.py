@@ -87,7 +87,7 @@ GEN_ED_CODES = {
 }
 # Directory of pickles for GEN_EDS, GEN_ED_CODES, valid years, and valid subjects.
 PICKLE_DIR = '../pickles'
-GPA_DATA_DIR = '../data/gpa_data'
+GPA_DATA_DIR = '../data'
 SHA_FILE = GPA_DATA_DIR + '/' + 'commit_sha.txt'
 CSV_FILE = GPA_DATA_DIR + '/' +  'gpa.csv'
 FEATHER_FILE = GPA_DATA_DIR + '/' + 'gpa.feather'
