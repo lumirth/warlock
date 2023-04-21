@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>My Webpage</title>
+    <link rel="stylesheet" href="test1.css">
+    <script src="myfunction.js"></script>
+    <style>
+      .button-container {
+        margin: 30px;
+        margin-bottom: 10px;
+        padding-bottom: 10px; 
+			display: none;
+		}
+      /* Add CSS styles */
+      .container {
+        margin: 30px;
+        margin-bottom: 10px;
+        padding-bottom: 10px; 
+      }
+      .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #f5f5f5;
+        text-align: center;
+        padding: 10px 0;
+      }
+
+		/* Style the list of years */
+		.year-list {
+			display: none;
+			list-style-type: none;
+			padding: 0;
+		}
+
+		/* Style the list items */
+		.year-list li {
+			margin: 8px;
+		}
+
+		/* Style the checkboxes */
+		.year-checkbox {
+			margin-right: 8px;
+		}
+
+        .term-list {
+        display: none;
+        list-style-type: none;
+        padding: 0;
+      }
+
+      /* Style the checkboxes */
+      .term-checkbox {
+        margin-right: 8px;
+      }
+
+
+      .college-list {
+  display: none;
+  list-style-type: none;
+  padding: 0;
+}
+
+.college-list li {
+  margin: 8px;
+}
+
+.college-checkbox {
+  margin-right: 8px;
+}
+
+    </style>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="container">
+      <form>
+        <label for="course-name">Course Name:</label>
+        <input type="text" id="course-name" placeholder="Enter course name..." />
+        <button type="submit">Search</button>
+      </form>
+      <!-- Add your page content here -->
+    </div>
+    <!--<footer class="footer">
+      <p>Copyright &copy; 2023 
+      </p>
+    </footer>-->
+    
+    <!-- <div class="dropdown">
+      <button onclick="myFunction()" class="dropbtn">Advanced Search</button>
+      <div id="myDropdown" class="dropdown-content">
+        <a href="#">Year</a>
+        <a href="#">Term</a>
+        <a href="#">College</a>
+        <a href="#">Subject</a>
+        <a href="#">Credit Hours</a>
+        <a href="#">Section Attributes</a>
+        <a href="#">Course Level</a>
+        <a href="#">GenEd REQs</a>
+        <a href="#">Part of Term</a>
+      </div>
+    </div>
+  </body> -->
+
+
+	<!-- The checkbox and label -->
+	<label for="show-buttons-checkbox" class="container">Advanced Search:</label>
+	<input type="checkbox" id="show-buttons-checkbox" onclick="toggleButtons()">
+
+	<!-- The container that holds the buttons (hidden by default) -->
+	<div id="button-container" class="button-container">
+		<button class="button" onclick="toggleYearList()">Year</button>
+		<div id="year-list" class="year-list">
+			<input type="checkbox" class="year-checkbox" id="year-2022-checkbox">
+			<label for="year-2022-checkbox">2022</label><br>
+			<input type="checkbox" class="year-checkbox" id="year-2021-checkbox">
+			<label for="year-2021-checkbox">2021</label><br>
+			<input type="checkbox" class="year-checkbox" id="year-2020-checkbox">
+			<label for="year-2020-checkbox">2020</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2019-checkbox">
+			<label for="year-2019-checkbox">2019</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2018-checkbox">
+			<label for="year-2018-checkbox">2018</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2017-checkbox">
+			<label for="year-2017-checkbox">2017</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2016-checkbox">
+			<label for="year-2016-checkbox">2016</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2015-checkbox">
+			<label for="year-2015-checkbox">2015</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2014-checkbox">
+			<label for="year-2014-checkbox">2014</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2013-checkbox">
+			<label for="year-2013-checkbox">2013</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2012-checkbox">
+			<label for="year-2012-checkbox">2012</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2011-checkbox">
+			<label for="year-2011-checkbox">2011</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2010-checkbox">
+			<label for="year-2010-checkbox">2010</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2009-checkbox">
+			<label for="year-2009-checkbox">2009</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2008-checkbox">
+			<label for="year-2008-checkbox">2008</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2007-checkbox">
+			<label for="year-2007-checkbox">2007</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2006-checkbox">
+			<label for="year-2006-checkbox">2006</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2005-checkbox">
+			<label for="year-2005-checkbox">2005</label><br>
+      <input type="checkbox" class="year-checkbox" id="year-2004-checkbox">
+			<label for="year-2004-checkbox">2004</label><br>
+		</div>
+
+        <button class="button" onclick="toggleTermList()">Term</button>
+        <div id="term-list" class="term-list">
+            <input type="checkbox" class="term-checkbox" id="term-winter-checkbox">
+            <label for="term-winter-checkbox">Winter</label><br>
+            <input type="checkbox" class="term-checkbox" id="term-spring-checkbox">
+            <label for="term-spring-checkbox">Spring</label><br>
+            <input type="checkbox" class="term-checkbox" id="term-summer-checkbox">
+            <label for="term-summer-checkbox">Summer</label><br>
+            <input type="checkbox" class="term-checkbox" id="term-fall-checkbox">
+            <label for="term-fall-checkbox">Fall</label><br>
+        </div>
+
+
+        <button class="button" onclick="toggleCollegeList()">College</button>
+        <div id="college-list" class="year-list">
+            <input type="checkbox" class="year-checkbox" id="college-Agricultural, Consumer and Environmental Sciences-checkbox">
+            <label for="college-Agricultural, Consumer and Environmental Sciences-checkbox">Agricultural, Consumer and Environmental Sciences</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-Applied Health Sciences-checkbox">
+            <label for="college-Applied Health Sciences-checkbox">Applied Health Sciences</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-armed forces-checkbox">
+            <label for="college-armed forces-checkbox">Armed Forces</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-Carle Illinois College of Medicine-checkbox">
+            <label for="college-Carle Illinois College of Medicine-checkbox">Carle Illinois College of Medicine</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-Media-checkbox">
+            <label for="college-Media-checkbox">College of Media</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-dgs-checkbox">
+            <label for="college-dgs-checkbox">Division of General Studies</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-edu-checkbox">
+            <label for="college-edu-checkbox">College of Education</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-faa-checkbox">
+            <label for="college-faa-checkbox">Fine and Applied Arts</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-Gies College of Business-checkbox">
+            <label for="college-Gies College of Business-checkbox">Gies College of Business</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-Graduate College-checkbox">
+            <label for="college-Graduate College-checkbox">Graduate College</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-Grainger College of Engineering-checkbox">
+            <label for="college-Grainger College of Engineering-checkbox">Grainger College of Engineering</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-law-checkbox">
+            <label for="college-law-checkbox">Law</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-Liberal Arts and Sciences-checkbox">
+            <label for="college-Liberal Arts and Sciences-checkbox">Liberal Arts and Sciences</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-School of Information Sciences-checkbox">
+            <label for="college-School of Information Sciences-checkbox">School of Information Sciences</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-School of Labor and Employment Relations-checkbox">
+            <label for="college-School of Labor and Employment Relations-checkbox">School of Labor and Employment Relations</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-social work-checkbox">
+            <label for="college-social work-checkbox">School of School Work</label><br>
+            <input type="checkbox" class="year-checkbox" id="college-Veterinary Medicine-checkbox">
+            <label for="college-Veterinary Medicine-checkbox">Veterinary Medicine</label><br>
+        </div>
+
+        <button class="button" onclick="toggleCreditHourList()">Credit Hour</button>
+        <div id="credit-hour-list" class="year-list">
+            <input type="checkbox" class="year-checkbox" id="credit-hour-1-checkbox">
+            <label for="credit-hour-1-checkbox">1</label><br>
+            <input type="checkbox" class="year-checkbox" id="credit-hour-2-checkbox">
+            <label for="credit-hour-2-checkbox">2</label><br>
+            <input type="checkbox" class="year-checkbox" id="credit-hour-3-checkbox">
+            <label for="credit-hour-3-checkbox">3</label><br>
+            <input type="checkbox" class="year-checkbox" id="credit-hour-4-checkbox">
+            <label for="credit-hour-4-checkbox">4</label><br>
+            <input type="checkbox" class="year-checkbox" id="credit-hour-5-checkbox">
+            <label for="credit-hour-5-checkbox">5</label><br>
+        </div>
+
+        <button class="button" onclick="toggleCourseLevelList()">Course Level</button>
+        <div id="course-level-list" class="year-list">
+            <input type="checkbox" class="year-checkbox" id="course-level-100-checkbox">
+            <label for="course-level-100-checkbox">100</label><br>
+            <input type="checkbox" class="year-checkbox" id="course-level-200-checkbox">
+            <label for="course-level-200-checkbox">200</label><br>
+            <input type="checkbox" class="year-checkbox" id="course-level-300-checkbox">
+            <label for="course-level-300-checkbox">300</label><br>
+            <input type="checkbox" class="year-checkbox" id="course-level-400-checkbox">
+            <label for="course-level-400-checkbox">400</label><br>
+            <input type="checkbox" class="year-checkbox" id="course-level-500-checkbox">
+            <label for="course-level-500-checkbox">500</label><br>
+        </div>
+
+	</div>
+
+
+    
+
+
+	<!-- JavaScript to show/hide the button container and year list -->
+	<script>
+		function toggleButtons() {
+			var buttonContainer = document.getElementById('button-container');
+			if (document.getElementById('show-buttons-checkbox').checked) {
+				buttonContainer.style.display = 'block';
+			} else {
+				buttonContainer.style.display = 'none';
+			}
+		}
+
+		function toggleYearList() {
+			var yearList = document.getElementById('year-list');
+			if (yearList.style.display === 'none') {
+				yearList.style.display = 'block';
+			} else {
+				yearList.style.display = 'none';
+			}
+		}
+
+
+        function toggleTermList() {
+    var termList = document.getElementById('term-list');
+    if (termList.style.display === 'none') {
+        termList.style.display = 'block';
+    } else {
+        termList.style.display = 'none';
+    }
+}
+
+function toggleCollegeList() {
+  var collegeList = document.getElementById('college-list');
+  if (collegeList.style.display === 'none') {
+    collegeList.style.display = 'block';
+  } else {
+    collegeList.style.display = 'none';
+  }
+}
+
+
+function toggleCreditHourList() {
+    var creditHourList = document.getElementById('credit-hour-list');
+    if (creditHourList.style.display === 'none') {
+        creditHourList.style.display = 'block';
+    } else {
+        creditHourList.style.display = 'none';
+    }
+}
+
+function toggleCourseLevelList() {
+    var courseLevelList = document.getElementById('course-level-list');
+    if (courseLevelList.style.display === 'none') {
+      courseLevelList.style.display = 'block';
+    } else {
+      courseLevelList.style.display = 'none';
+    }
+}
+	</script>
+
+
+
+</body>
+</html>
