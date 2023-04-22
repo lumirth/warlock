@@ -95,7 +95,7 @@ def align_to_pattern(advanced_query: AdvancedSearchParameters):
         if len(advanced_query.subject) > 4:
             advanced_query.subject = advanced_query.subject[:4]
         if advanced_query.subject not in SUBJECTS.keys():
-            subject = process.extractOne(subject, SUBJECTS.keys(), scorer=fuzz.token_set_ratio, score_cutoff=FUZZ_THRESH)
+            subject = process.extractOne(advanced_query.subject, SUBJECTS.keys(), scorer=fuzz.token_set_ratio, score_cutoff=FUZZ_THRESH)
             if subject is None:
                 raise ValueError('Subject not found')
     # semester should be one of the following: fall, spring, summer, winter
@@ -103,13 +103,16 @@ def align_to_pattern(advanced_query: AdvancedSearchParameters):
         advanced_query.semester = SEMESTER[advanced_query.semester]
     # year should be a 4 digit number in YEARS
     if advanced_query.year is not None:
+        advanced_query.year = str(advanced_query.year)
         if advanced_query.year not in YEARS:
             raise ValueError('Year not found')
+        advanced_query.year = int(advanced_query.year)
     # part_of_term must be in PART_OF_TERM
     if advanced_query.part_of_term is not None:
         if advanced_query.part_of_term.lower() not in PART_OF_TERM:
             raise ValueError('Part of term not found')
         advanced_query.part_of_term = PART_OF_TERM[advanced_query.part_of_term]
+
         
 def parse_colon_arguments(token: str, advanced_query: AdvancedSearchParameters) -> AdvancedSearchParameters:
     key, value = token.split(':', 1)
@@ -126,6 +129,10 @@ def parse_colon_arguments(token: str, advanced_query: AdvancedSearchParameters) 
         elif key in aliases and arg in ('gened_reqs'):
             if advanced_query.gened_reqs is None:
                 advanced_query.gened_reqs = []
+            if value.upper in GEN_ED_CODES:
+                value = GEN_ED_CODES[value.upper()]
+            else:
+                raise ValueError(f'Invalid gen ed code: {value}')
             advanced_query.gened_reqs.append(value)
             return advanced_query
     raise ValueError(f'Invalid colon argument: {key}')
@@ -134,6 +141,16 @@ def parse_colon_arguments(token: str, advanced_query: AdvancedSearchParameters) 
 def parse_subject_and_course_number(token: str, advanced_query: AdvancedSearchParameters) -> AdvancedSearchParameters:
     subject, course_number = re.match(r'^([a-zA-Z ]+)(?:\s+)?(\d+)$', token).groups()
     subject, course_number = subject.strip(), int(course_number)
+    
+    if course_number == 1:
+        fuzzy_match = process.extractOne(subject, GEN_EDS.keys(), scorer=fuzz.token_set_ratio, score_cutoff=FUZZ_THRESH)
+        if fuzzy_match is not None:
+            fuzzy_match = fuzzy_match[0]
+            if fuzzy_match in GEN_EDS:
+                if advanced_query.gened_reqs is None:
+                    advanced_query.gened_reqs = []
+                advanced_query.gened_reqs.append(GEN_EDS[fuzzy_match])
+                return advanced_query
     
     if subject not in SUBJECTS:
         subject = process.extractOne(subject, SUBJECTS.keys(), scorer=fuzz.token_set_ratio, score_cutoff=FUZZ_THRESH)
@@ -156,12 +173,12 @@ def parse_optional_digits_pattern(token: str, advanced_query: AdvancedSearchPara
     if fuzzy_match is not None:
         fuzzy_match = fuzzy_match[0]
 
-        if fuzzy_match in GEN_EDS:
+        if fuzzy_match in SUBJECTS:
+            advanced_query.subject = SUBJECTS[fuzzy_match]
+        elif fuzzy_match in GEN_EDS:
             if advanced_query.gened_reqs is None:
                 advanced_query.gened_reqs = []
-            advanced_query.gened_reqs.append(fuzzy_match)
-        elif fuzzy_match in SUBJECTS:
-            advanced_query.subject = SUBJECTS[fuzzy_match]
+            advanced_query.gened_reqs.append(GEN_EDS[fuzzy_match])
 
         advanced_query.keyword = token
 
@@ -218,7 +235,7 @@ def token_is_semester(token):
 
 if __name__ == '__main__':
     example_queries = [
-        "sp, 2021, cs 2",
+        "quant 1, SOC",
         # "crn: 12345, gen ed: Humanities - Hist & Phil",
         # "id: 101, subj: ece, pot: first, instructor: John Smith",
     ]

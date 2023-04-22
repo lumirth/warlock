@@ -14,9 +14,13 @@ GEN_EDS = {
     'Composition I': 'COMP1',
     'Advanced Composition': '1CLL',
     'Humanities and the Arts': 'HUM',
+    'Humanities and the Arts: Literature & the Arts': '1LA',
+    'Humanities and the Arts: Historical & Philosophical Perspectives': '1HP',
     'Literature & the Arts': '1LA',
     'Historical & Philosophical ': '1HP',
     'Natural Sciences and Technology': 'NAT',
+    'Natural Sciences and Technology: Life Science': '1LS',
+    'Natural Sciences and Technology: Physical Science': '1PS',
     'Life Science': '1LS',
     'Physical Science': '1PS',
     'Quantitative Reasoning I': '1QR1',
@@ -29,6 +33,27 @@ GEN_EDS = {
     'Non-Western Cultures': '1NW',
     'US Minority Cultures': '1US',
 }
+
+# This is a bit of a bandaid to make fuzzy matching some common shorthand nicer
+# This helps add more fuzzy terms to the gen ed search
+GEN_EDS_MANUAL = {
+    'adv comp': '1CLL',
+    'comp 1': 'COMP1',
+    'lit & arts': '1LA',
+    'hist & phil': '1HP',
+    'lit and arts': '1LA',
+    'hist and phil': '1HP',
+    'quant 1': '1QR1',
+    'quant 2': '1QR2',
+    'social': 'SBS',
+    'soc beh': '1BSC',
+    'soc social': '1SS',
+    'cult stud': 'CS',
+    'western': '1WCC',
+    'non-western': '1NW',
+    'minority': '1US',
+}
+
 # GEN_ED_CODES defines the mapping of a number of warlock-valid gen ed codes to their Banner code.
 GEN_ED_CODES = {
     'COMP1': 'COMP1',
@@ -123,8 +148,10 @@ if __name__ == '__main__':
     add_manual_subjects(subjects)
     terms = fetch_terms(years)
     print('Successfully fetched data from UIUC course catalog.')
+    
+    gen_eds = {**GEN_EDS, **GEN_EDS_MANUAL}
     data = {
-        'gen_eds': GEN_EDS,
+        'gen_eds': gen_eds,
         'gen_ed_codes': GEN_ED_CODES,
         'years': years,
         'subjects': subjects,
@@ -138,7 +165,7 @@ if __name__ == '__main__':
     print()
     print('Testing unpickling...')
     unpickled_gen_eds = unpickle_data(PICKLE_DIR + '/gen_eds.pkl')
-    assert(unpickled_gen_eds == GEN_EDS)
+    assert(unpickled_gen_eds == gen_eds)
     print('Successfully unpickled gen_eds.pkl.')
     
     print()

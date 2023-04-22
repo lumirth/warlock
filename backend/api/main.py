@@ -1,7 +1,6 @@
 from typing import List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from query_parser import WarlockQuery
 import api.courses as courses
 from .models import SimpleCourse, DetailedCourse, AdvancedSearchParameters
 

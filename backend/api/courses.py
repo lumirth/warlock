@@ -4,11 +4,10 @@ from dataclasses import dataclass
 import requests
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
-from models import Query, SimpleCourse, AdvancedSearchParameters, DetailedCourse
-from data_loader import gpa_dataframe
+from .models import Query, SimpleCourse, AdvancedSearchParameters, DetailedCourse
+from .data_loader import gpa_dataframe
 import javascript
 import polars as pl
-from query_parser import WarlockQuery
 
 # Constants
 UNIVERSITY_API_BASE_URL = "https://courses.illinois.edu/cisapp/explorer"
@@ -19,20 +18,20 @@ UNIVERSITY_ID = 'U2Nob29sLTExMTI='
 
 
 def search_advanced(advanced_search: AdvancedSearchParameters) -> List[SimpleCourse]:
-    warlock_query = WarlockQuery(advanced_search)
+    # warlock_query = WarlockQuery(advanced_search)
 
-    query_params = warlock_query.to_query_params()
+    # query_params = warlock_query.to_query_params()
 
-    response = requests.get(
-        f"{UNIVERSITY_API_BASE_URL}/schedule/courses",
-        params=query_params
-    )
-    xml_data = response.text
-    root = ET.fromstring(xml_data)
+    # response = requests.get(
+    #     f"{UNIVERSITY_API_BASE_URL}/schedule/courses",
+    #     params=query_params
+    # )
+    # xml_data = response.text
+    # root = ET.fromstring(xml_data)
 
     simple_courses = []
-    for course in root.findall(".//ns2:course", root.nsmap):
-        simple_courses.append(SimpleCourse.from_xml_element(course))
+    # for course in root.findall(".//ns2:course", root.nsmap):
+    #     simple_courses.append(SimpleCourse.from_xml_element(course))
 
     return simple_courses
 
