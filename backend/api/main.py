@@ -2,7 +2,7 @@ from typing import List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import api.courses as courses
-from .models import SimpleCourse, DetailedCourse, AdvancedSearchParameters
+from .models import SimpleCourse, DetailedCourse, DetailedSection, AdvancedSearchParameters
 
 app = FastAPI()
 
@@ -42,3 +42,24 @@ def get_course(year: int, term: int, subj: str, id: int):
         return course
     else:
         raise HTTPException(status_code=404, detail="Course not found")
+    
+@app.get("/course/{year}/{term}/{subj}/{id}/sections", response_model=List[DetailedSection])
+def get_simple_course_sections(year: int, term: int, subj: str, id: int):
+    sections = courses.get_simple_course_sections(year, term, subj, id)
+    if sections:
+        return sections
+    else:
+        raise HTTPException(status_code=404, detail="Course not found")
+    
+# endpoint for loading reddit API data on a detailed course page
+@app.get("/course/{year}/{term}/{subj}/{id}/reddit", response_model=List[DetailedSection])
+def get_reddit_data(year: int, term: int, subj: str, id: int):
+    # undfined for now
+    return
+
+# endpoitn for loading detailed GPA graphs on a detailed course page    
+@app.get("/course/{year}/{term}/{subj}/{id}/gpa", response_model=List[DetailedSection])
+def get_gpa_data(year: int, term: int, subj: str, id: int):
+    # undefined for now
+    return
+
