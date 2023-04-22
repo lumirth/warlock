@@ -1,9 +1,16 @@
 import polars as pl
+import os
 
+# change directory to the directory of this file
+# this script creates a directory in the parent directory of the directory of this file
+# meaning, if script is in folder/scripts, the directory created will be folder/data
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
 
 def load_gpa_data() -> pl.DataFrame:
     # Replace 'gpa.csv' with the path to your CSV or Feather file
-    gpa_data = pl.read_ipc("backend/api/data/gpa.feather")
+    gpa_data = pl.read_ipc("data/gpa.feather")
     gpa_data = gpa_data.with_columns(
         [
             (

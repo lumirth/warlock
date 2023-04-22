@@ -9,4 +9,4 @@ polars # for dataframes
 pyarrow # for feather files
 pydantic # for data models
 javascript # for npm in python
-xmlschema # for xml validation
+requests # for http requests

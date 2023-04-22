@@ -235,7 +235,7 @@ def token_is_semester(token):
 
 if __name__ == '__main__':
     example_queries = [
-        "quant 1, SOC",
+        "math 416",
         # "crn: 12345, gen ed: Humanities - Hist & Phil",
         # "id: 101, subj: ece, pot: first, instructor: John Smith",
     ]
