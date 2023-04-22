@@ -92,6 +92,21 @@ SHA_FILE = GPA_DATA_DIR + '/' + 'commit_sha.txt'
 CSV_FILE = GPA_DATA_DIR + '/' +  'gpa.csv'
 FEATHER_FILE = GPA_DATA_DIR + '/' + 'gpa.feather'
 
+# This is a bit of a bandaid to make fuzzy matching some common shorthand nicer
+# We can add to this as needed to make fuzzy matching more accurate
+MANUAL_SUBJECTS = {
+    'comp sci': 'CS',
+    'anthro': 'ANTH',
+    'crop sci': 'CPSC',
+    'classic civ': 'CLCV',
+    'coms': 'COMM'
+    
+}
+
+def add_manual_subjects(subj_dict):
+    for key, value in MANUAL_SUBJECTS.items():
+        subj_dict[key] = value
+
 # This is a maintenance script that does the following:
 #   - Create pickles for data that isn't redefined often but CAN change (gen ed codes, valid years/subjects)
 #       - Fetch the list of valid years from the UIUC course catalog.
@@ -105,6 +120,7 @@ if __name__ == '__main__':
     print('Fetching data from UIUC course catalog...')
     years = fetch_years()
     subjects = fetch_subjects(years)
+    add_manual_subjects(subjects)
     terms = fetch_terms(years)
     print('Successfully fetched data from UIUC course catalog.')
     data = {

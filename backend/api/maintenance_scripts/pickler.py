@@ -17,7 +17,7 @@ def fetch_years():
 
 
 def fetch_subjects(years, print_progress=False, print_prefix=''):
-    subjects = set()
+    subjects = {}
     default_year = max(map(int, years))
     for year in range(2004, default_year + 1):
         for semester in ["fall", "spring", "summer", "winter"]:
@@ -27,7 +27,10 @@ def fetch_subjects(years, print_progress=False, print_prefix=''):
             if response.status_code == 200:
                 root = ET.fromstring(response.content)
                 for subject in root.find("subjects"):
-                    subjects.add(subject.attrib["id"])
+                    subject_id = subject.attrib["id"]
+                    subject_name = subject.text
+                    subjects[subject_name] = subject_id
+                    subjects[subject_id] = subject_id
     return subjects
 
 def fetch_terms(years, print_progress=False, print_prefix=''):
