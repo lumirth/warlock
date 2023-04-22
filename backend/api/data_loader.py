@@ -9,7 +9,6 @@ dname = os.path.dirname(abspath)
 os.chdir(dname)
 
 def load_gpa_data() -> pl.DataFrame:
-    # Replace 'gpa.csv' with the path to your CSV or Feather file
     gpa_data = pl.read_ipc("data/gpa.feather")
     gpa_data = gpa_data.with_columns(
         [
