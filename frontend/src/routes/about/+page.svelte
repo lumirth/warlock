@@ -14,7 +14,7 @@
 		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. It was created by running
 	</p>
 
-	<pre>npm create svelte@latest</pre>
+	<pre class="!rounded-none">npm create svelte@latest</pre>
 
 
 </div>
