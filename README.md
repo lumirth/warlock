@@ -1,8 +1,12 @@
 ```
-Last updated on 2023-04-05
+Last updated on 2023-04-23
 
 Changes include:
-- New "On Parsing Queries" section under "Structure"
+- Add #Errors subsection under #Usage
+- Add text on outside-of-container development under #Prerequisites
+- Update #Structure to reflect current project frameworks
+- Add note on feather files in regards to databases
+- Remove commit reference for RateMyProfessor and give example in README
 ```
 
 # Table of Contents
@@ -12,6 +16,7 @@ Changes include:
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
   - [Usage](#usage)
+    - [Errors](#errors)
   - [Testing](#testing)
 - [Structure](#structure)
   - [On Parsing Queries](#on-parsing-queries)
@@ -26,13 +31,15 @@ Changes include:
 
 - Docker. See [Docker installation](https://docs.docker.com/install/).
 
-Everything else should install accordingly through the docker setup.
+Everything else should install accordingly through the docker-compose setup.
+
+However, you may want to develop the frontend outside of the container for better reload times. To do so, make sure you have node installed and use `npm i` in the `frontend` directory.
 
 ## Installation
 
 1. Clone the repository
 2. Open in IDE
-3. `docker-compose up --build`
+3. `docker-compose up`
 
 ## Usage
 
@@ -41,9 +48,15 @@ Everything else should install accordingly through the docker setup.
 
 If things get finicky and your changes aren't being reflected, you can `docker compose down` or `docker compose rm` then `docker compose up --build` again, should fix it.
 
+### Errors
+
+If things get finicky and your changes aren't being reflected, you can `docker compose down -v`(which removes volumes) then `docker compose up --build`(forces a rebuild). This should fix it.
+
+For example, if a new module or library has been added to `requirements.txt`, make sure to use the above technique to make sure it works in the container.
+
 ## Testing
 
-- `docker-compose exec backend  pytest`
+- `docker compose exec backend pytest`
 
 Testing is with pytest. [FastAPI's testing documentation](https://fastapi.tiangolo.com/tutorial/testing/) gives more details.
 
@@ -51,9 +64,10 @@ Testing is with pytest. [FastAPI's testing documentation](https://fastapi.tiango
 
 - `backend` - FastAPI backend
   - FastAPI: a web framework. See [documentation](https://fastapi.tiangolo.com/)
-- `frontend` - Svelte/Vite frontend
-  - Svelte: a UI framework. See [documentation](https://svelte.dev/docs)
-  - Vite: a build tool. See [documentation](https://vitejs.dev/guide/)
+- `frontend` - SvelteKit frontend
+  - SvelteKit: a UI framework. See [documentation](https://svelte.dev/docs)
+  - TailwindCSS: CSS utility class framework. See [documentation](https://tailwindcss.com/docs/)
+  - DaisyUI: tailwind CSS components. See [documentation](https://daisyui.com/components/)
 
 The idea is simple. You have a Svelte app deployed as a static site, and a FastAPI backend REST API providing data to the frontend. The frontend is served from a CDN, and the backend is served from a web server(that is, when finally deployed).
 
@@ -67,7 +81,7 @@ Note:
 | RateMyProfessor | as reviews come in |
 | Waf's GPA Datasets | Every semester |
 
-Thus, it may be advantageous to store Waf's GPA Datasets in a database, and update it every semester, but query the Course API and RateMyProfessor every time the frontend is loaded.
+Thus, it may be advantageous to store Waf's GPA Datasets in a database(or maybe a feather file?), and update it every semester, but query the Course API and RateMyProfessor every time the frontend is loaded.
 
 ## On Parsing Queries
 There's a draft of the format by which to parse queries available in [PARSE_QUERIES.md](PARSE_QUERIES.md)
@@ -133,7 +147,30 @@ You'll have to programatically find the information you need within the XML resp
 ## On RateMyProfessor
 The RateMyProfessor NPM module I linked is, of course, a Node module. Thus, we'll have to figure out a way to use JS in Python, because this module looks actively maintained and fulfills our use-case spectacularly. I'm not sure how to do this, but I'm sure it's possible.
 
-Update: I've figured out how to do this. There's a working example on commit [6058e61e0faa378468c3eafd1694c083570bd535](https://github.com/CS222-UIUC/course-warlock/commit/6058e61e0faa378468c3eafd1694c083570bd535) in the `lukas-rmp` branch.
+Update: I've figured out how to do this. Here is a working example:
+
+```python
+import javascript
+
+rmp = javascript.require("@mtucourses/rate-my-professors")
+
+UNIVERSITY_ID = 'U2Nob29sLTExMTI='
+results = []
+
+results.append(rmp.default.searchTeacher('wade', UNIVERSITY_ID))
+results.append(rmp.default.searchTeacher('woodley', UNIVERSITY_ID))
+results.append(rmp.default.searchTeacher('michael nowak', UNIVERSITY_ID))
+
+for result in results:
+    result = result[0]
+    info = rmp.default.getTeacher(result.id)
+    print('Professor ', info.firstName, info.lastName + ':')
+    print('RATING: ', info.avgRating)
+    print('DIFFICULTY: ', info.avgDifficulty)
+    print('NUM RATINGS: ', info.numRatings)
+    print('PERCENT WOULD TAKE AGAIN: ', info.wouldTakeAgainPercent)
+    print()
+```
 
 ## On Waf's GPA Datasets
 [Waf's GPA Datasets](https://github.com/wadefagen/datasets/blob/master/gpa/README.md) are a CSV file that contains the GPA of every course offered at the University of Illinois. It's updated every semester. We'll need some system for updating this neatly.
