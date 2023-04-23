@@ -39,6 +39,7 @@
   <meta name="description" content="Svelte demo app" />
 </svelte:head>
 
+<!-- <div class="radial-progress text-xs bg-primary text-primary-content border-4 border-primary" style="--value:70; --size:2rem; --thickness: 3px;">3.5</div> -->
 <section>
   <form on:submit={handleSubmit} class="flex gap-4 mx-auto">
     <input
