@@ -87,7 +87,7 @@
         </ul>
         <p>Or you can declare values explicitly:</p>
         <ul>
-            <li>Subject/department (<code>subj:CS, d:MATH, dept: CPSC</code>)</li>
+            <li>Subject/department (<code>subj:CS; d:MATH; dept: CPSC</code>)</li>
             <li>Course ID (<code>course:225; id: 107</code>)</li>
             <li>Year (<code>yr:2009; year:2011</code>)</li>
             <li>Term (<code>term:fall; t:sp</code>)</li>
