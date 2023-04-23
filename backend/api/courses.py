@@ -4,9 +4,9 @@ from dataclasses import dataclass
 import requests
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
-from .models import Query, SimpleCourse, AdvancedSearchParameters, DetailedCourse
-from .data_loader import gpa_dataframe
-from .query_parser import parse_advanced_query_string
+from api.models import Query, SimpleCourse, AdvancedSearchParameters, DetailedCourse
+from api.data_loader import gpa_dataframe
+from api.query_parser import parse_advanced_query_string
 import javascript
 import polars as pl
 

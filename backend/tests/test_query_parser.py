@@ -7,7 +7,7 @@ import pytest
 # Add the backend/api directory to sys.path so we can import the query_parser module
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'api')))
 
-from query_parser import (
+from api.query_parser import (
     parse_advanced_query_string,
     align_to_pattern,
     parse_colon_arguments,
@@ -18,7 +18,7 @@ from query_parser import (
     token_is_year,
     token_is_semester,
 )
-from models import AdvancedSearchParameters
+from api.models import AdvancedSearchParameters
 
 
 def test_parse_advanced_query_string():

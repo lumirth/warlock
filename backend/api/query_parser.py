@@ -1,5 +1,5 @@
 from typing import Optional
-from models import AdvancedSearchParameters
+from api.models import AdvancedSearchParameters
 import time
 import re
 import pickle
