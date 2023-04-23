@@ -179,8 +179,8 @@ def parse_optional_digits_pattern(token: str, advanced_query: AdvancedSearchPara
             if advanced_query.gened_reqs is None:
                 advanced_query.gened_reqs = []
             advanced_query.gened_reqs.append(GEN_EDS[fuzzy_match])
-
-        advanced_query.keyword = token
+        else:
+            advanced_query.keyword = token
 
     return advanced_query
 
@@ -234,11 +234,11 @@ def token_is_semester(token):
 
 
 if __name__ == '__main__':
-    for key, value in SUBJECTS.items():
+    for key, value in GEN_EDS.items():
         if key != value:
             print(f'{key}: {value}')
     example_queries = [
-        "MACS 3, g:west",
+        "macs, western, pot:a",
         # "crn: 12345, gen ed: Humanities - Hist & Phil",
         # "id: 101, subj: ece, pot: first, instructor: John Smith",
     ]
