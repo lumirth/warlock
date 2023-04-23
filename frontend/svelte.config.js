@@ -1,5 +1,7 @@
 import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/kit/vite';
+// TODO: add static adapter
+// TODO: add favicons
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
