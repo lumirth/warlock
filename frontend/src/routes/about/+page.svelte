@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>About</title>
+	<title>About - Course Warlock</title>
 	<meta name="description" content="About this app" />
 </svelte:head>
 
@@ -11,7 +11,7 @@
 	</p>
 
 	<p>
-		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. It was created by running
+		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. It was created by running:
 	</p>
 
 	<pre class="!rounded-none bg-base-200">npm create svelte@latest</pre>
