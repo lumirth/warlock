@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import Counter from "./Counter.svelte";
+  import AdvancedSearch from "../lib/AdvancedSearch.svelte";
 
   let x = 0;
   let query = "";
@@ -91,7 +92,8 @@
         >✕</label
       >
       <h3 class="text-lg font-bold">ADVANCED SEARCH</h3>
-      <p class="py-4">TODO: implement the advanced search fields here</p>
+      <p class="py-4">TODO: implement full advanced search with correct forms</p>
+      <AdvancedSearch />
     </label>
   </label>
   <input type="checkbox" id="modal-syntax" class="modal-toggle" />
