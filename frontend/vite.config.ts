@@ -1,9 +1,8 @@
-import { defineConfig } from 'vite'
-import { svelte } from '@sveltejs/vite-plugin-svelte'
+import { sveltekit } from "@sveltejs/kit/vite";
+import { defineConfig } from "vite";
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [svelte()],
+  plugins: [sveltekit()],
   server: {
     watch: {
       usePolling: true,
@@ -11,5 +10,5 @@ export default defineConfig({
     host: true, // needed for the Docker Container port mapping to work
     strictPort: true,
     port: 8080, // you can replace this port with any port
-  }
-})
+  },
+});
