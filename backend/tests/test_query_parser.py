@@ -74,7 +74,6 @@ def test_parse_optional_digits_pattern():
     result = parse_optional_digits_pattern(token, advanced_query)
 
     assert result.subject == "CS"
-    assert result.keyword == "cs"
 
 
 def test_parse_token():

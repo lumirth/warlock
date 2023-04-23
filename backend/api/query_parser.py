@@ -1,5 +1,5 @@
 from typing import Optional
-from models import AdvancedSearchParameters
+from api.models import AdvancedSearchParameters
 import time
 import re
 import pickle
@@ -238,7 +238,7 @@ if __name__ == '__main__':
         if key != value:
             print(f'{key}: {value}')
     example_queries = [
-        "macs, western, pot:a",
+        "MACS, western, is:online",
         # "crn: 12345, gen ed: Humanities - Hist & Phil",
         # "id: 101, subj: ece, pot: first, instructor: John Smith",
     ]
