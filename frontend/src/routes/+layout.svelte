@@ -7,7 +7,7 @@
   <Header />
 
   <!-- responsive for different screen sizes -->
-  <main class="container mx-auto px-4 md:px-10 lg:px-20 xl:px-40">
+  <main class="container mx-auto px-4 md:px-20 lg:px-40 xl:px-80">
     <slot />
   </main>
   <footer class="footer footer-center p-4 text-base-content mt-5 md:mt-10 lg:mt-20 xl:mt-30">
