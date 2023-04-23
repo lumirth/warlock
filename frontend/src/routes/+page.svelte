@@ -5,6 +5,7 @@
   let x = 0;
   let query = "";
   let output = "";
+  let loading = false;
 
   const increment = () => {
     x++;
@@ -22,6 +23,10 @@
     if (output === "") {
       output = "NO BACKEND RESPONSE";
     }
+    loading = true;
+    setTimeout(() => {
+      loading = false;
+    }, 10000);
   };
 
   onMount(() => {
@@ -44,7 +49,7 @@
     />
     <button
       type="submit"
-      class="btn bg-base-200 font-normal text-lg"
+      class="btn bg-base-200 font-normal text-lg {loading ? 'loading' : ''}"
       >SEARCH</button
     >
   </form>
