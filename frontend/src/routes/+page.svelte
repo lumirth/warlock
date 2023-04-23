@@ -48,17 +48,7 @@
       >SEARCH</button
     >
   </form>
-  <div class="flex items-start form-control pt-2">
-    <label class="label">
-      <input
-        type="checkbox"
-        on:click={increment}
-        class="checkbox checkbox-primary bg-base-200 border-neutral hover:border-neutral focus:border-neutral"
-      />
-      <span class="label-text pl-3 cursor-pointer">ADVANCED SEARCH</span>
-    </label>
-  </div>
-
+  <label for="my-modal-4" class="btn btn-sm mt-4 font-normal bg-base-100 border-none h-3 underline">ADVANCED</label>
   {#if output}
     <div class="toast">
       <div class="alert alert-info bg-primary">
@@ -68,6 +58,15 @@
       </div>
     </div>
   {/if}
+
+<input type="checkbox" id="my-modal-4" class="modal-toggle" />
+<label for="my-modal-4" class="modal modal-bottom sm:modal-middle cursor-pointer">
+<label class="modal-box relative" for="">
+    <label for="my-modal-4" class="btn btn-xs absolute right-2 top-2 border-neutral bg-base-200">✕</label>
+    <h3 class="text-lg font-bold">ADVANCED SEARCH</h3>
+    <p class="py-4">TODO: implement the advanced search fields here</p>
+</label>
+</label>
 </section>
 
 <style>
