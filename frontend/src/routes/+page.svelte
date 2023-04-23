@@ -14,14 +14,14 @@
     const response = await fetch(
       "http://localhost:8000/search/simple?query=" + query
     );
-    const data = await response.json();
-    console.log(data);
-    output = data[0].id;
   };
 
   const handleSubmit = (event: Event) => {
     event.preventDefault();
     queryBackend();
+    if (output === "") {
+        output = 'NO BACKEND RESPONSE';
+    }
   };
 
   onMount(() => {
@@ -49,11 +49,12 @@
     >
   </form>
   <label for="my-modal-4" class="btn btn-sm mt-4 font-normal bg-base-100 border-none h-3 underline">ADVANCED</label>
+  <label for="my-modal-5" class="btn btn-sm mt-4 font-normal bg-base-100 border-none h-3 underline">WHAT IS A QUERY?</label>
   {#if output}
     <div class="toast">
       <div class="alert alert-info bg-primary">
         <div>
-          <span class="font-mono">OUTPUT FROM BACKEND RECEIVED: {output}</span>
+          <span class="font-mono">OUTPUT: {output}</span>
         </div>
       </div>
     </div>
@@ -65,6 +66,14 @@
     <label for="my-modal-4" class="btn btn-xs absolute right-2 top-2 border-neutral bg-base-200">✕</label>
     <h3 class="text-lg font-bold">ADVANCED SEARCH</h3>
     <p class="py-4">TODO: implement the advanced search fields here</p>
+</label>
+</label>
+<input type="checkbox" id="my-modal-5" class="modal-toggle" />
+<label for="my-modal-5" class="modal modal-bottom sm:modal-middle cursor-pointer">
+<label class="modal-box relative" for="">
+    <label for="my-modal-5" class="btn btn-xs absolute right-2 top-2 border-neutral bg-base-200">✕</label>
+    <h3 class="text-lg font-bold">QUERY SYNTAX</h3>
+    <p class="py-4">TODO: explain how queries work in a way normies can understand</p>
 </label>
 </label>
 </section>

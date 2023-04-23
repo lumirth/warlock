@@ -3,24 +3,18 @@
 	<meta name="description" content="About this app" />
 </svelte:head>
 
-<div class="text-column">
-	<h1>About this app</h1>
+<div class="prose sm:prose-sm md:prose-md lg:prose-lg mx-auto">
+	<h1>ABOUT THIS APP</h1>
 
 	<p>
-		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. You can make your own by typing the
-		following into your command line and following the prompts:
+		Course Warlock brings together RateMyProfessor ratings, historic GPA data, and the University of Illinois's courses API together to give one straightforward and comprehensive tool for understanding whether a course is worth taking. 
+	</p>
+
+	<p>
+		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. It was created by running
 	</p>
 
 	<pre>npm create svelte@latest</pre>
 
-	<p>
-		The page you're looking at is purely static HTML, with no client-side interactivity needed.
-		Because of that, we don't need to load any JavaScript. Try viewing the page's source, or opening
-		the devtools network panel and reloading.
-	</p>
 
-	<p>
-		The <a href="/sverdle">Sverdle</a> page illustrates SvelteKit's data loading and form handling. Try
-		using it with JavaScript disabled!
-	</p>
 </div>
