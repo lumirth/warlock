@@ -5,11 +5,11 @@
 </script>
 
 <div class="mb-1 !mt-0">
-  <label for="{id}" class="label-text text-neutral">{label}</label>
+  <label for="{id}" class="label-text-alt text-neutral">{label}</label>
   <input
     type="number"
     id="{id}"
     bind:value="{value}"
-    class="input input-sm input-bordered w-full font-normal placeholder-neutral focus:outline-none focus:border-primary focus:placeholder-transparent"
+    class="input input-sm input-bordered w-full font-normal placeholder-neutral focus:outline-none focus:border-primary focus:placeholder-transparent hover:border-primary"
   />
 </div>

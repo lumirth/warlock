@@ -148,6 +148,9 @@ if __name__ == '__main__':
     add_manual_subjects(subjects)
     terms = fetch_terms(years)
     print('Successfully fetched data from UIUC course catalog.')
+    for key, value in subjects.items():
+        if (key != value):
+            print(key, value)
     
     gen_eds = {**GEN_EDS, **GEN_EDS_MANUAL}
     data = {

@@ -47,7 +47,7 @@
     <input
       type="text"
       placeholder="ENTER QUERY..."
-      class="flex-grow input input-bordered w-2/3 md:w-4/5 lg:w-4/5 xl:w-5/6 bg-base-200 text-lg font-normal placeholder-neutral focus:outline-none focus:border-primary focus:placeholder-transparent"
+      class="flex-grow input hover:border-primary input-bordered w-2/3 md:w-4/5 lg:w-4/5 xl:w-5/6 bg-base-200 text-lg font-normal placeholder-neutral focus:outline-none focus:border-primary focus:placeholder-transparent"
       bind:value={query}
     />
     <button
@@ -58,17 +58,17 @@
   </form>
   <label
     for="modal-advanced"
-    class="btn btn-sm mt-4 font-normal bg-base-100 border-none h-3 underline"
+    class="btn btn-xs mt-4 font-normal bg-base-100 border-none h-3 underline"
     >ADVANCED</label
   >
   <label
     for="modal-syntax"
-    class="btn btn-sm mt-4 font-normal bg-base-100 border-none h-3 underline"
+    class="btn btn-xs mt-4 font-normal bg-base-100 border-none h-3 underline"
     >SYNTAX</label
   >
   <label
     for="modal-examples"
-    class="btn btn-sm mt-4 font-normal bg-base-100 border-none h-3 underline"
+    class="btn btn-xs mt-4 font-normal bg-base-100 border-none h-3 underline"
     >EXAMPLES</label
   >
   {#if output}
@@ -93,7 +93,8 @@
         >✕</label
       >
       <h3 class="text-lg font-bold">ADVANCED SEARCH</h3>
-      <p class="py-4">TODO: implement full advanced search with correct forms</p>
+      <!-- <p class="py-4">TODO: implement full advanced search with correct forms</p> -->
+      <p class="py-2 text-xs text-neutral">Please note that some field may override others (CRN, Course ID, etc.)</p>
       <AdvancedSearch />
     </label>
   </label>
@@ -151,19 +152,19 @@
       </article>
     </label>
   </label>
-  <input type="checkbox" id="modal" class="modal-toggle" />
+  <input type="checkbox" id="modal-examples" class="modal-toggle" />
   <label
-    for="modal"
+    for="modal-examples"
     class="modal modal-bottom sm:modal-middle cursor-pointer"
   >
     <label class="modal-box relative" for="">
       <label
-        for="modal"
+        for="modal-examples"
         class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200"
         >✕</label
       >
       <h3 class="text-lg font-bold">EXAMPLES</h3>
-      <p class="py-4">Give easy-to-understand examples of queries here.</p>
+      <p class="py-4">TODO: give easy top understand query examples</p>
     </label>
   </label>
 </section>
