@@ -35,16 +35,16 @@
 </svelte:head>
 
 <section>
-  <form on:submit={handleSubmit} class="flex gap-4">
+  <form on:submit={handleSubmit} class="flex gap-4 mx-auto">
     <input
       type="text"
       placeholder="ENTER QUERY..."
-      class="input input-bordered w-2/3 md:w-4/5 lg:w-4/5 xl:w-5/6 bg-base-200 text-lg font-normal placeholder-neutral focus:outline-none focus:border-primary focus:placeholder-transparent"
+      class="flex-grow input input-bordered w-2/3 md:w-4/5 lg:w-4/5 xl:w-5/6 bg-base-200 text-lg font-normal placeholder-neutral focus:outline-none focus:border-primary focus:placeholder-transparent"
       bind:value={query}
     />
     <button
       type="submit"
-      class="btn w-1/3 md:w-1/5 lg:w-1/5 xl:w-1/6 bg-base-200 font-normal text-lg"
+      class="btn bg-base-200 font-normal text-lg"
       >SEARCH</button
     >
   </form>
