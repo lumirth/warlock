@@ -5,7 +5,7 @@
   </script>
   
   <div class="mb-1 !mt-0">
-    <label for="{id}" class="label-text-alt text-neutral">{label}</label>
+    <label for="{id}" class="label-text-alt text-neutral !select-none">{label}</label>
     <input
       type="text"
       id="{id}"
