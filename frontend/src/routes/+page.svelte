@@ -92,10 +92,10 @@
             <li>Year (<code>yr:2009; year:2011</code>)</li>
             <li>Term (<code>term:fall; t:sp</code>)</li>
             <li>CRN (<code>crn:12345</code>)</li>
-            <li>Credit hours (<code>hrs:3, hr: 1</code>)</li>
+            <li>Credit hours (<code>hrs:3; hr: 1</code>)</li>
             <li>GenEd (<code>gen:adv comp; g:hum</code>)</li>
-            <li>Part of Term (<code>pot:first, p: whole, part-of-term:all</code>)</li>
-            <li>Keyword (<code>q: minds and machines, keyword: advanced applications</code>)</li>
+            <li>Part of Term (<code>pot:first; p: whole; part-of-term:all</code>)</li>
+            <li>Keyword (<code>q: minds and machines; keyword: advanced applications</code>)</li>
             
         </ul>
     </article>
