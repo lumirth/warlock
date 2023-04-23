@@ -63,7 +63,7 @@
 <input type="checkbox" id="my-modal-4" class="modal-toggle" />
 <label for="my-modal-4" class="modal modal-bottom sm:modal-middle cursor-pointer">
 <label class="modal-box relative" for="">
-    <label for="my-modal-4" class="btn btn-xs absolute right-2 top-2 border-neutral bg-base-200">✕</label>
+    <label for="my-modal-4" class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200">✕</label>
     <h3 class="text-lg font-bold">ADVANCED SEARCH</h3>
     <p class="py-4">TODO: implement the advanced search fields here</p>
 </label>
@@ -71,7 +71,7 @@
 <input type="checkbox" id="my-modal-5" class="modal-toggle" />
 <label for="my-modal-5" class="modal modal-bottom sm:modal-middle cursor-pointer">
 <label class="modal-box relative" for="">
-    <label for="my-modal-5" class="btn btn-xs absolute right-2 top-2 border-neutral bg-base-200">✕</label>
+    <label for="my-modal-5" class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200">✕</label>
     <article class="prose prose-sm">
         <h3 class="text-lg font-bold">QUERY SYNTAX</h3>
         <p>The search box takes a comma-separated list of arguments. It will attempt to intelligently match your input for the following:</p>
