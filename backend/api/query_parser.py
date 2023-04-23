@@ -1,5 +1,5 @@
 from typing import Optional
-from api.models import AdvancedSearchParameters
+from models import AdvancedSearchParameters
 import time
 import re
 import pickle
@@ -129,7 +129,7 @@ def parse_colon_arguments(token: str, advanced_query: AdvancedSearchParameters) 
         elif key in aliases and arg in ('gened_reqs'):
             if advanced_query.gened_reqs is None:
                 advanced_query.gened_reqs = []
-            if value.upper in GEN_ED_CODES:
+            if value.upper() in GEN_ED_CODES:
                 value = GEN_ED_CODES[value.upper()]
             else:
                 raise ValueError(f'Invalid gen ed code: {value}')
@@ -234,8 +234,11 @@ def token_is_semester(token):
 
 
 if __name__ == '__main__':
+    for key, value in SUBJECTS.items():
+        if key != value:
+            print(f'{key}: {value}')
     example_queries = [
-        "math 416",
+        "MACS 3, g:west",
         # "crn: 12345, gen ed: Humanities - Hist & Phil",
         # "id: 101, subj: ece, pot: first, instructor: John Smith",
     ]

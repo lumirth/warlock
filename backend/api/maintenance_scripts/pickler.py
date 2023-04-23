@@ -19,7 +19,7 @@ def fetch_years():
 def fetch_subjects(years, print_progress=False, print_prefix=''):
     subjects = {}
     default_year = max(map(int, years))
-    for year in range(2004, default_year + 1):
+    for year in range(default_year, 2003, -1):
         for semester in ["fall", "spring", "summer", "winter"]:
             url = URL_FORM.format(year=year, semester=semester)
             print("{}Fetching subjects from {}".format(print_prefix, url)) if print_progress else None
