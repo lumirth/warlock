@@ -109,7 +109,7 @@
         class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200"
         >✕</label
       >
-      <article class="prose prose-sm">
+      <div class="prose select-text cursor-text">
         <h3 class="text-lg font-bold">QUERY SYNTAX</h3>
         <p>
           The search box takes a comma-separated list of arguments. It will
@@ -149,7 +149,7 @@
             >)
           </li>
         </ul>
-      </article>
+      </div>
     </label>
   </label>
   <input type="checkbox" id="modal-examples" class="modal-toggle" />
@@ -163,8 +163,25 @@
         class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200"
         >✕</label
       >
-      <h3 class="text-lg font-bold">EXAMPLES</h3>
-      <p class="py-4">TODO: give easy top understand query examples</p>
+      <div class="prose select-text cursor-text">
+        <h3 class="text-lg font-bold">EXAMPLES</h3>
+        <p>Search for courses in the CS department in Fall 2021:</p>
+        <ul>
+          <li><code>comp sci, fall, 2021</code></li>
+          <li><code>fall, 2021, Computer Science</code></li>
+          <li><code>year:2021, sem:fa, subj:CS</code></li>
+        </ul>
+        
+        <p>Find courses in the MACS department that match the Cultural Studies: Western GenEd:</p>
+        <ul>
+          <li><code>macs, western</code></li>
+          <li><code>media and cinema studies, cultural studies western</code></li>
+          <li>Specifically at the 300 level: <code>MACS 3, g:west</code></li>
+          <li>Worth 3 credit hours: <code>MACS, g:west, hrs:3</code></li>
+          <li>Online: <code>MACS, western, is:online</code></li>
+          <li>First eight weeks: <code>macs, western, pot:a</code></li>
+        </ul>
+      </div>
     </label>
   </label>
 </section>
