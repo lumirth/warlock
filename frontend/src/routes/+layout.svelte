@@ -12,7 +12,7 @@
   </main>
   <footer class="footer footer-center p-4 text-base-content mt-5 md:mt-10 lg:mt-20 xl:mt-30">
     <div class="flex gap-4">
-      <div class="uppercase">Copyright © 2023</div>
+      <!-- <div class="uppercase">Copyright © 2023</div> -->
       <!-- <a href="https://github.com" role="button" class="btn cursor-pointer rounded-full btn-xs">GITHUB</a> -->
     </div>
   </footer>
