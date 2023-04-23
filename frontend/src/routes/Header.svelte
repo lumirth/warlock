@@ -11,7 +11,7 @@
         <a href="/" class="btn btn-ghost normal-case text-xl">COURSE WARLOCK</a>
       </div>
       <div class="flex-none">
-          <a class="btn font-normal text-lg border-none bg-transparent" href="/about">ABOUT</a>
+          <a class="btn font-normal text-lg border-none bg-transparent underline" href="/about">ABOUT</a>
       </div>
     </div>
 </header>
