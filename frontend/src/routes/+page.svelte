@@ -55,17 +55,17 @@
     >
   </form>
   <label
-    for="my-modal-4"
+    for="modal-advanced"
     class="btn btn-sm mt-4 font-normal bg-base-100 border-none h-3 underline"
     >ADVANCED</label
   >
   <label
-    for="my-modal-5"
+    for="modal-syntax"
     class="btn btn-sm mt-4 font-normal bg-base-100 border-none h-3 underline"
     >SYNTAX</label
   >
   <label
-    for="my-modal-6"
+    for="modal-examples"
     class="btn btn-sm mt-4 font-normal bg-base-100 border-none h-3 underline"
     >EXAMPLES</label
   >
@@ -79,14 +79,14 @@
     </div>
   {/if}
 
-  <input type="checkbox" id="my-modal-4" class="modal-toggle" />
+  <input type="checkbox" id="modal-advanced" class="modal-toggle" />
   <label
-    for="my-modal-4"
+    for="modal-advanced"
     class="modal modal-bottom sm:modal-middle cursor-pointer"
   >
     <label class="modal-box relative" for="">
       <label
-        for="my-modal-4"
+        for="modal-advanced"
         class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200"
         >✕</label
       >
@@ -94,14 +94,14 @@
       <p class="py-4">TODO: implement the advanced search fields here</p>
     </label>
   </label>
-  <input type="checkbox" id="my-modal-5" class="modal-toggle" />
+  <input type="checkbox" id="modal-syntax" class="modal-toggle" />
   <label
-    for="my-modal-5"
+    for="modal-syntax"
     class="modal modal-bottom sm:modal-middle cursor-pointer"
   >
     <label class="modal-box relative" for="">
       <label
-        for="my-modal-5"
+        for="modal-syntax"
         class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200"
         >✕</label
       >
@@ -148,14 +148,14 @@
       </article>
     </label>
   </label>
-  <input type="checkbox" id="my-modal-6" class="modal-toggle" />
+  <input type="checkbox" id="modal" class="modal-toggle" />
   <label
-    for="my-modal-6"
+    for="modal"
     class="modal modal-bottom sm:modal-middle cursor-pointer"
   >
     <label class="modal-box relative" for="">
       <label
-        for="my-modal-6"
+        for="modal"
         class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200"
         >✕</label
       >
