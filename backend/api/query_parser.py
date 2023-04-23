@@ -1,5 +1,8 @@
 from typing import Optional
-from api.models import AdvancedSearchParameters
+if __name__ != "__main__":
+    from api.models import AdvancedSearchParameters
+else:
+    from models import AdvancedSearchParameters
 import time
 import re
 import pickle
