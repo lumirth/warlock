@@ -42,20 +42,8 @@
     { value: "winter", text: "Winter"}
   ];
 
-  // Define selected value variables for each dropdown
-  let selectedYear: string;
-  let selectedSemester: string;
-  let selectedCollege: string;
-  let selectedSubject: string;
-  let selectedGenedReqs1: string;
-  let selectedGenedReqs2: string;
-  let selectedGenedReqs3: string;
-  let selectedPartOfTerm: string;
-  let selectedKeywordType: string;
-  let selectedCourseLevel: string;
-
-  // Create additional options arrays (not using JSON files)
-  const keywordTypeOptions = [
+    // Create additional options arrays (not using JSON files)
+    const keywordTypeOptions = [
     { value: "default", text: "Default" },
     { value: "exact phrase", text: "Exact Phrase" },
     { value: "any of these words", text: "Any Words" },
@@ -76,13 +64,29 @@
     { value: "6", text: "600 Level" },
   ];
 
+  const defaultYear = yearOptions[0].value;
+  const defaultSemester = semesterOptions[0].value;
+  const defaultKeywordType = keywordTypeOptions[0].value;
+  // Define selected value variables for each dropdown
+  let selectedYear: string = defaultYear;
+  let selectedSemester: string = defaultSemester;
+  let selectedCollege: string;
+  let selectedSubject: string;
+  let selectedGenedReqs1: string;
+  let selectedGenedReqs2: string;
+  let selectedGenedReqs3: string;
+  let selectedPartOfTerm: string;
+  let selectedKeywordType: string = defaultKeywordType;
+  let selectedCourseLevel: string;
+
+
   let keywordValue: string;
   let instructorValue: string;
   let courseIdValue: number;
   let crnValue: number;
   let creditHoursValue: number;
-  let matchAllGenedReqs: boolean;
-  let matchAnyGenedReqs: boolean;
+  let matchAllGenedReqs: boolean = true;
+  let matchAnyGenedReqs: boolean = false;
   let online: boolean;
   let onCampus: boolean;
   let openSections: boolean;
@@ -95,12 +99,14 @@
     label="Year"
     options={yearOptions}
     selectedValue={selectedYear}
+    addEmptyOption={false}
   />
   <Dropdown
     id="semester"
     label="Semester"
     options={semesterOptions}
     selectedValue={selectedSemester}
+    addEmptyOption={false}
   />
   <TextInput id="keyword" label="Keyword" value={keywordValue} />
   <Dropdown
@@ -108,6 +114,7 @@
     label="Keyword Type"
     options={keywordTypeOptions}
     selectedValue={selectedKeywordType}
+    addEmptyOption={false}
   />
   <TextInput id="instructor" label="Instructor" value={instructorValue} />
   <Dropdown
