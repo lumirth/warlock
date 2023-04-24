@@ -197,6 +197,7 @@
     bind:selectedValue={selectedSemester}
     addEmptyOption={false}
   />
+  <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-neutral"/>
   <TextInput id="keyword" label="Keyword" value={keywordValue} />
   <Dropdown
     id="keywordType"
@@ -218,7 +219,7 @@
     options={subjectOptions}
     bind:selectedValue={selectedSubject}
   />
-  <NumberInput id="courseId" label="Course ID" value={courseIdValue} />
+  <NumberInput id="courseId" label="Course ID*" value={courseIdValue} />
   <NumberInput id="crn" label="CRN" value={crnValue} />
   <NumberInput id="creditHours" label="Credit Hours" value={creditHoursValue} />
   <!-- TODO: add section attributes back. this would require adding maintenance
@@ -232,7 +233,7 @@
   /> -->
   <Dropdown
     id="courseLevel"
-    label="Course Level"
+    label="Course Level*"
     options={courseLevelOptions}
     bind:selectedValue={selectedCourseLevel}
   />
@@ -272,7 +273,7 @@
   />
   <Checkbox id="online" label="Online" bind:checked={online} />
   <Checkbox id="onCampus" label="On Campus" bind:checked={onCampus} />
-  <Checkbox id="openSections" label="Open Sections" bind:checked={openSections} />
+  <Checkbox id="openSections" label="Open Sections*" bind:checked={openSections} />
   <Checkbox id="evenings" label="Evenings" bind:checked={evenings} />
   <div class="flex flex-row gap-4">
     {#if loading}

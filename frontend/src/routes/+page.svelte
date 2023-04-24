@@ -115,7 +115,7 @@
     for="modal-advanced"
     class="modal modal-bottom sm:modal-middle cursor-pointer"
   >
-    <label class="modal-box relative" for="">
+    <label class="modal-box relative no-scrollbar" for="">
       <label
         for="modal-advanced"
         class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200"
@@ -123,7 +123,8 @@
       >
       <h3 class="text-lg font-bold">ADVANCED SEARCH</h3>
       <!-- <p class="py-4">TODO: implement full advanced search with correct forms</p> -->
-      <p class="py-2 text-xs text-neutral">Please note that some field may override others (CRN, Course ID, etc.)</p>
+      <p class="pt-2 text-xs text-neutral">• Please note that some field may override others (CRN, Course ID, etc.)</p>
+      <p class="pb-2 text-xs text-neutral">• Fields with an <code>*</code> must be combined with at least 1 other field.</p>
       <AdvancedSearch />
     </label>
   </label>
@@ -132,7 +133,7 @@
     for="modal-syntax"
     class="modal modal-bottom sm:modal-middle cursor-pointer"
   >
-    <label class="modal-box relative" for="">
+    <label class="modal-box relative no-scrollbar" for="">
       <label
         for="modal-syntax"
         class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200"
@@ -186,7 +187,7 @@
     for="modal-examples"
     class="modal modal-bottom sm:modal-middle cursor-pointer"
   >
-    <label class="modal-box relative" for="">
+    <label class="modal-box relative no-scrollbar" for="">
       <label
         for="modal-examples"
         class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200"
@@ -216,4 +217,11 @@
 </section>
 
 <style>
+.no-scrollbar {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important; /* IE and Edge */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
 </style>
