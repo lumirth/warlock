@@ -3,6 +3,7 @@
   import TextInput from "./TextInput.svelte";
   import NumberInput from "./NumberInput.svelte";
   import Checkbox from "./Checkbox.svelte";
+  import Radio from "./Radio.svelte";
 
   import yearsJson from "../data/years.json";
   // TODO: add conditional semester dropdown that shows the correct semesters for the selected year
@@ -102,6 +103,11 @@
   let openSections: boolean;
   let evenings: boolean;
 
+  let genEdMatching = 'matchAll';
+  function handleGenEdMatchingChange(value: string) {
+    genEdMatching = value;
+  }
+
   let error_message: string = "";
   let loading: boolean = false;
 
@@ -123,7 +129,7 @@
       // !evenings
     ) {
       event.preventDefault();
-      error_message = "Please give at least one search option.";
+      error_message = "Missing criteria.";
     } else {
       error_message = "";
       loading = true;
@@ -250,16 +256,21 @@
     options={genedReqsOptions}
     bind:selectedValue={selectedGenedReqs3}
   />
-  <Checkbox
-    id="matchAllGenedReqs"
-    label="Match all GenEd requirements"
-    bind:checked={matchAllGenedReqs}
-  />
-  <Checkbox
-    id="matchAnyGenedReqs"
-    label="Match any GenEd requirements"
-    bind:checked={matchAnyGenedReqs}
-  />
+  <Radio 
+  id="matchAllGenedReqs" 
+  label="Match all GenEd requirements" 
+  value="matchAll" 
+  groupValue="{genEdMatching}" 
+  onChange="{handleGenEdMatchingChange}" 
+/>
+
+<Radio 
+  id="matchAnyGenedReqs" 
+  label="Match any GenEd requirements" 
+  value="matchAny" 
+  groupValue="{genEdMatching}" 
+  onChange="{handleGenEdMatchingChange}" 
+/>
   <Dropdown
     id="partOfTerm"
     label="Part of Term"
@@ -274,18 +285,18 @@
     bind:checked={openSections}
   />
   <!-- <Checkbox id="evenings" label="Evenings" bind:checked={evenings} /> -->
-  <div class="flex flex-row gap-4">
+  <div class="flex flex-row gap-4 justify-end">
+    {#if error_message}
+      <div class="text-red-500">{error_message}</div>
+    {/if}
     {#if loading}
-      <button class="btn bg-base-200 font-normal text-lg loading">
+      <button class="btn btn-sm bg-base-200 font-normal text-lg loading">
         LOADING
       </button>
     {:else}
-      <button type="submit" class="btn bg-base-200 font-normal text-lg">
+      <button type="submit" class="btn btn-sm bg-base-200 font-normal text-lg">
         SEARCH
       </button>
-    {/if}
-    {#if error_message}
-      <div class="text-red-500">{error_message}</div>
     {/if}
   </div>
 </form>
