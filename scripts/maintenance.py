@@ -1,6 +1,7 @@
 from utils.pickler import *
 from utils.download_gpa import *
 from utils.fetch_uiuc import *
+from utils.find_college_codes import retrieve_college_codes
 import json
 import sys
 
@@ -12,6 +13,7 @@ else:
 
 # Directory of pickles for GEN_EDS, GEN_ED_CODES, valid years, and valid subjects.
 PICKLE_DIR = "backend/api/pickles"
+JSON_DIR = "frontend/src/data"
 GPA_DATA_DIR = "backend/api/data"
 SHA_FILE = GPA_DATA_DIR + "/" + "commit_sha.txt"
 CSV_FILE = GPA_DATA_DIR + "/" + "gpa.csv"
@@ -47,63 +49,64 @@ MANUAL_SUBJECTS = dict_manual["MANUAL_SUBJECTS"]
 
 
 def main():
-    years = set()
-    subjects = dict()
-    terms = set()
+    print("Fetching data from UIUC course catalog...")
+    years = fetch_years()
+    subjects = fetch_subjects(years, max_workers=MAX_WORKERS)
+    subjects = {**subjects, **MANUAL_SUBJECTS}
+    terms = fetch_terms(years, max_workers=MAX_WORKERS)
+    colleges = retrieve_college_codes()
+    print("Successfully fetched data from UIUC course catalog.")
 
-    def _fetch_data_from_uiuc():
-        print("Fetching data from UIUC course catalog...")
-        years = fetch_years()
-        subjects = fetch_subjects(years, max_workers=MAX_WORKERS)
-        subjects = {**subjects, **MANUAL_SUBJECTS}
-        terms = fetch_terms(years, max_workers=MAX_WORKERS)
-        print("Successfully fetched data from UIUC course catalog.")
+    data = {
+        "gen_eds": GEN_EDS,
+        "gen_ed_codes": GEN_ED_CODES, 
+        "years": years,
+        "subjects": subjects,
+        "terms": terms,
+        "colleges": colleges
+    }
+    print()
+    print("Pickling data...")
+    pickle_data_in_dir(data, PICKLE_DIR)
+    print("Successfully pickled data. Pickles should be located at: " + PICKLE_DIR)
+        
+    print()
+    print("Saving data as JSON...")
+    save_data_as_json(data, JSON_DIR)
+    print("Successfully saved data as JSON. JSON files should be located at: " + JSON_DIR)
 
-    def _pickle_data():
-        data = {
-            "gen_eds": GEN_EDS,
-            "gen_ed_codes": GEN_ED_CODES, 
-            "years": years,
-            "subjects": subjects,
-            "terms": terms,
-        }
-        print()
-        print("Pickling data...")
-        pickle_data_in_dir(data, PICKLE_DIR)
-        print("Successfully pickled data.")
+    print()
+    print("Testing unpickling...")
+    unpickled_gen_eds = unpickle_data(PICKLE_DIR + "/gen_eds.pkl")
+    assert unpickled_gen_eds == GEN_EDS
+    print("Successfully unpickled gen_eds.pkl.")
+    
+    print()
+    print("First 3 of each data:")
+    for key in data:
+        if isinstance(data[key], dict):
+            print(key, ":", dict(list(data[key].items())[:3]), "...")
+        if isinstance(data[key], set):
+            print(key, ":", sorted(data[key], reverse=True)[:3], "...")
 
-    def _test_unpickling():
-        print()
-        print("Testing unpickling...")
-        unpickled_gen_eds = unpickle_data(PICKLE_DIR + "/gen_eds.pkl")
-        assert unpickled_gen_eds == GEN_EDS
-        print("Successfully unpickled gen_eds.pkl.")
-
-    def _get_csv_data():
-        print()
-        print("Getting latest GPA data...")
-        print("Checking hash of local CSV file...")
-        previous_sha = get_previous_sha(SHA_FILE)
-        print("Checking hash of latest CSV file...")
-        latest_sha, download_url = get_latest_file_info()
-        print(
-            "Checking whether the latest CSV file has already been downloaded and converted..."
+    print()
+    print("Getting latest GPA data...")
+    print("Checking hash of local CSV file...")
+    previous_sha = get_previous_sha(SHA_FILE)
+    print("Checking hash of latest CSV file...")
+    latest_sha, download_url = get_latest_file_info()
+    print(
+        "Checking whether the latest CSV file has already been downloaded and converted..."
+    )
+    if latest_sha != previous_sha:
+        download_and_convert_csv(
+            download_url, CSV_FILE, FEATHER_FILE, SHA_FILE, latest_sha
         )
-        if latest_sha != previous_sha:
-            download_and_convert_csv(
-                download_url, CSV_FILE, FEATHER_FILE, SHA_FILE, latest_sha
-            )
-        else:
-            print(
-                "The latest version of the CSV file has already been downloaded and converted."
-            )
-        print("Feather file should be located at: " + FEATHER_FILE)
-
-    _fetch_data_from_uiuc()
-    _pickle_data()
-    _test_unpickling()
-    _get_csv_data()
-
+    else:
+        print(
+            "The latest version of the CSV file has already been downloaded and converted."
+        )
+    print("Feather file should be located at: " + FEATHER_FILE)
 
 if __name__ == "__main__":
     main()
