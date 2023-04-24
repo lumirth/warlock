@@ -108,8 +108,6 @@
   function handleSubmit(event: Event): void {
     // if only year and semester are selected, then do not submit
     if (
-      selectedYear === defaultYear &&
-      selectedSemester === defaultSemester &&
       !selectedCollege &&
       !selectedSubject &&
       !selectedGenedReqs1 &&
@@ -118,14 +116,11 @@
       !selectedPartOfTerm &&
       !keywordValue &&
       !instructorValue &&
-      !courseIdValue &&
       !crnValue &&
       !creditHoursValue &&
-      !selectedCourseLevel &&
       !online &&
-      !onCampus &&
-      !openSections &&
-      !evenings
+      !openSections
+      // !evenings
     ) {
       event.preventDefault();
       error_message = "Please give at least one search option.";
@@ -170,7 +165,7 @@
       online: online,
       onCampus: onCampus,
       openSections: openSections,
-      evenings: evenings,
+      // evenings: evenings,
       courseLevel: courseLevel,
     };
     // filter out empty values
@@ -197,7 +192,7 @@
     bind:selectedValue={selectedSemester}
     addEmptyOption={false}
   />
-  <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-neutral"/>
+  <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-neutral" />
   <TextInput id="keyword" label="Keyword" value={keywordValue} />
   <Dropdown
     id="keywordType"
@@ -273,8 +268,12 @@
   />
   <Checkbox id="online" label="Online" bind:checked={online} />
   <Checkbox id="onCampus" label="On Campus" bind:checked={onCampus} />
-  <Checkbox id="openSections" label="Open Sections*" bind:checked={openSections} />
-  <Checkbox id="evenings" label="Evenings" bind:checked={evenings} />
+  <Checkbox
+    id="openSections"
+    label="Open Sections*"
+    bind:checked={openSections}
+  />
+  <!-- <Checkbox id="evenings" label="Evenings" bind:checked={evenings} /> -->
   <div class="flex flex-row gap-4">
     {#if loading}
       <button class="btn bg-base-200 font-normal text-lg loading">
