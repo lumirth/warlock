@@ -6,7 +6,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 URL_FORM = "https://courses.illinois.edu/cisapp/explorer/schedule/{year}/{semester}.xml"
 YEARS_URL = "https://courses.illinois.edu/cisapp/explorer/schedule.xml"
-MAX_WORKERS = 10
 
 def fetch_years():
     req = requests.get(YEARS_URL)
@@ -29,7 +28,7 @@ def fetch_subjects_worker(year, semester, print_prefix=''):
             subjects[subject_id] = subject_id
     return subjects
 
-def fetch_subjects(years, print_progress=False, print_prefix='', max_workers=MAX_WORKERS):
+def fetch_subjects(years, print_progress=False, print_prefix='', max_workers=10):
     default_year = max(map(int, years))
     tasks = []
     subjects = {}
@@ -58,7 +57,7 @@ def fetch_terms_worker(year, print_prefix=''):
                 terms.add('winter')
     return year, terms
 
-def fetch_terms(years, print_progress=False, print_prefix='', max_workers=MAX_WORKERS):
+def fetch_terms(years, print_progress=False, print_prefix='', max_workers=10):
     terms = {}
     tasks = []
     with ThreadPoolExecutor(max_workers=max_workers) as executor:

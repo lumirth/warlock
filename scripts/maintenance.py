@@ -45,9 +45,9 @@ MANUAL_SUBJECTS = dict_manual["MANUAL_SUBJECTS"]
 if __name__ == '__main__':    
     print('Fetching data from UIUC course catalog...')
     years = fetch_years()
-    subjects = fetch_subjects(years, MAX_WORKERS)
+    subjects = fetch_subjects(years, max_workers=MAX_WORKERS)
     subjects = {**subjects, **MANUAL_SUBJECTS}
-    terms = fetch_terms(years, MAX_WORKERS)
+    terms = fetch_terms(years, max_workers=MAX_WORKERS)
     print('Successfully fetched data from UIUC course catalog.')
     # pretty_print(years)
     
