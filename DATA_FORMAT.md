@@ -36,3 +36,25 @@ Other attributes and their codes:
 | James Scholar                       | `1055`  | `JS`        |
 | Campus Honors/Chancellor's Scholar  | `1CH`   | `CH`        |
 | Teacher Certification               | UNKNOWN | `TC`        |
+
+## College Codes
+
+| Name                                              | Code | Display Tag |
+| ------------------------------------------------- | ---- | ----------- |
+| Agricultural, Consumer and Environmental Sciences | `KL` | `ACES`      |
+| Applied Health Sci                                | `KY` | `AHS`       |
+| Armed Forces                                      | `LD` | `AF`        |
+| Carle Illinois College of Medicine                | `LT` | `CARLE`     |
+| College of Media                                  | `KT` | `MEDIA`     |
+| Division of General Studies                       | `KW` | `DGS`       |
+| Education                                         | `KN` | `EDU`       |
+| Fine and Applied Arts                             | `KR` | `FAA`       |
+| Gies College of Business                          | `KM` | `GIES`      |
+| Graduate College                                  | `KS` | `GRAD`      |
+| Grainger College of Engineering                   | `KP` | `ENG`       |
+| Law                                               | `KU` | `LAW`       |
+| Liberal Arts and Sciences                         | `KV` | `LAS`       |
+| School of Information Sciences                    | `LP` | `iSchool`   |
+| School of Labor and Employee Relations            | `LG` | `LER`       |
+| School of Social Work                             | `LL` | `SSW`       |
+| Veterinary Medicine                               | `LC` | `VETMED`    |
