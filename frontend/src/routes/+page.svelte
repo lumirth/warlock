@@ -21,7 +21,6 @@
     'life sciences',
     'natural sciences, quant1',
     'PSYC, non-western',
-    'COMP1',
     'fall, 2021, cs 128',
     'anthropology, 2019',
     '2005, mathematics, hrs:2'
