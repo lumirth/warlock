@@ -2,13 +2,7 @@ from pickler import *
 from download_gpa import *
 import os
 
-# change directory to the directory of this file
-# this script creates a directory in the parent directory of the directory of this file
-# meaning, if script is in folder/scripts, the directory created will be folder/data
-abspath = os.path.abspath(__file__)
-dname = os.path.dirname(abspath)
-os.chdir(dname)
-
+# TODO: move these dictionaries to a separate file — json or something
 # GEN_EDS defines the mapping of a full gen ed name ot its Banner code.
 GEN_EDS = {
     'Composition I': 'COMP1',
@@ -111,8 +105,8 @@ GEN_ED_CODES = {
     'MINORITY': '1US',
 }
 # Directory of pickles for GEN_EDS, GEN_ED_CODES, valid years, and valid subjects.
-PICKLE_DIR = '../pickles'
-GPA_DATA_DIR = '../data'
+PICKLE_DIR = './backend/api/pickles'
+GPA_DATA_DIR = './backend/api/data'
 SHA_FILE = GPA_DATA_DIR + '/' + 'commit_sha.txt'
 CSV_FILE = GPA_DATA_DIR + '/' +  'gpa.csv'
 FEATHER_FILE = GPA_DATA_DIR + '/' + 'gpa.feather'
