@@ -8,6 +8,29 @@
   let output = "";
   let loading = false;
 
+  const examples = [
+    'CS 222',
+    'MACS, western',
+    'hrs:2, is:online',
+    'gen:HUM, is:campus',
+    'adv comp, pot:b',
+    'CS 2',
+    'prof: wade',
+    'keyword: data',
+    'life sciences',
+    'natural sciences, quant1',
+    'PSYC, non-western',
+    'COMP1',
+    'fall, 2021, cs 128',
+    'anthropology, 2019',
+    '2005, mathematics, hrs:2'
+  ]
+
+  let placeholder_example = ""
+
+  const randomExample = () => {
+    placeholder_example = examples[Math.floor(Math.random() * examples.length)];
+  }
   
   const increment = () => {
     x++;
@@ -32,6 +55,7 @@
   };
 
   onMount(() => {
+    randomExample()
     // code to execute when the component is mounted
   });
 </script>
@@ -46,8 +70,8 @@
   <form on:submit={handleSubmit} class="flex gap-4 mx-auto">
     <input
       type="text"
-      placeholder="ENTER QUERY..."
-      class="flex-grow input hover:border-primary input-bordered w-2/3 md:w-4/5 lg:w-4/5 xl:w-5/6 bg-base-200 text-lg font-normal placeholder-neutral focus:outline-none focus:border-primary focus:placeholder-transparent"
+      placeholder='Try... {placeholder_example}'
+      class="flex-grow input uppercase hover:border-primary input-bordered w-2/3 md:w-4/5 lg:w-4/5 xl:w-5/6 bg-base-200 text-lg font-normal placeholder-neutral focus:outline-none focus:border-primary focus:placeholder-transparent"
       bind:value={query}
     />
     <button

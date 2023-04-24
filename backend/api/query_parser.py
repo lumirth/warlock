@@ -241,7 +241,7 @@ if __name__ == '__main__':
         if key != value:
             print(f'{key}: {value}')
     example_queries = [
-        "MACS, western, is:online",
+        "PSYC, nonwestern",
         # "crn: 12345, gen ed: Humanities - Hist & Phil",
         # "id: 101, subj: ece, pot: first, instructor: John Smith",
     ]
