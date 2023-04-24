@@ -2,6 +2,7 @@ from utils.pickler import *
 from utils.download_gpa import *
 from utils.fetch_uiuc import *
 from utils.find_college_codes import retrieve_college_codes
+from utils.find_pot_codes import retrieve_part_of_terms
 import json
 import sys
 
@@ -45,7 +46,9 @@ GEN_ED_CODES = {
     **dict_manual["MANUAL_GEN_ED_CODES"],
     **dict_display["DISPLAY_GEN_ED_CODES"],
 }
+GEN_EDS_DISPLAY = dict_display["DISPLAY_GEN_EDS"]
 MANUAL_SUBJECTS = dict_manual["MANUAL_SUBJECTS"]
+POTS = retrieve_part_of_terms()
 
 
 def main():
@@ -59,11 +62,13 @@ def main():
 
     data = {
         "gen_eds": GEN_EDS,
+        "gen_eds_display": GEN_EDS_DISPLAY,
         "gen_ed_codes": GEN_ED_CODES, 
         "years": years,
         "subjects": subjects,
         "terms": terms,
-        "colleges": colleges
+        "colleges": colleges,
+        "pots": POTS
     }
     print()
     print("Pickling data...")

@@ -16,25 +16,27 @@ def parse_html(html_content):
     return BeautifulSoup(html_content, "html.parser")
 
 
-def extract_college_code_options(parsed_html):
-    select_element = parsed_html.find("select", {"id": "collegeCode"})
+def extract_part_of_term_options(parsed_html):
+    select_element = parsed_html.find("select", {"id": "partOfTerm"})
     option_elements = select_element.find_all("option")
     return option_elements
 
 
-def create_college_code_dict(option_elements):
-    college_code_dict = {
+def create_part_of_term_dict(option_elements):
+    part_of_term_dict = {
         option.text.strip(): option.get("value")
         for option in option_elements
         if option.text.strip()  # Ignore empty option names
     }
-    return college_code_dict
+    return part_of_term_dict
 
-def retrieve_college_codes():
+
+def retrieve_part_of_terms():
     html_content = fetch_html(URL)
     parsed_html = parse_html(html_content)
-    option_elements = extract_college_code_options(parsed_html)
-    return create_college_code_dict(option_elements)
+    option_elements = extract_part_of_term_options(parsed_html)
+    return create_part_of_term_dict(option_elements)
+
 
 if __name__ == "__main__":
-    print(retrieve_college_codes())
+    print(retrieve_part_of_terms())
