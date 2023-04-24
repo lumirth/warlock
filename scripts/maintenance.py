@@ -33,8 +33,6 @@ GEN_EDS = {**dict_truth["GEN_EDS"], **dict_manual["MANUAL_GEN_EDS"], **dict_disp
 GEN_ED_CODES = {**dict_truth["GEN_ED_CODES"], **dict_manual["MANUAL_GEN_ED_CODES"], **dict_display["DISPLAY_GEN_ED_CODES"]}
 MANUAL_SUBJECTS = dict_manual["MANUAL_SUBJECTS"]
 
-# Access dictionaries from the loaded JSON data
-
 # This is a maintenance script that does the following:
 #   - Create pickles for data that isn't redefined often but CAN change (gen ed codes, valid years/subjects)
 #       - Fetch the list of valid years from the UIUC course catalog.
