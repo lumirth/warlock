@@ -300,10 +300,10 @@ def token_is_semester(token):
 
 
 if __name__ == "__main__":
-    for key, value in GEN_EDS.items():
-        if key != value:
-            print(f"{key}: {value}")
-    print("---")
+    # for key, value in GEN_EDS.items():
+    #     if key != value:
+    #         print(f"{key}: {value}")
+    # print("---")
     example_queries = [
         "cs",
         "adv comp",
