@@ -16,7 +16,7 @@ with open('scripts/data.json', 'r') as f:
 
 # Access dictionaries from the loaded JSON data
 GEN_EDS = data['GEN_EDS']
-GEN_EDS_MANUAL = data['GEN_EDS_MANUAL']
+MANUAL_GEN_EDS = data['MANUAL_GEN_EDS']
 GEN_ED_CODES = data['GEN_ED_CODES']
 MANUAL_SUBJECTS = data['MANUAL_SUBJECTS']
 
@@ -44,7 +44,7 @@ if __name__ == '__main__':
         if (key != value):
             print(key, value)
     
-    gen_eds = {**GEN_EDS, **GEN_EDS_MANUAL}
+    gen_eds = {**GEN_EDS, **MANUAL_GEN_EDS}
     data = {
         'gen_eds': gen_eds,
         'gen_ed_codes': GEN_ED_CODES,

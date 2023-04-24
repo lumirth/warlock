@@ -22,7 +22,7 @@
     "Non-Western Cultures": "1NW",
     "US Minority Cultures": "1US"
   },
-  "GEN_EDS_MANUAL": {
+  "MANUAL_GEN_EDS": {
     "adv comp": "1CLL",
     "comp 1": "COMP1",
     "lit & arts": "1LA",
@@ -42,18 +42,14 @@
   "GEN_ED_CODES": {
     "COMP1": "COMP1",
     "1CLL": "1CLL",
-    "HUM": "HUM",
     "1LA": "1LA",
     "1HP": "1HP",
-    "NAT": "NAT",
     "1LS": "1LS",
     "1PS": "1PS",
     "1QR1": "1QR1",
     "1QR2": "1QR2",
-    "SBS": "SBS",
     "1SS": "1SS",
     "1BSC": "1BSC",
-    "CS": "CS",
     "1WCC": "1WCC",
     "1NW": "1NW",
     "1US": "1US",
@@ -66,7 +62,7 @@
     "NAT-LS": "1LS",
     "NAT-PS": "1PS",
     "QR-I": "1QR1",
-    "QR-I": "1QR2",
+    "QR-II": "1QR2",
     "SBS": "SBS",
     "SBS-SS": "1SS",
     "SBS-BS": "1BSC",
