@@ -27,7 +27,7 @@ def test_parse_advanced_query_string():
 
     assert isinstance(result, AdvancedSearchParameters)
     assert result.year == 2021
-    assert result.semester == 'spring'
+    assert result.term == 'spring'
     assert result.subject == 'CS'
     assert result.course_id == 2
 
@@ -38,12 +38,12 @@ def test_parse_advanced_query_string():
 
 
 def test_align_to_pattern():
-    advanced_query = AdvancedSearchParameters(subject="cs", semester="sp", year='2021', part_of_term="first")
+    advanced_query = AdvancedSearchParameters(subject="cs", term="sp", year='2021', part_of_term="first")
 
     align_to_pattern(advanced_query)
 
     assert advanced_query.subject == "CS"
-    assert advanced_query.semester == "spring"
+    assert advanced_query.term == "spring"
     assert advanced_query.year == 2021
     assert advanced_query.part_of_term == "A"
 
@@ -82,7 +82,7 @@ def test_parse_token():
 
     result = parse_token(token, advanced_query)
 
-    assert result.semester == "spring"
+    assert result.term == "spring"
 
 
 def test_token_is_crn():
@@ -105,7 +105,7 @@ def test_parse_advanced_query_string_fuzzy():
     assert query1.subject == 'CS'
     assert query1.course_id == 225
     assert query1.year == 2021
-    assert query1.semester == 'spring'
+    assert query1.term == 'spring'
 
     # Test gened_reqs matching with slight typos and variations
     query2 = parse_advanced_query_string("compossition 1")
@@ -119,10 +119,10 @@ def test_parse_advanced_query_string_fuzzy():
 
     # Test semester matching with slight typos and variations
     query5 = parse_advanced_query_string("spr")
-    assert query5.semester == 'spring'
+    assert query5.term == 'spring'
 
     query6 = parse_advanced_query_string("win")
-    assert query6.semester == 'winter'
+    assert query6.term == 'winter'
 
     # Test part_of_term matching with slight typos and variations
     query7 = parse_advanced_query_string("pot:1st")

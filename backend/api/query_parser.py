@@ -121,8 +121,8 @@ def align_to_pattern(advanced_query: AdvancedSearchParameters):
             if subject is None:
                 raise ValueError("Subject not found")
     # semester should be one of the following: fall, spring, summer, winter
-    if advanced_query.semester is not None:
-        advanced_query.semester = SEMESTER[advanced_query.semester]
+    if advanced_query.term is not None:
+        advanced_query.term = SEMESTER[advanced_query.term]
     # year should be a 4 digit number in YEARS
     if advanced_query.year is not None:
         advanced_query.year = str(advanced_query.year)
@@ -265,7 +265,7 @@ def parse_token(
         return advanced_query
 
     if token_is_semester(token):
-        advanced_query.semester = SEMESTER[token]
+        advanced_query.term = SEMESTER[token]
         return advanced_query
 
     if re.match(r"^([a-zA-Z ]+)(?:\s+)?(\d+)$", token):
