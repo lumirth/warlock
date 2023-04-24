@@ -24,9 +24,9 @@ os.chdir(dname)
 PICKLES_DIR = "pickles"
 
 # convert keys and values to lowercase. we change them to uppercase as appropriate later
-gen_eds = pickle.load(open(os.path.join(PICKLES_DIR, "gen_eds.pkl"), "rb"))
+gen_eds = pickle.load(open(os.path.join(PICKLES_DIR, "gen_eds_matching.pkl"), "rb"))
 gen_ed_codes = pickle.load(open(os.path.join(PICKLES_DIR, "gen_ed_codes.pkl"), "rb"))
-subjects = pickle.load(open(os.path.join(PICKLES_DIR, "subjects.pkl"), "rb"))
+subjects = pickle.load(open(os.path.join(PICKLES_DIR, "subjects_matching.pkl"), "rb"))
 subjects_reverse = {v: v for k, v in subjects.items()}
 subjects = {**subjects, **subjects_reverse}
 subjects = {k.lower(): v.lower() for k, v in subjects.items()}

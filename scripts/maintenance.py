@@ -55,17 +55,18 @@ def main():
     print("Fetching data from UIUC course catalog...")
     years = fetch_years()
     subjects = fetch_subjects(years, max_workers=MAX_WORKERS)
-    subjects = {**subjects, **MANUAL_SUBJECTS}
     terms = fetch_terms(years, max_workers=MAX_WORKERS)
     colleges = retrieve_college_codes()
     print("Successfully fetched data from UIUC course catalog.")
 
+    subjects_matching = { **subjects, **MANUAL_SUBJECTS }
     data = {
-        "gen_eds": GEN_EDS,
+        "gen_eds_matching": GEN_EDS,
         "gen_eds_display": GEN_EDS_DISPLAY,
         "gen_ed_codes": GEN_ED_CODES, 
         "years": years,
-        "subjects": subjects,
+        "subjects_matching": subjects_matching,
+        "subjects_display": subjects,
         "terms": terms,
         "colleges": colleges,
         "pots": POTS
