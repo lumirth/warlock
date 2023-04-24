@@ -23,7 +23,6 @@ def fetch_subjects_worker(year, semester, print_prefix=''):
             subject_id = subject.attrib["id"]
             subject_name = subject.text
             subjects[subject_name] = subject_id
-            subjects[subject_id] = subject_id
     return subjects
 
 def fetch_subjects(years, print_progress=False, print_prefix='', max_workers=10):
