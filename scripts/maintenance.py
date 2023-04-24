@@ -2,6 +2,13 @@ from pickler import *
 from download_gpa import *
 import os
 import json
+import sys
+
+# take command line argument for # max workers (default 10)
+if len(sys.argv) > 1:
+    MAX_WORKERS = int(sys.argv[1])
+else:
+    MAX_WORKERS = 10
 
 # Directory of pickles for GEN_EDS, GEN_ED_CODES, valid years, and valid subjects.
 PICKLE_DIR = 'backend/api/pickles'
@@ -40,11 +47,11 @@ MANUAL_SUBJECTS = dict_manual["MANUAL_SUBJECTS"]
 if __name__ == '__main__':    
     print('Fetching data from UIUC course catalog...')
     years = fetch_years()
-    subjects = fetch_subjects(years)
+    subjects = fetch_subjects(years, MAX_WORKERS)
     subjects = {**subjects, **MANUAL_SUBJECTS}
-    terms = fetch_terms(years)
+    terms = fetch_terms(years, MAX_WORKERS)
     print('Successfully fetched data from UIUC course catalog.')
-    pretty_print(years)
+    # pretty_print(years)
     
     data = {
         'gen_eds': GEN_EDS,
