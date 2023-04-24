@@ -182,7 +182,7 @@
   }
 </script>
 
-<form class="space-y-4" on:submit={handleSubmit}>
+<form class="space-y-4" on:submit|preventDefault={handleSubmit}>
   <Dropdown
     id="year"
     label="Year"
@@ -276,7 +276,7 @@
   <Checkbox id="evenings" label="Evenings" bind:checked={evenings} />
   <div class="flex flex-row gap-4">
     {#if loading}
-      <button type="submit" class="btn bg-base-200 font-normal text-lg loading">
+      <button class="btn bg-base-200 font-normal text-lg loading">
         LOADING
       </button>
     {:else}
