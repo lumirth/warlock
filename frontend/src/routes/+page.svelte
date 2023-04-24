@@ -30,7 +30,7 @@
   let placeholder_example = ""
 
   const randomExample = () => {
-    placeholder_example = examples[Math.floor(Math.random() * examples.length)];
+    placeholder_example = "TRY... " + examples[Math.floor(Math.random() * examples.length)];
   }
   
   const increment = () => {
@@ -71,7 +71,7 @@
   <form on:submit={handleSubmit} class="flex gap-4 mx-auto">
     <input
       type="text"
-      placeholder='TRY... "{placeholder_example}"'
+      placeholder='{placeholder_example}'
       class="flex-grow input hover:border-primary input-bordered w-2/3 md:w-4/5 lg:w-4/5 xl:w-5/6 bg-base-200 text-lg font-normal placeholder-neutral focus:outline-none focus:border-primary focus:placeholder-transparent"
       bind:value={query}
     />
