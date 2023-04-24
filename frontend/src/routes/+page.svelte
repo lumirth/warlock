@@ -30,7 +30,7 @@
   let placeholder_example = ""
 
   const randomExample = () => {
-    placeholder_example = "TRY... " + examples[Math.floor(Math.random() * examples.length)];
+    placeholder_example = "TRY... \"" + examples[Math.floor(Math.random() * examples.length)] + "\"";
   }
   
   const increment = () => {
