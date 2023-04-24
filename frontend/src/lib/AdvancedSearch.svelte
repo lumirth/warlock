@@ -56,10 +56,10 @@
 
   // Create additional options arrays (not using JSON files)
   const keywordTypeOptions = [
-    { value: "default", text: "Default" },
-    { value: "exact phrase", text: "Exact Phrase" },
-    { value: "any of these words", text: "Any Words" },
-    { value: "all of these words", text: "All Words" },
+    { value: "qs", text: "Default" },
+    { value: "qp", text: "Exact Phrase" },
+    { value: "qw_a", text: "Any Words" },
+    { value: "qw_o", text: "All Words" },
   ];
 
   const sectionAttributesOptions = [
@@ -183,7 +183,7 @@
   }
 </script>
 
-<form class="space-y-4" on:submit|preventDefault={handleSubmit}>
+<form class="space-y-4 mt-5" on:submit|preventDefault={handleSubmit}>
   <Dropdown
     id="year"
     label="Year"
@@ -198,7 +198,7 @@
     bind:selectedValue={selectedSemester}
     addEmptyOption={false}
   />
-  <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-neutral" />
+  <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-base-100" />
   <TextInput id="keyword" label="Keyword" value={keywordValue} />
   <Dropdown
     id="keywordType"
@@ -207,6 +207,7 @@
     bind:selectedValue={selectedKeywordType}
     addEmptyOption={false}
   />
+  <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-base-100" />
   <TextInput id="instructor" label="Instructor" value={instructorValue} />
   <Dropdown
     id="college"
@@ -238,6 +239,7 @@
     options={courseLevelOptions}
     bind:selectedValue={selectedCourseLevel}
   />
+  <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-base-100" />
   <Dropdown
     id="genedReqs1"
     label="GenEd Requirement 1"
@@ -256,6 +258,7 @@
     options={genedReqsOptions}
     bind:selectedValue={selectedGenedReqs3}
   />
+  <div class="block my-4"></div>
   <Radio 
   id="matchAllGenedReqs" 
   label="Match all GenEd requirements" 
@@ -271,6 +274,8 @@
   groupValue="{genEdMatching}" 
   onChange="{handleGenEdMatchingChange}" 
 />
+<hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-base-100" />
+
   <Dropdown
     id="partOfTerm"
     label="Part of Term"
@@ -285,6 +290,7 @@
     bind:checked={openSections}
   />
   <!-- <Checkbox id="evenings" label="Evenings" bind:checked={evenings} /> -->
+  <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-base-100" />
   <div class="flex flex-row gap-4 justify-end">
     {#if error_message}
       <div class="text-red-500">{error_message}</div>
