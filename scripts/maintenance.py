@@ -18,10 +18,14 @@ CSV_FILE = GPA_DATA_DIR + '/' +  'gpa.csv'
 FEATHER_FILE = GPA_DATA_DIR + '/' + 'gpa.feather'
 
 # DATA:
-# - truth.json. A source of truth for GEN_EDS and GEN_ED_CODES. GEN_ED_CODES match banner exactly. GEN_EDS match reasonable expectation of gen ed name.
-# - manual.json. Since GEN_EDS and subjects are fuzzy matched in the query parser, we add some manual correlations so that matching works as the user expects. For example, "comp sci" matching to "CS".
-# - display.json. The display names for GEN_EDS and subjects. These are used in the UI. GEN_EDS match courses.illinois.edu/search/form exactly.
-# the above may need to be refactored to be more intuitive, but for now, this works.
+# - truth.json. A source of truth for GEN_EDS and GEN_ED_CODES. GEN_ED_CODES
+#   match banner exactly. GEN_EDS match reasonable expectation of gen ed name.
+# - manual.json. Since GEN_EDS and subjects are fuzzy matched in the query
+#   parser, we add some manual correlations so that matching works as the user
+#   expects. For example, "comp sci" matching to "CS".
+# - display.json. The display names for GEN_EDS and subjects. These are used in
+#   the UI. GEN_EDS match courses.illinois.edu/search/form exactly. the above
+#   may need to be refactored to be more intuitive, but for now, this works.
 with open('scripts/data/truth.json', 'r') as f:
     dict_truth = json.load(f)    
 with open('scripts/data/manual.json', 'r') as f:
