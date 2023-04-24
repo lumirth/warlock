@@ -124,7 +124,8 @@ MANUAL_SUBJECTS = {
     'anthro': 'ANTH',
     'crop sci': 'CPSC',
     'classic civ': 'CLCV',
-    'coms': 'COMM'
+    'coms': 'COMM',
+    'pysch': 'PSYC',
     
 }
 
@@ -141,7 +142,7 @@ def add_manual_subjects(subj_dict):
 #       - Pickle the data into the PICKLE_DIR directory. (and verify it pickled correctly)
 #   - Download the latest GPA data from Wade's datasets, if it hasn't already been downloaded.
 #       - NOTE: If deleting the data, remember to delete commit_sha.txt as well.
-if __name__ == '__main__':
+if __name__ == '__main__':    
     print('Fetching data from UIUC course catalog...')
     years = fetch_years()
     subjects = fetch_subjects(years)

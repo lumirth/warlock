@@ -10,9 +10,6 @@
         <a href="/" class="flex items-center">
           <span class="btn btn-ghost normal-case text-xl">
             <img src="{warlock}" alt="Warlock logo" class="h-9 w-9 mr-1 ml-[-9px]">
-            <!-- two rows -->
-            <!-- left-aligned -->
-            <!-- small gap -->
             <div class="flex flex-col text-left gap-0 leading-5">
               <span class="block">COURSE</span>
               <span class="block">WARLOCK</span>

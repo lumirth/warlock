@@ -11,11 +11,11 @@
   const examples = [
     'CS 222',
     'math257',
+    'pysch 101',
     'MACS, western',
     'hrs:1, is:online',
     'gen:HUM, is:campus',
     'adv comp, pot:b',
-    'cs2',
     'prof: wade',
     'keyword: data',
     'life sciences',
