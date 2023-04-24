@@ -103,6 +103,7 @@
   let evenings: boolean;
 
   let error_message: string = "";
+  let loading: boolean = false;
 
   function handleSubmit(event: Event): void {
     // if only year and semester are selected, then do not submit
@@ -130,6 +131,7 @@
       error_message = "Please give at least one search option.";
     } else {
       error_message = "";
+      loading = true;
     }
 
     // gen eds is a list of non-empty values
@@ -146,6 +148,10 @@
     // no matchAnyGenedReqs if genedReqs is empty
     let matchAllGenedReqsValue = genedReqs ? matchAllGenedReqs : null;
     let matchAnyGenedReqsValue = genedReqs ? matchAnyGenedReqs : null;
+    let college = selectedCollege ? selectedCollege : null;
+    let subject = selectedSubject ? selectedSubject : null;
+    let partOfTerm = selectedPartOfTerm ? selectedPartOfTerm : null;
+    let courseLevel = selectedCourseLevel ? selectedCourseLevel : null;
     let AdvancedSearchAllVals = {
       year: selectedYear,
       semester: selectedSemester,
@@ -155,9 +161,9 @@
       courseId: courseIdValue,
       crn: crnValue,
       creditHours: creditHoursValue,
-      college: selectedCollege,
-      subject: selectedSubject,
-      partOfTerm: selectedPartOfTerm,
+      college: college,
+      subject: subject,
+      partOfTerm: partOfTerm,
       genedReqs: genedReqs,
       matchAllGenedReqs: matchAllGenedReqsValue,
       matchAnyGenedReqs: matchAnyGenedReqsValue,
@@ -165,7 +171,7 @@
       onCampus: onCampus,
       openSections: openSections,
       evenings: evenings,
-      courseLevel: selectedCourseLevel,
+      courseLevel: courseLevel,
     };
     // filter out empty values
     let AdvancedSearchFiltered = Object.fromEntries(
@@ -181,14 +187,14 @@
     id="year"
     label="Year"
     options={yearOptions}
-    selectedValue={selectedYear}
+    bind:selectedValue={selectedYear}
     addEmptyOption={false}
   />
   <Dropdown
     id="semester"
     label="Semester"
     options={semesterOptions}
-    selectedValue={selectedSemester}
+    bind:selectedValue={selectedSemester}
     addEmptyOption={false}
   />
   <TextInput id="keyword" label="Keyword" value={keywordValue} />
@@ -196,7 +202,7 @@
     id="keywordType"
     label="Keyword Type"
     options={keywordTypeOptions}
-    selectedValue={selectedKeywordType}
+    bind:selectedValue={selectedKeywordType}
     addEmptyOption={false}
   />
   <TextInput id="instructor" label="Instructor" value={instructorValue} />
@@ -204,13 +210,13 @@
     id="college"
     label="College"
     options={collegeOptions}
-    selectedValue={selectedCollege}
+    bind:selectedValue={selectedCollege}
   />
   <Dropdown
     id="subject"
     label="Subject"
     options={subjectOptions}
-    selectedValue={selectedSubject}
+    bind:selectedValue={selectedSubject}
   />
   <NumberInput id="courseId" label="Course ID" value={courseIdValue} />
   <NumberInput id="crn" label="CRN" value={crnValue} />
@@ -228,52 +234,58 @@
     id="courseLevel"
     label="Course Level"
     options={courseLevelOptions}
-    selectedValue={selectedCourseLevel}
+    bind:selectedValue={selectedCourseLevel}
   />
   <Dropdown
     id="genedReqs1"
     label="GenEd Requirement 1"
     options={genedReqsOptions}
-    selectedValue={selectedGenedReqs1}
+    bind:selectedValue={selectedGenedReqs1}
   />
   <Dropdown
     id="genedReqs2"
     label="GenEd Requirement 2"
     options={genedReqsOptions}
-    selectedValue={selectedGenedReqs2}
+    bind:selectedValue={selectedGenedReqs2}
   />
   <Dropdown
     id="genedReqs3"
     label="GenEd Requirement 3"
     options={genedReqsOptions}
-    selectedValue={selectedGenedReqs3}
+    bind:selectedValue={selectedGenedReqs3}
   />
   <Checkbox
     id="matchAllGenedReqs"
     label="Match all GenEd requirements"
-    checked={matchAllGenedReqs}
+    bind:checked={matchAllGenedReqs}
   />
   <Checkbox
     id="matchAnyGenedReqs"
     label="Match any GenEd requirements"
-    checked={matchAnyGenedReqs}
+    bind:checked={matchAnyGenedReqs}
   />
   <Dropdown
     id="partOfTerm"
     label="Part of Term"
     options={partOfTermOptions}
-    selectedValue={selectedPartOfTerm}
+    bind:selectedValue={selectedPartOfTerm}
   />
-  <Checkbox id="online" label="Online" checked={online} />
-  <Checkbox id="onCampus" label="On Campus" checked={onCampus} />
-  <Checkbox id="openSections" label="Open Sections" checked={openSections} />
-  <Checkbox id="evenings" label="Evenings" checked={evenings} />
+  <Checkbox id="online" label="Online" bind:checked={online} />
+  <Checkbox id="onCampus" label="On Campus" bind:checked={onCampus} />
+  <Checkbox id="openSections" label="Open Sections" bind:checked={openSections} />
+  <Checkbox id="evenings" label="Evenings" bind:checked={evenings} />
   <div class="flex flex-row gap-4">
-    <button type="submit" class="btn bg-base-200 font-normal text-lg">
-      SEARCH
-    </button>
+    {#if loading}
+      <button type="submit" class="btn bg-base-200 font-normal text-lg loading">
+        LOADING
+      </button>
+    {:else}
+      <button type="submit" class="btn bg-base-200 font-normal text-lg">
+        SEARCH
+      </button>
+    {/if}
     {#if error_message}
-    <div class="text-red-500">{error_message}</div>
+      <div class="text-red-500">{error_message}</div>
     {/if}
   </div>
 </form>
