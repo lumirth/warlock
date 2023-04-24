@@ -15,11 +15,11 @@ FEATHER_FILE = GPA_DATA_DIR + '/' + 'gpa.feather'
 # - manual.json. Since GEN_EDS and subjects are fuzzy matched in the query parser, we add some manual correlations so that matching works as the user expects. For example, "comp sci" matching to "CS".
 # - display.json. The display names for GEN_EDS and subjects. These are used in the UI. GEN_EDS match courses.illinois.edu/search/form exactly.
 # the above may need to be refactored to be more intuitive, but for now, this works.
-with open('scripts/truth.json', 'r') as f:
+with open('scripts/data/truth.json', 'r') as f:
     dict_truth = json.load(f)    
-with open('scripts/manual.json', 'r') as f:
+with open('scripts/data/manual.json', 'r') as f:
     dict_manual = json.load(f)
-with open('scripts/display.json', 'r') as f:
+with open('scripts/data/display.json', 'r') as f:
     dict_display = json.load(f)
     
 GEN_EDS = {**dict_truth["GEN_EDS"], **dict_manual["MANUAL_GEN_EDS"], **dict_display["DISPLAY_GEN_EDS"]}
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     print()
     print('Testing unpickling...')
     unpickled_gen_eds = unpickle_data(PICKLE_DIR + '/gen_eds.pkl')
-    assert(unpickled_gen_eds == gen_eds)
+    assert(unpickled_gen_eds == GEN_EDS)
     print('Successfully unpickled gen_eds.pkl.')
     
     print()
