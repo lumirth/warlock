@@ -124,7 +124,7 @@ def search_courses(search_params: AdvancedSearchParameters) -> Tuple[List[Simple
 def main():
     search_params = AdvancedSearchParameters(
         year="2023",
-        semester="spring",
+        term="spring",
         # course_id="340",
         # online=False,
         # subject="CS",
