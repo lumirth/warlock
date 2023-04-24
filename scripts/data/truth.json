@@ -1,0 +1,38 @@
+{
+    "GEN_EDS": {
+      "Composition I": "COMP1",
+      "Advanced Composition": "1CLL",
+      "Humanities and the Arts": "HUM",
+      "Literature & the Arts": "1LA",
+      "Historical & Philosophical Perspectives": "1HP",
+      "Natural Sciences and Technology": "NAT",
+      "Life Science": "1LS",
+      "Physical Science": "1PS",
+      "Quantitative Reasoning": "QR",
+      "Quantitative Reasoning I": "1QR1",
+      "Quantitative Reasoning II": "1QR2",
+      "Social and Behavioral Sciences": "SBS",
+      "Social Science": "1SS",
+      "Behavioral Science": "1BSC",
+      "Cultural Studies": "CS",
+      "Western/Comparative Cultures": "1WCC",
+      "Non-Western Cultures": "1NW",
+      "US Minority Cultures": "1US"
+    },
+    "GEN_ED_CODES": {
+      "COMP1": "COMP1",
+      "1CLL": "1CLL",
+      "1LA": "1LA",
+      "1HP": "1HP",
+      "1LS": "1LS",
+      "1PS": "1PS",
+      "1QR1": "1QR1",
+      "1QR2": "1QR2",
+      "1SS": "1SS",
+      "1BSC": "1BSC",
+      "1WCC": "1WCC",
+      "1NW": "1NW",
+      "1US": "1US"
+    }
+  }
+  

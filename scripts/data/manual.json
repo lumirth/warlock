@@ -1,0 +1,49 @@
+{
+    "MANUAL_GEN_EDS": {
+        "adv comp": "1CLL",
+        "comp 1": "COMP1",
+        "lit & arts": "1LA",
+        "hist & phil": "1HP",
+        "lit and arts": "1LA",
+        "hist and phil": "1HP",
+        "quant 1": "1QR1",
+        "quant 2": "1QR2",
+        "social": "SBS",
+        "soc beh": "1BSC",
+        "soc social": "1SS",
+        "cult stud": "CS",
+        "western": "1WCC",
+        "non-western": "1NW",
+        "minority": "1US"
+      },
+      "MANUAL_SUBJECTS": {
+        "comp sci": "CS",
+        "anthro": "ANTH",
+        "crop sci": "CPSC",
+        "classic civ": "CLCV",
+        "coms": "COMM",
+        "pysch": "PSYC"
+      },
+      "MANUAL_GEN_ED_CODES": {
+        "COMP": "COMP1",
+        "ADVCOMP": "1CLL",
+        "LITART": "1LA",
+        "LIT": "1LA",
+        "HISTPHIL": "1HP",
+        "HIST": "1HP",
+        "LIFE": "1LS",
+        "PHYS": "1PS",
+        "QR1": "1QR1",
+        "QR2": "1QR2",
+        "SOCBEH": "SBS",
+        "SOC": "1SS",
+        "BEH": "1BSC",
+        "CULT": "CS",
+        "WEST": "1WCC",
+        "NWEST": "1NW",
+        "NONWEST": "1NW",
+        "MIN": "1US",
+        "MINORITY": "1US"
+
+      }
+}

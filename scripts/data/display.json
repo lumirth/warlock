@@ -1,0 +1,43 @@
+{
+  "DISPLAY_GEN_EDS": {
+    "Composition I": "COMP1",
+    "Advanced Composition": "1CLL",
+    "Humanities and the Arts": "HUM",
+    "Natural Sciences and Technology": "NAT",
+    "Quantitative Reasoning": "QR",
+    "Social and Behavioral Sciences": "SBS",
+    "Cultural Studies": "CS",
+    "ACP - Advanced Composition": "1CLL",
+    "CS - Non-Western Cultures": "1NW",
+    "CS - U.S. Minority Cultures": "1US",
+    "CS - Western Comparative Cultures": "1WCC",
+    "HUM - Historical & Philosophical Perspectives": "1HP",
+    "HUM - Literature & the Arts": "1LA",
+    "NAT - Life Sciences": "1LS",
+    "NAT - Physical Sciences": "1PS",
+    "QR - Quantitative Reasoning I": "1QR1",
+    "QR - Quantitative Reasoning II": "1QR2",
+    "SBS - Behavioral Science": "1BSC",
+    "SBS - Social Science": "1SS"
+  },
+  "DISPLAY_GEN_ED_CODES": {
+    "CP": "COMP1",
+    "ACP": "1CLL",
+    "HUM": "HUM",
+    "HUM-LA": "1LA",
+    "HUM-HP": "1HP",
+    "NAT": "NAT",
+    "NAT-LS": "1LS",
+    "NAT-PS": "1PS",
+    "QR-I": "1QR1",
+    "QR-II": "1QR2",
+    "SBS": "SBS",
+    "SBS-SS": "1SS",
+    "SBS-BS": "1BSC",
+    "CS": "CS",
+    "CS-WCC": "1WCC",
+    "CS-NW": "1NW",
+    "CS-US": "1US"
+  }
+}
+

@@ -10,19 +10,23 @@ SHA_FILE = GPA_DATA_DIR + '/' + 'commit_sha.txt'
 CSV_FILE = GPA_DATA_DIR + '/' +  'gpa.csv'
 FEATHER_FILE = GPA_DATA_DIR + '/' + 'gpa.feather'
 
-# Load data from JSON file
-with open('scripts/data.json', 'r') as f:
-    data = json.load(f)
+# DATA:
+# - truth.json. A source of truth for GEN_EDS and GEN_ED_CODES. GEN_ED_CODES match banner exactly. GEN_EDS match reasonable expectation of gen ed name.
+# - manual.json. Since GEN_EDS and subjects are fuzzy matched in the query parser, we add some manual correlations so that matching works as the user expects. For example, "comp sci" matching to "CS".
+# - display.json. The display names for GEN_EDS and subjects. These are used in the UI. GEN_EDS match courses.illinois.edu/search/form exactly.
+# the above may need to be refactored to be more intuitive, but for now, this works.
+with open('scripts/truth.json', 'r') as f:
+    dict_truth = json.load(f)    
+with open('scripts/manual.json', 'r') as f:
+    dict_manual = json.load(f)
+with open('scripts/display.json', 'r') as f:
+    dict_display = json.load(f)
+    
+GEN_EDS = {**dict_truth["GEN_EDS"], **dict_manual["MANUAL_GEN_EDS"], **dict_display["DISPLAY_GEN_EDS"]}
+GEN_ED_CODES = {**dict_truth["GEN_ED_CODES"], **dict_manual["MANUAL_GEN_ED_CODES"], **dict_display["DISPLAY_GEN_ED_CODES"]}
+MANUAL_SUBJECTS = dict_manual["MANUAL_SUBJECTS"]
 
 # Access dictionaries from the loaded JSON data
-GEN_EDS = data['GEN_EDS']
-MANUAL_GEN_EDS = data['MANUAL_GEN_EDS']
-GEN_ED_CODES = data['GEN_ED_CODES']
-MANUAL_SUBJECTS = data['MANUAL_SUBJECTS']
-
-def add_manual_subjects(subj_dict):
-    for key, value in MANUAL_SUBJECTS.items():
-        subj_dict[key] = value
 
 # This is a maintenance script that does the following:
 #   - Create pickles for data that isn't redefined often but CAN change (gen ed codes, valid years/subjects)
@@ -37,16 +41,15 @@ if __name__ == '__main__':
     print('Fetching data from UIUC course catalog...')
     years = fetch_years()
     subjects = fetch_subjects(years)
-    add_manual_subjects(subjects)
+    subjects = {**subjects, **MANUAL_SUBJECTS}
     terms = fetch_terms(years)
     print('Successfully fetched data from UIUC course catalog.')
     for key, value in subjects.items():
         if (key != value):
             print(key, value)
     
-    gen_eds = {**GEN_EDS, **MANUAL_GEN_EDS}
     data = {
-        'gen_eds': gen_eds,
+        'gen_eds': GEN_EDS,
         'gen_ed_codes': GEN_ED_CODES,
         'years': years,
         'subjects': subjects,
