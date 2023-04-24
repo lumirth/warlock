@@ -83,9 +83,9 @@ def main():
 
     print()
     print("Testing unpickling...")
-    unpickled_gen_eds = unpickle_data(PICKLE_DIR + "/gen_eds.pkl")
+    unpickled_gen_eds = unpickle_data(PICKLE_DIR + "/gen_eds_matching.pkl")
     assert unpickled_gen_eds == GEN_EDS
-    unpickled_subjects = unpickle_data(PICKLE_DIR + "/subjects.pkl")
+    unpickled_subjects = unpickle_data(PICKLE_DIR + "/subjects_display.pkl")
     assert unpickled_subjects == subjects
     print("Successfully unpickled.")
     

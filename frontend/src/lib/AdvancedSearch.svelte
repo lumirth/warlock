@@ -5,37 +5,42 @@
   import Checkbox from "./Checkbox.svelte";
 
   import yearsJson from "../data/years.json";
-  import termsJson from "../data/terms.json";
+  // TODO: add conditional semester dropdown that shows the correct semesters for the selected year
+  // import termsJson from "../data/terms.json"; 
   import collegesJson from "../data/colleges.json";
-  import subjectsJson from "../data/subjects.json";
-  import genEdsJson from "../data/gen_eds.json";
+  import subjectsJson from "../data/subjects_display.json";
+  import genEdsJson from "../data/gen_eds_display.json";
   import potsJson from "../data/pots.json";
 
-  // Create arrays using imported JSON data
-  const yearOptions = Object.entries(yearsJson).map(([text, value]) => ({
+  // Create arrays using imported JSON data, sorted alphabetically
+  const collegeOptions = Object.entries(collegesJson).sort().map(([text, value]) => ({
     text,
     value: String(value),
   }));
-  const semesterOptions = Object.entries(termsJson).map(([text, value]) => ({
+  const subjectOptions = Object.entries(subjectsJson).sort().map(([text, value]) => ({
     text,
     value: String(value),
   }));
-  const collegeOptions = Object.entries(collegesJson).map(([text, value]) => ({
+  const genedReqsOptions = Object.entries(genEdsJson).sort().map(([text, value]) => ({
     text,
     value: String(value),
   }));
-  const subjectOptions = Object.entries(subjectsJson).map(([text, value]) => ({
+  const partOfTermOptions = Object.entries(potsJson).sort().map(([text, value]) => ({
     text,
     value: String(value),
   }));
-  const genedReqsOptions = Object.entries(genEdsJson).map(([text, value]) => ({
-    text,
-    value: String(value),
+  // years is different because it is an array of numbers. make sure to reverse sort
+  const yearOptions = yearsJson.sort().reverse().map((year) => ({
+    value: String(year),
+    text: String(year),
   }));
-  const partOfTermOptions = Object.entries(potsJson).map(([text, value]) => ({
-    text,
-    value: String(value),
-  }));
+  // semester is different because it is pre-defined
+  const semesterOptions = [
+    { value: "fall", text: "Fall" },
+    { value: "spring", text: "Spring" },
+    { value: "summer", text: "Summer" },
+    { value: "winter", text: "Winter"}
+  ];
 
   // Define selected value variables for each dropdown
   let selectedYear: string;
@@ -63,11 +68,12 @@
   ];
 
   const courseLevelOptions = [
-    { value: "level1", text: "100 Level" },
-    { value: "level2", text: "200 Level" },
-    { value: "level3", text: "300 Level" },
-    { value: "level4", text: "400 Level" },
-    { value: "level5", text: "500 Level" },
+    { value: "1", text: "100 Level" },
+    { value: "2", text: "200 Level" },
+    { value: "3", text: "300 Level" },
+    { value: "4", text: "400 Level" },
+    { value: "5", text: "500 Level" },
+    { value: "6", text: "600 Level" },
   ];
 
   let keywordValue: string;

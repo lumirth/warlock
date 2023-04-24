@@ -1,63 +1,23 @@
 {
-    "2018": [
-        "fall",
-        "spring",
-        "summer",
-        "winter"
-    ],
-    "2017": [
-        "fall",
-        "spring",
-        "summer",
-        "winter"
-    ],
-    "2016": [
-        "fall",
-        "spring",
-        "summer",
-        "winter"
-    ],
-    "2008": [
+    "2014": [
         "fall",
         "spring",
         "summer"
     ],
-    "2021": [
-        "fall",
-        "spring",
-        "summer",
-        "winter"
-    ],
-    "2009": [
-        "fall",
-        "spring",
-        "summer"
-    ],
-    "2005": [
-        "fall",
-        "spring",
-        "summer"
-    ],
-    "2010": [
-        "fall",
-        "spring",
-        "summer"
+    "2004": [
+        "fall"
     ],
     "2006": [
         "fall",
         "spring",
         "summer"
     ],
-    "2023": [
+    "2008": [
         "fall",
         "spring",
-        "summer",
-        "winter"
+        "summer"
     ],
-    "2004": [
-        "fall"
-    ],
-    "2022": [
+    "2017": [
         "fall",
         "spring",
         "summer",
@@ -68,23 +28,7 @@
         "spring",
         "summer"
     ],
-    "2019": [
-        "fall",
-        "spring",
-        "summer",
-        "winter"
-    ],
-    "2011": [
-        "fall",
-        "spring",
-        "summer"
-    ],
-    "2012": [
-        "fall",
-        "spring",
-        "summer"
-    ],
-    "2020": [
+    "2022": [
         "fall",
         "spring",
         "summer",
@@ -95,13 +39,69 @@
         "spring",
         "summer"
     ],
+    "2020": [
+        "fall",
+        "spring",
+        "summer",
+        "winter"
+    ],
+    "2009": [
+        "fall",
+        "spring",
+        "summer"
+    ],
+    "2012": [
+        "fall",
+        "spring",
+        "summer"
+    ],
+    "2018": [
+        "fall",
+        "spring",
+        "summer",
+        "winter"
+    ],
+    "2011": [
+        "fall",
+        "spring",
+        "summer"
+    ],
+    "2021": [
+        "fall",
+        "spring",
+        "summer",
+        "winter"
+    ],
     "2015": [
         "fall",
         "spring",
         "summer",
         "winter"
     ],
-    "2014": [
+    "2023": [
+        "fall",
+        "spring",
+        "summer",
+        "winter"
+    ],
+    "2019": [
+        "fall",
+        "spring",
+        "summer",
+        "winter"
+    ],
+    "2005": [
+        "fall",
+        "spring",
+        "summer"
+    ],
+    "2016": [
+        "fall",
+        "spring",
+        "summer",
+        "winter"
+    ],
+    "2010": [
         "fall",
         "spring",
         "summer"
