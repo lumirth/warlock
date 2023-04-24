@@ -2,6 +2,7 @@ from typing import List, Optional
 from pydantic import BaseModel
 from xml.etree.ElementTree import Element
 
+
 class Instructor(BaseModel):
     lastName: str
     firstName: str
@@ -11,6 +12,7 @@ class Instructor(BaseModel):
     avg_difficulty: Optional[float]
     num_ratings: Optional[int]
 
+
 class Meeting(BaseModel):
     type: dict
     start: Optional[str]
@@ -19,6 +21,7 @@ class Meeting(BaseModel):
     roomNumber: Optional[str]
     buildingName: Optional[str]
     instructors: List[Instructor]
+
 
 class DetailedSection(BaseModel):
     id: str
@@ -31,10 +34,12 @@ class DetailedSection(BaseModel):
     endDate: Optional[str]
     meetings: List[Meeting]
 
+
 class Category(BaseModel):
     id: str
     description: Optional[str]
     genEdAttributes: Optional[dict]
+
 
 class SimpleCourse(BaseModel):
     id: str
@@ -45,58 +50,88 @@ class SimpleCourse(BaseModel):
     href: Optional[str]  # Add href attribute to store the link to detailed course data
 
     @classmethod
-    def from_xml_element(cls, course_xml: Element) -> 'SimpleCourse':
+    def from_xml_element(cls, course_xml: Element) -> "SimpleCourse":
         course_id = course_xml.attrib["id"]
         title = course_xml.find("label").text
         description = course_xml.find("description").text
         credit_hours = course_xml.find("creditHours").text
         href = course_xml.attrib["href"]
 
-        return cls(id=course_id, label=title, description=description, creditHours=credit_hours, href=href)
+        return cls(
+            id=course_id,
+            label=title,
+            description=description,
+            creditHours=credit_hours,
+            href=href,
+        )
+
 
 class DetailedCourse(SimpleCourse):
     sectionDegreeAttributes: Optional[str]
     genEdCategories: List[Category]
     detailedSections: List[DetailedSection]
 
+
 class AdvancedSearchParameters(BaseModel):
-    year: Optional[int]
-    semester: Optional[str]
-    keyword: Optional[str]
-    keyword_type: Optional[str]
-    instructor: Optional[str]
-    college: Optional[str]
-    subject: Optional[str]
-    course_id: Optional[int]
-    crn: Optional[int]
-    credit_hours: Optional[str]
-    # section_attributes: Optional[str]
-    course_level: Optional[str]
-    gened_reqs: Optional[List[str]]
-    match_all_gened_reqs: Optional[bool]
-    match_any_gened_reqs: Optional[bool]
-    part_of_term: Optional[str]
-    online: Optional[bool]
-    on_campus: Optional[bool]
-    open_sections: Optional[bool]
-    evenings: Optional[bool]
-    
+    year: Optional[int]  # required
+    semester: Optional[str]  # required
+    keyword: Optional[str]  # substantive
+    keyword_type: Optional[str]  # NOT substantive, but required if keyword is present
+    instructor: Optional[str]  # substantive
+    college: Optional[str]  # substantive
+    subject: Optional[str]  # substantive
+    course_id: Optional[int]  # NOT substantive
+    crn: Optional[int]  # substantive, but disregards other parameters
+    credit_hours: Optional[str]  # substantive
+    # section_attributes: Optional[str] # substantive
+    course_level: Optional[str]  # NOT substantive
+    gened_reqs: Optional[List[str]]  # substantive
+    match_all_gened_reqs: Optional[bool]  # NOT substantive
+    # but this or match_any_gened_reqs is required if gened_reqs is present. This is the default
+    match_any_gened_reqs: Optional[bool]  # NOT substantive
+    # but this or match_all_gened_reqs is required if gened_reqs is present. If both, match_all_gened_reqs takes precedence
+    part_of_term: Optional[str]  # substantive
+    online: Optional[bool]  # substantive
+    on_campus: Optional[bool]  # substantive
+    open_sections: Optional[bool]  # NOT substantive
+    # evenings: Optional[bool] # NOT substantive
+
     def __str__(self) -> str:
-        attributes = [  
-            'year', 'semester', 'keyword', 'keyword_type', 'instructor', 'college', 'subject', 'course_id', 'crn', 'credit_hours', 'section_attributes', 'gened_reqs', 'match_all_gened_reqs', 'match_any_gened_reqs', 'part_of_term', 'online', 'on_campus', 'open_sections', 'evenings'
+        attributes = [
+            "year",
+            "semester",
+            "keyword",
+            "keyword_type",
+            "instructor",
+            "college",
+            "subject",
+            "course_id",
+            "crn",
+            "credit_hours",
+            # "section_attributes",
+            "gened_reqs",
+            "match_all_gened_reqs",
+            "match_any_gened_reqs",
+            "part_of_term",
+            "online",
+            "on_campus",
+            "open_sections",
+            # "evenings",
         ]
         max_attr_length = max(len(attr) for attr in attributes)
-        string = ''
+        string = ""
         for attr in attributes:
             value = getattr(self, attr)
             if value is not None:
-                string += '  - {:<{}}: {}\n'.format(attr, max_attr_length, value)
-        
+                string += "  - {:<{}}: {}\n".format(attr, max_attr_length, value)
+
         return string
+
 
 class Query(BaseModel):
     simple_query: Optional[str]
     advanced_query: Optional[AdvancedSearchParameters]
+
 
 class CourseSearchResponse(BaseModel):
     courses: List[SimpleCourse]
