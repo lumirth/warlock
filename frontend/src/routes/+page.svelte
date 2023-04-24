@@ -12,7 +12,7 @@
     'CS 222',
     'math257',
     'MACS, western',
-    'hrs:2, is:online',
+    'hrs:1, is:online',
     'gen:HUM, is:campus',
     'adv comp, pot:b',
     'cs2',
