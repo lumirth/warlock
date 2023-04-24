@@ -3,6 +3,8 @@ from typing import List, Tuple
 from xml.etree import ElementTree
 from concurrent.futures import ThreadPoolExecutor
 from models import SimpleCourse, DetailedSection, AdvancedSearchParameters, Instructor, Meeting
+import polars as pl
+from data_loader import gpa_dataframe
 
 def prepare_query_params(search_params: AdvancedSearchParameters) -> dict:
     query_params = {
@@ -34,7 +36,7 @@ def parse_simple_course(course: ElementTree.Element) -> SimpleCourse:
     return SimpleCourse(
         id=course.get("id"),
         label=course.find("label").text,
-        description=course.find("description").text,
+        description=course.find("description").text if course.find("description") is not None else None,
         creditHours=course.find("creditHours").text,
         href=course.get("href")
     )
@@ -94,6 +96,22 @@ def filter_courses_by_level(simple_courses: List[SimpleCourse], course_level: st
 def filter_sections_by_level(simple_courses: List[SimpleCourse], simple_courses_filtered: List[SimpleCourse], detailed_sections_list: List[List[DetailedSection]], course_level: str) -> List[List[DetailedSection]]:
     return [detailed_sections for course, detailed_sections in zip(simple_courses, detailed_sections_list) if course.id in [sc.id for sc in simple_courses_filtered]]
 
+def average_gpa_by_course(gpa_dataframe: pl.DataFrame, subject: str, number: int) -> pl.DataFrame:
+    gpa_dataframe = gpa_dataframe.groupby(["Subject", "Number"]).agg(pl.col("GPA").mean().alias("Average_GPA"))
+    course_average_gpa = gpa_dataframe.filter((gpa_dataframe["Subject"] == subject) & (gpa_dataframe["Number"] == number)).select("Average_GPA")
+    if course_average_gpa.height > 0:
+        average_gpa_value = course_average_gpa["Average_GPA"].to_list()[0]
+        return average_gpa_value
+    else:
+        return None
+
+def add_gpa_data(simple_courses: List[SimpleCourse]) -> List[SimpleCourse]:
+    for course in simple_courses:
+        subj, num = course.id.split(" ")
+        course.gpa_average = average_gpa_by_course(gpa_dataframe, subj, num)
+    return simple_courses
+
+    
 def search_courses(search_params: AdvancedSearchParameters) -> Tuple[List[SimpleCourse], List[List[DetailedSection]]]:
     query_params = prepare_query_params(search_params)
     course_xml = get_course_xml(query_params)
@@ -113,6 +131,8 @@ def search_courses(search_params: AdvancedSearchParameters) -> Tuple[List[Simple
         detailed_sections_filtered = filter_sections_by_level(simple_courses, simple_courses_filtered, detailed_sections_list, search_params.course_level)
         simple_courses = simple_courses_filtered
         detailed_sections_list = detailed_sections_filtered
+        
+    simple_courses = add_gpa_data(simple_courses)
 
     return simple_courses, detailed_sections_list
 
@@ -127,11 +147,11 @@ def main():
         term="spring",
         # course_id="340",
         # online=False,
-        # subject="CS",
+        subject="CS",
         # college="KV",
         # credit_hours="3",
-        part_of_term="A",
-        gened_reqs=["HUM"],
+        # part_of_term="A",
+        # gened_reqs=["HUM"],
         # course_level="2",
         # keyword_type="qs",
         # keyword="ethical"
@@ -140,12 +160,13 @@ def main():
     simple_courses, detailed_sections_list = search_courses(search_params)
     for i in range(len(simple_courses)):
         print(f"Course: {simple_courses[i].id} - {simple_courses[i].label}")
-        for section in detailed_sections_list[i]:
-            print(f"    Section: {section.sectionNumber} - {section.statusCode} - {section.partOfTerm} - {section.sectionStatusCode} - {section.enrollmentStatus} - {section.startDate} - {section.endDate}")
-            for meeting in section.meetings:
-                print(f"        Meeting: {meeting.type} - {meeting.start} - {meeting.end} - {meeting.daysOfTheWeek} - {meeting.roomNumber} - {meeting.buildingName}")
-                for instructor in meeting.instructors:
-                    print(f"            Instructor: {instructor.lastName} - {instructor.firstName}")
+        print(f"    Average GPA: {simple_courses[i].gpa_average}")
+        # for section in detailed_sections_list[i]:
+        #     print(f"    Section: {section.sectionNumber} - {section.statusCode} - {section.partOfTerm} - {section.sectionStatusCode} - {section.enrollmentStatus} - {section.startDate} - {section.endDate}")
+        #     for meeting in section.meetings:
+        #         print(f"        Meeting: {meeting.type} - {meeting.start} - {meeting.end} - {meeting.daysOfTheWeek} - {meeting.roomNumber} - {meeting.buildingName}")
+        #         for instructor in meeting.instructors:
+        #             print(f"            Instructor: {instructor.lastName} - {instructor.firstName}")
     
 if __name__ == "__main__":
     main()
