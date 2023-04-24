@@ -44,9 +44,7 @@ if __name__ == '__main__':
     subjects = {**subjects, **MANUAL_SUBJECTS}
     terms = fetch_terms(years)
     print('Successfully fetched data from UIUC course catalog.')
-    for key, value in subjects.items():
-        if (key != value):
-            print(key, value)
+    pretty_print(years)
     
     data = {
         'gen_eds': GEN_EDS,
