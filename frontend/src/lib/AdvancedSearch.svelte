@@ -6,44 +6,55 @@
 
   import yearsJson from "../data/years.json";
   // TODO: add conditional semester dropdown that shows the correct semesters for the selected year
-  // import termsJson from "../data/terms.json"; 
+  // import termsJson from "../data/terms.json";
   import collegesJson from "../data/colleges.json";
   import subjectsJson from "../data/subjects_display.json";
   import genEdsJson from "../data/gen_eds_display.json";
   import potsJson from "../data/pots.json";
 
   // Create arrays using imported JSON data, sorted alphabetically
-  const collegeOptions = Object.entries(collegesJson).sort().map(([text, value]) => ({
-    text,
-    value: String(value),
-  }));
-  const subjectOptions = Object.entries(subjectsJson).sort().map(([text, value]) => ({
-    text,
-    value: String(value),
-  }));
-  const genedReqsOptions = Object.entries(genEdsJson).sort().map(([text, value]) => ({
-    text,
-    value: String(value),
-  }));
-  const partOfTermOptions = Object.entries(potsJson).sort().map(([text, value]) => ({
-    text,
-    value: String(value),
-  }));
+  const collegeOptions = Object.entries(collegesJson)
+    .sort()
+    .map(([text, value]) => ({
+      text,
+      value: String(value),
+    }));
+  const subjectOptions = Object.entries(subjectsJson)
+    .sort()
+    .map(([text, value]) => ({
+      text,
+      value: String(value),
+    }));
+  const genedReqsOptions = Object.entries(genEdsJson)
+    .sort()
+    .map(([text, value]) => ({
+      text,
+      value: String(value),
+    }));
+  const partOfTermOptions = Object.entries(potsJson)
+    .sort()
+    .map(([text, value]) => ({
+      text,
+      value: String(value),
+    }));
   // years is different because it is an array of numbers. make sure to reverse sort
-  const yearOptions = yearsJson.sort().reverse().map((year) => ({
-    value: String(year),
-    text: String(year),
-  }));
+  const yearOptions = yearsJson
+    .sort()
+    .reverse()
+    .map((year) => ({
+      value: String(year),
+      text: String(year),
+    }));
   // semester is different because it is pre-defined
   const semesterOptions = [
     { value: "fall", text: "Fall" },
     { value: "spring", text: "Spring" },
     { value: "summer", text: "Summer" },
-    { value: "winter", text: "Winter"}
+    { value: "winter", text: "Winter" },
   ];
 
-    // Create additional options arrays (not using JSON files)
-    const keywordTypeOptions = [
+  // Create additional options arrays (not using JSON files)
+  const keywordTypeOptions = [
     { value: "default", text: "Default" },
     { value: "exact phrase", text: "Exact Phrase" },
     { value: "any of these words", text: "Any Words" },
@@ -79,7 +90,6 @@
   let selectedKeywordType: string = defaultKeywordType;
   let selectedCourseLevel: string;
 
-
   let keywordValue: string;
   let instructorValue: string;
   let courseIdValue: number;
@@ -91,9 +101,82 @@
   let onCampus: boolean;
   let openSections: boolean;
   let evenings: boolean;
+
+  let error_message: string = "";
+
+  function handleSubmit(event: Event): void {
+    // if only year and semester are selected, then do not submit
+    if (
+      selectedYear === defaultYear &&
+      selectedSemester === defaultSemester &&
+      !selectedCollege &&
+      !selectedSubject &&
+      !selectedGenedReqs1 &&
+      !selectedGenedReqs2 &&
+      !selectedGenedReqs3 &&
+      !selectedPartOfTerm &&
+      !keywordValue &&
+      !instructorValue &&
+      !courseIdValue &&
+      !crnValue &&
+      !creditHoursValue &&
+      !selectedCourseLevel &&
+      !online &&
+      !onCampus &&
+      !openSections &&
+      !evenings
+    ) {
+      event.preventDefault();
+      error_message = "Please give at least one search option.";
+    } else {
+      error_message = "";
+    }
+
+    // gen eds is a list of non-empty values
+    // no genedReqs if all are empty
+    let genedReqs =
+      selectedGenedReqs1 || selectedGenedReqs2 || selectedGenedReqs3
+        ? [selectedGenedReqs1, selectedGenedReqs2, selectedGenedReqs3].filter(
+            Boolean
+          )
+        : null;
+    // no keyword type if keyword is empty
+    let keywordType = keywordValue ? selectedKeywordType : null;
+    // no matchAllGenedReqs if genedReqs is empty
+    // no matchAnyGenedReqs if genedReqs is empty
+    let matchAllGenedReqsValue = genedReqs ? matchAllGenedReqs : null;
+    let matchAnyGenedReqsValue = genedReqs ? matchAnyGenedReqs : null;
+    let AdvancedSearchAllVals = {
+      year: selectedYear,
+      semester: selectedSemester,
+      keyword: keywordValue,
+      keywordType: keywordType,
+      instructor: instructorValue,
+      courseId: courseIdValue,
+      crn: crnValue,
+      creditHours: creditHoursValue,
+      college: selectedCollege,
+      subject: selectedSubject,
+      partOfTerm: selectedPartOfTerm,
+      genedReqs: genedReqs,
+      matchAllGenedReqs: matchAllGenedReqsValue,
+      matchAnyGenedReqs: matchAnyGenedReqsValue,
+      online: online,
+      onCampus: onCampus,
+      openSections: openSections,
+      evenings: evenings,
+      courseLevel: selectedCourseLevel,
+    };
+    // filter out empty values
+    let AdvancedSearchFiltered = Object.fromEntries(
+      Object.entries(AdvancedSearchAllVals).filter(([_, v]) => v != null)
+    );
+
+    console.log(AdvancedSearchFiltered);
+  }
 </script>
 
-<form class="space-y-4">
+<form class="space-y-4" on:submit={handleSubmit}>
   <Dropdown
     id="year"
     label="Year"
@@ -185,7 +268,12 @@
   <Checkbox id="onCampus" label="On Campus" checked={onCampus} />
   <Checkbox id="openSections" label="Open Sections" checked={openSections} />
   <Checkbox id="evenings" label="Evenings" checked={evenings} />
-  <button type="submit" class="btn bg-base-200 font-normal text-lg">
-    SEARCH
-  </button>
+  <div class="flex flex-row gap-4">
+    <button type="submit" class="btn bg-base-200 font-normal text-lg">
+      SEARCH
+    </button>
+    {#if error_message}
+    <div class="text-red-500">{error_message}</div>
+    {/if}
+  </div>
 </form>
