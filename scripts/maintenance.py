@@ -1,127 +1,24 @@
 from pickler import *
 from download_gpa import *
 import os
+import json
 
-# TODO: move these dictionaries to a separate file — json or something
-# GEN_EDS defines the mapping of a full gen ed name ot its Banner code.
-GEN_EDS = {
-    'Composition I': 'COMP1',
-    'Advanced Composition': '1CLL',
-    'Humanities and the Arts': 'HUM',
-    'Humanities and the Arts: Literature & the Arts': '1LA',
-    'Humanities and the Arts: Historical & Philosophical Perspectives': '1HP',
-    'Literature & the Arts': '1LA',
-    'Historical & Philosophical ': '1HP',
-    'Natural Sciences and Technology': 'NAT',
-    'Natural Sciences and Technology: Life Science': '1LS',
-    'Natural Sciences and Technology: Physical Science': '1PS',
-    'Life Science': '1LS',
-    'Physical Science': '1PS',
-    'Quantitative Reasoning I': '1QR1',
-    'Quantitative Reasoning II': '1QR2',
-    'Social and Behavioral Sciences': 'SBS',
-    'Social Science': '1SS',
-    'Behavioral Science': '1BSC',
-    'Cultural Studies': 'CS',
-    'Western/Comparative Cultures': '1WCC',
-    'Non-Western Cultures': '1NW',
-    'US Minority Cultures': '1US',
-}
-
-# This is a bit of a bandaid to make fuzzy matching some common shorthand nicer
-# This helps add more fuzzy terms to the gen ed search
-GEN_EDS_MANUAL = {
-    'adv comp': '1CLL',
-    'comp 1': 'COMP1',
-    'lit & arts': '1LA',
-    'hist & phil': '1HP',
-    'lit and arts': '1LA',
-    'hist and phil': '1HP',
-    'quant 1': '1QR1',
-    'quant 2': '1QR2',
-    'social': 'SBS',
-    'soc beh': '1BSC',
-    'soc social': '1SS',
-    'cult stud': 'CS',
-    'western': '1WCC',
-    'non-western': '1NW',
-    'minority': '1US',
-}
-
-# GEN_ED_CODES defines the mapping of a number of warlock-valid gen ed codes to their Banner code.
-GEN_ED_CODES = {
-    'COMP1': 'COMP1',
-    '1CLL': '1CLL',
-    'HUM': 'HUM',
-    '1LA': '1LA',
-    '1HP': '1HP',
-    'NAT': 'NAT',
-    '1LS': '1LS',
-    '1PS': '1PS',
-    '1QR1': '1QR1',
-    '1QR2': '1QR2',
-    'SBS': 'SBS',
-    '1SS': '1SS',
-    '1BSC': '1BSC',
-    'CS': 'CS',
-    '1WCC': '1WCC',
-    '1NW': '1NW',
-    '1US': '1US',
-    'CP': 'COMP1',
-    'ACP': '1CLL',
-    'HUM': 'HUM',
-    'HUM-LA': '1LA',
-    'HUM-HP': '1HP',
-    'NAT': 'NAT',
-    'NAT-LS': '1LS',
-    'NAT-PS': '1PS',
-    'QR-I': '1QR1',
-    'QR-I': '1QR2',
-    'SBS': 'SBS',
-    'SBS-SS': '1SS',
-    'SBS-BS': '1BSC',
-    'CS': 'CS',
-    'CS-WCC': '1WCC',
-    'CS-NW': '1NW',
-    'CS-US': '1US',
-    'COMP': 'COMP1',
-    'ADVCOMP': '1CLL',
-    'LITART': '1LA',
-    'LIT': '1LA',
-    'HISTPHIL': '1HP',
-    'HIST': '1HP',
-    'LIFE': '1LS',
-    'PHYS': '1PS',
-    'QR1': '1QR1',
-    'QR2': '1QR2',
-    'SOCBEH': 'SBS',
-    'SOC': '1SS',
-    'BEH': '1BSC',
-    'CULT': 'CS',
-    'WEST': '1WCC',
-    'NWEST': '1NW',
-    'NONWEST': '1NW',
-    'MIN': '1US',
-    'MINORITY': '1US',
-}
 # Directory of pickles for GEN_EDS, GEN_ED_CODES, valid years, and valid subjects.
-PICKLE_DIR = './backend/api/pickles'
-GPA_DATA_DIR = './backend/api/data'
+PICKLE_DIR = 'backend/api/pickles'
+GPA_DATA_DIR = 'backend/api/data'
 SHA_FILE = GPA_DATA_DIR + '/' + 'commit_sha.txt'
 CSV_FILE = GPA_DATA_DIR + '/' +  'gpa.csv'
 FEATHER_FILE = GPA_DATA_DIR + '/' + 'gpa.feather'
 
-# This is a bit of a bandaid to make fuzzy matching some common shorthand nicer
-# We can add to this as needed to make fuzzy matching more accurate
-MANUAL_SUBJECTS = {
-    'comp sci': 'CS',
-    'anthro': 'ANTH',
-    'crop sci': 'CPSC',
-    'classic civ': 'CLCV',
-    'coms': 'COMM',
-    'pysch': 'PSYC',
-    
-}
+# Load data from JSON file
+with open('scripts/data.json', 'r') as f:
+    data = json.load(f)
+
+# Access dictionaries from the loaded JSON data
+GEN_EDS = data['GEN_EDS']
+GEN_EDS_MANUAL = data['GEN_EDS_MANUAL']
+GEN_ED_CODES = data['GEN_ED_CODES']
+MANUAL_SUBJECTS = data['MANUAL_SUBJECTS']
 
 def add_manual_subjects(subj_dict):
     for key, value in MANUAL_SUBJECTS.items():
