@@ -7,7 +7,7 @@ from models import SimpleCourse, DetailedSection, AdvancedSearchParameters, Inst
 def prepare_query_params(search_params: AdvancedSearchParameters) -> dict:
     query_params = {
         "year": search_params.year,
-        "term": search_params.semester,
+        "term": search_params.term,
         "sectionTypeCode": "ONL" if search_params.online else None,
         "subject": search_params.subject,
         "collegeCode": search_params.college,

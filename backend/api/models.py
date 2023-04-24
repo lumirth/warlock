@@ -74,7 +74,7 @@ class DetailedCourse(SimpleCourse):
 
 class AdvancedSearchParameters(BaseModel):
     year: Optional[int]  # required
-    semester: Optional[str]  # required
+    term: Optional[str]  # required
     keyword: Optional[str]  # substantive
     keyword_type: Optional[str]  # NOT substantive, but required if keyword is present
     instructor: Optional[str]  # substantive
@@ -99,7 +99,7 @@ class AdvancedSearchParameters(BaseModel):
     def __str__(self) -> str:
         attributes = [
             "year",
-            "semester",
+            "term",
             "keyword",
             "keyword_type",
             "instructor",
