@@ -7,10 +7,33 @@ import asyncio
 import aiohttp
 import rmp
 import time
+import pickle 
+import os
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
 
-time_spent_getting_profs = 0
-time_spent_getting_ratings = 0
-rating_count = 0
+LOAD_PICKLES = True
+PICKLES_DIR = "pickles"
+
+print('Initializing professor cache...')
+if LOAD_PICKLES:
+    # load professor cache from pickle file
+    PROFESSOR_CACHE = pickle.load(open(os.path.join(PICKLES_DIR, "professor_cache.pkl"), "rb"))
+    print('Professor cache loaded.')
+else:
+    # Initialize the professor cache
+    PROFESSOR_CACHE = asyncio.run(rmp.fetch_all_professors())
+    print('Professor cache initialized.')
+
+print('Saving professor cache...')
+PICKLES_DIR = "pickles"
+# save professor cache to pickle file
+if not os.path.exists(PICKLES_DIR):
+    os.makedirs(PICKLES_DIR)
+pickle.dump(PROFESSOR_CACHE, open(os.path.join(PICKLES_DIR, "professor_cache.pkl"), "wb"))
+print('Professor cache saved.')
+
 
 async def prepare_query_params(search_params: AdvancedSearchParameters) -> dict:
     query_params = {
@@ -58,20 +81,13 @@ def get_list_of_instructors(simple_course: SimpleCourse) -> List[str]:
                 instructors.add(f"{instructor.firstName} {instructor.lastName}")
     return list(instructors)
 
+def get_professor_data_from_cache(instructor_name: str) -> dict:
+    return PROFESSOR_CACHE.get(instructor_name)
+
 async def add_prof_ratings(simple_courses: List[SimpleCourse]) -> List[SimpleCourse]:
-    global time_spent_getting_profs
-    global time_spent_getting_ratings
-    global rating_count
     for course in simple_courses:
-        start = time.time()
         instructor_names = get_list_of_instructors(course)
-        end = time.time()
-        time_spent_getting_profs += end - start
-        
-        start = time.time()
-        instructor_data = await rmp.get_ratings_for_teachers(instructor_names)
-        end = time.time()
-        time_spent_getting_ratings += end - start
+        instructor_data = [get_professor_data_from_cache(name) for name in instructor_names]
 
         total_rating = 0
         num_ratings = 0
@@ -85,10 +101,9 @@ async def add_prof_ratings(simple_courses: List[SimpleCourse]) -> List[SimpleCou
             course.prof_average = total_rating / num_ratings
         else:
             course.prof_average = None
-            
-        rating_count += num_ratings
 
     return simple_courses
+
 
 async def search_courses(search_params: AdvancedSearchParameters) -> Tuple[List[SimpleCourse], List[List[DetailedSection]]]:
     query_params = await prepare_query_params(search_params)
@@ -204,27 +219,18 @@ def main():
         # instructor="fagen-ulmschneider"
     )
     def load_courses():
-        global time_spent_getting_profs
-        global time_spent_getting_ratings
-        global rating_count
         simple_courses = asyncio.run(search_courses(search_params))
-        print(time_spent_getting_profs)
-        print(time_spent_getting_ratings)
-        print(rating_count)
-        time_spent_getting_profs = 0
-        time_spent_getting_ratings = 0
-        rating_count = 0
         return simple_courses
 
     def print_courses(simple_courses):
         for i in range(len(simple_courses)):
             print(f"Course: {simple_courses[i].id} - {simple_courses[i].label}")
-            print(f"    Average GPA: {simple_courses[i].gpa_average}")
+            # print(f"    Average GPA: {simple_courses[i].gpa_average}")
             print(f"    Average PROF: {simple_courses[i].prof_average}")
-            for section in simple_courses[i].sections:
-                print(f"    Section: {section.sectionNumber} - {section.statusCode} - {section.partOfTerm} - {section.sectionStatusCode} - {section.enrollmentStatus} - {section.startDate} - {section.endDate}")
-                for meeting in section.meetings:
-                    print(f"        Meeting: {meeting.type} - {meeting.start} - {meeting.end} - {meeting.daysOfTheWeek} - {meeting.roomNumber} - {meeting.buildingName} - {meeting.instructors}")
+            # for section in simple_courses[i].sections:
+            #     print(f"    Section: {section.sectionNumber} - {section.statusCode} - {section.partOfTerm} - {section.sectionStatusCode} - {section.enrollmentStatus} - {section.startDate} - {section.endDate}")
+            #     for meeting in section.meetings:
+            #         print(f"        Meeting: {meeting.type} - {meeting.start} - {meeting.end} - {meeting.daysOfTheWeek} - {meeting.roomNumber} - {meeting.buildingName} - {meeting.instructors}")
             
     
     s = load_courses()

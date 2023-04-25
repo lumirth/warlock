@@ -3,10 +3,10 @@ import aiohttp
 from aiohttp import TCPConnector
 if __name__ != "__main__":
     from .constants import AUTH_TOKEN
-    from .queries import autocomplete_school_query, search_teacher_query, get_teacher_query
+    from .queries import combined_query
 else:
     from constants import AUTH_TOKEN
-    from queries import autocomplete_school_query, search_teacher_query, get_teacher_query
+    from queries import combined_query
 
 UNIVERSITY_ID = "U2Nob29sLTExMTI="
 API_URL = "https://www.ratemyprofessors.com/graphql"
@@ -14,11 +14,11 @@ HEADERS = {
     "authorization": f"Basic {AUTH_TOKEN}",
 }
 
-async def search_teacher(session, name, school_id=UNIVERSITY_ID):
+async def get_teacher_info(session, name, school_id):
     response = await session.post(
         API_URL,
         json={
-            "query": search_teacher_query,
+            "query": combined_query,
             "variables": {
                 "text": name,
                 "schoolID": school_id
@@ -27,31 +27,10 @@ async def search_teacher(session, name, school_id=UNIVERSITY_ID):
         headers=HEADERS
     )
     result = await response.json(content_type=None)
-    if result['data']['newSearch']['teachers'] is None:
-        return []
-    return [edge['node'] for edge in result['data']['newSearch']['teachers']['edges']]
-
-async def get_teacher(session, teacher_id):
-    response = await session.post(
-        API_URL,
-        json={
-            "query": get_teacher_query,
-            "variables": {
-                "id": teacher_id
-            }
-        },
-        headers=HEADERS
-    )
-    result = await response.json(content_type=None)
-    return result['data']['node']
-
-async def get_teacher_info(session, name, school_id):
-    teachers = await search_teacher(session, name, school_id)
+    teachers = result['data']['newSearch']['teachers']['edges']
     if not teachers:
         return None
-    teacher_id = teachers[0]['id']
-    teacher = await get_teacher(session, teacher_id)
-    return teacher
+    return teachers[0]['node']
 
 async def get_ratings_for_teachers(instructors, school_id=UNIVERSITY_ID):
     conn = TCPConnector(limit=300)
@@ -63,7 +42,6 @@ async def get_ratings_for_teachers(instructors, school_id=UNIVERSITY_ID):
 import time
 if __name__ == "__main__":
     instructors = ["Woodley", "Wade"]
-    # append instructors to itself  2000 times
     instructors = instructors * 2000
     school_id = "U2Nob29sLTExMTI="
 
@@ -71,4 +49,3 @@ if __name__ == "__main__":
     teachers_info = asyncio.run(get_ratings_for_teachers(instructors, school_id))
     end = time.time()
     print("Time taken: {}".format(end - start))
-    # print(teachers_info)
