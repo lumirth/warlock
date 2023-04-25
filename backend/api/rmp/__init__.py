@@ -1,0 +1,1 @@
+from .main import get_ratings_for_teachers

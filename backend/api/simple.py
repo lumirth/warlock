@@ -1,12 +1,20 @@
 import requests
 from typing import List, Tuple
 from xml.etree import ElementTree
-from concurrent.futures import ThreadPoolExecutor
 from models import SimpleCourse, DetailedSection, AdvancedSearchParameters, Instructor, Meeting
 import polars as pl
 from data_loader import gpa_dataframe
+import asyncio
+import aiohttp
+import rmp
+import time
 
-def prepare_query_params(search_params: AdvancedSearchParameters) -> dict:
+time_spent_getting_profs = 0
+time_spent_getting_ratings = 0
+rating_count = 0
+
+
+async def prepare_query_params(search_params: AdvancedSearchParameters) -> dict:
     query_params = {
         "year": search_params.year,
         "term": search_params.term,
@@ -24,13 +32,86 @@ def prepare_query_params(search_params: AdvancedSearchParameters) -> dict:
     }
     return {k: v for k, v in query_params.items() if v is not None}
 
-def get_course_xml(query_params: dict) -> ElementTree.Element:
+async def get_course_xml(query_params: dict) -> ElementTree.Element:
     base_url = "https://courses.illinois.edu/cisapp/explorer/schedule"
     courses_endpoint = f"{base_url}/courses.xml"
-    response = requests.get(courses_endpoint, params=query_params)
-    print(response.url)
-    response.raise_for_status()
-    return ElementTree.fromstring(response.content)
+    async with aiohttp.ClientSession() as session:
+        async with session.get(courses_endpoint, params=query_params) as response:
+            print(response.url)
+            response.raise_for_status()
+            content = await response.read()
+    return ElementTree.fromstring(content)
+
+async def get_course_details(simple_course: SimpleCourse) -> SimpleCourse:
+    async with aiohttp.ClientSession() as session:
+        async with session.get(simple_course.href, params={"mode": "cascade"}) as response:
+            response.raise_for_status()
+            content = await response.read()
+    course_xml_data = ElementTree.fromstring(content)
+    detailed_sections = [parse_detailed_section(detailed_section) for detailed_section in course_xml_data.findall(".//detailedSection")]
+    simple_course.sections = detailed_sections
+    return simple_course
+
+def get_list_of_instructors(simple_course: SimpleCourse) -> List[str]:
+    instructors = set()
+    for section in simple_course.sections:
+        for meeting in section.meetings:
+            for instructor in meeting.instructors:
+                instructors.add(f"{instructor.firstName} {instructor.lastName}")
+    return list(instructors)
+
+async def add_prof_ratings(simple_courses: List[SimpleCourse]) -> List[SimpleCourse]:
+    global time_spent_getting_profs
+    global time_spent_getting_ratings
+    global rating_count
+    for course in simple_courses:
+        start = time.time()
+        instructor_names = get_list_of_instructors(course)
+        end = time.time()
+        time_spent_getting_profs += end - start
+        
+        start = time.time()
+        instructor_data = await rmp.get_ratings_for_teachers(instructor_names)
+        end = time.time()
+        time_spent_getting_ratings += end - start
+
+        total_rating = 0
+        num_ratings = 0
+
+        for instructor in instructor_data:
+            if instructor is not None:
+                total_rating += instructor["avgRating"] * instructor["numRatings"]
+                num_ratings += instructor["numRatings"]
+
+        if num_ratings > 0:
+            course.prof_average = total_rating / num_ratings
+        else:
+            course.prof_average = None
+            
+        rating_count += num_ratings
+
+    return simple_courses
+
+async def search_courses(search_params: AdvancedSearchParameters) -> Tuple[List[SimpleCourse], List[List[DetailedSection]]]:
+    query_params = await prepare_query_params(search_params)
+    course_xml = await get_course_xml(query_params)
+
+    simple_courses = list(map(parse_simple_course, course_xml.findall(".//course")))
+    detailed_courses = await asyncio.gather(*(get_course_details(course) for course in simple_courses))
+
+    if search_params.course_id is not None:
+        simple_courses_filtered = filter_courses_by_id(detailed_courses, search_params.course_id)
+        detailed_courses = simple_courses_filtered
+        
+    if search_params.course_level is not None:
+        simple_courses_filtered = filter_courses_by_level(detailed_courses, search_params.course_level)
+        detailed_courses = simple_courses_filtered
+        
+    detailed_courses = add_gpa_data(detailed_courses)
+    simple_courses = await add_prof_ratings(simple_courses)
+
+
+    return detailed_courses, [course.sections for course in detailed_courses]
 
 def parse_simple_course(course: ElementTree.Element) -> SimpleCourse:
     return SimpleCourse(
@@ -77,13 +158,7 @@ def parse_instructor(instructor: ElementTree.Element) -> Instructor:
         lastName=instructor.get("lastName"),
         firstName=instructor.get("firstName")
     )
-
-def get_course_details(simple_course: SimpleCourse) -> List[DetailedSection]:
-    response = requests.get(simple_course.href, params={"mode": "cascade"})
-    response.raise_for_status()
-    course_xml_data = ElementTree.fromstring(response.content)
-    return [parse_detailed_section(detailed_section) for detailed_section in course_xml_data.findall(".//detailedSection")]
-
+    
 def filter_courses_by_id(simple_courses: List[SimpleCourse], course_id: str) -> List[SimpleCourse]:
     return [course for course in simple_courses if str(course_id) in course.id]
 
@@ -111,32 +186,6 @@ def add_gpa_data(simple_courses: List[SimpleCourse]) -> List[SimpleCourse]:
         course.gpa_average = average_gpa_by_course(gpa_dataframe, subj, num)
     return simple_courses
 
-    
-def search_courses(search_params: AdvancedSearchParameters) -> Tuple[List[SimpleCourse], List[List[DetailedSection]]]:
-    query_params = prepare_query_params(search_params)
-    course_xml = get_course_xml(query_params)
-
-    with ThreadPoolExecutor() as executor:
-        simple_courses = list(map(parse_simple_course, course_xml.findall(".//course")))
-        detailed_sections_list = list(executor.map(get_course_details, simple_courses))
-
-    if search_params.course_id is not None:
-        simple_courses_filtered = filter_courses_by_id(simple_courses, search_params.course_id)
-        detailed_sections_filtered = filter_sections_by_id(simple_courses, simple_courses_filtered, detailed_sections_list, search_params.course_id)
-        simple_courses = simple_courses_filtered
-        detailed_sections_list = detailed_sections_filtered
-        
-    if search_params.course_level is not None:
-        simple_courses_filtered = filter_courses_by_level(simple_courses, search_params.course_level)
-        detailed_sections_filtered = filter_sections_by_level(simple_courses, simple_courses_filtered, detailed_sections_list, search_params.course_level)
-        simple_courses = simple_courses_filtered
-        detailed_sections_list = detailed_sections_filtered
-        
-    simple_courses = add_gpa_data(simple_courses)
-
-    return simple_courses, detailed_sections_list
-
-
 # TODO: add code for filtering by on campus classes
 # TODO: add communication in the frontend explaining that some fields don't qualify as fields that substantiate a search
 # TODO: add code to filter for open sections
@@ -157,11 +206,15 @@ def main():
         # keyword="ethical"
         # instructor="fagen-ulmschneider"
     )
-    simple_courses, detailed_sections_list = search_courses(search_params)
+    simple_courses, detailed_sections_list = asyncio.run(search_courses(search_params))
+    print(time_spent_getting_profs)
+    print(time_spent_getting_ratings)
+    print(rating_count)
     for i in range(len(simple_courses)):
         print(f"Course: {simple_courses[i].id} - {simple_courses[i].label}")
         print(f"    Average GPA: {simple_courses[i].gpa_average}")
-        # for section in detailed_sections_list[i]:
+        print(f"    Average PROF: {simple_courses[i].prof_average}")
+        # for section in simple_courses[i].sections:
         #     print(f"    Section: {section.sectionNumber} - {section.statusCode} - {section.partOfTerm} - {section.sectionStatusCode} - {section.enrollmentStatus} - {section.startDate} - {section.endDate}")
         #     for meeting in section.meetings:
         #         print(f"        Meeting: {meeting.type} - {meeting.start} - {meeting.end} - {meeting.daysOfTheWeek} - {meeting.roomNumber} - {meeting.buildingName}")

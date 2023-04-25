@@ -6,7 +6,6 @@ from xml.etree.ElementTree import Element
 class Instructor(BaseModel):
     lastName: str
     firstName: str
-    rate_my_professor_id: Optional[str]
     department: Optional[str]
     avg_rating: Optional[float]
     avg_difficulty: Optional[float]
@@ -47,7 +46,9 @@ class SimpleCourse(BaseModel):
     description: Optional[str]
     creditHours: Optional[str]
     gpa_average: Optional[float]
+    prof_average: Optional[float]
     href: Optional[str]  # Add href attribute to store the link to detailed course data
+    sections: Optional[List[DetailedSection]]
 
     @classmethod
     def from_xml_element(cls, course_xml: Element) -> "SimpleCourse":
