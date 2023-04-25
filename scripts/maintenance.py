@@ -4,13 +4,7 @@ from utils.fetch_uiuc import *
 from utils.find_college_codes import retrieve_college_codes
 from utils.find_pot_codes import retrieve_part_of_terms
 import json
-import sys
-
-# Command line argument for # max workers (default 10)
-if len(sys.argv) > 1:
-    MAX_WORKERS = int(sys.argv[1])
-else:
-    MAX_WORKERS = 10
+import asyncio
 
 # Directory of pickles for GEN_EDS, GEN_ED_CODES, valid years, and valid subjects.
 PICKLE_DIR = "backend/api/pickles"
@@ -51,12 +45,12 @@ MANUAL_SUBJECTS = dict_manual["MANUAL_SUBJECTS"]
 POTS = retrieve_part_of_terms()
 
 
-def main():
+async def main():
     print("Fetching data from UIUC course catalog...")
-    years = fetch_years()
-    subjects = fetch_subjects(years, max_workers=MAX_WORKERS)
-    terms = fetch_terms(years, max_workers=MAX_WORKERS)
-    colleges = retrieve_college_codes()
+    years = await asyncio.create_task(fetch_years())
+    subjects = await fetch_subjects(years)
+    terms = await fetch_terms(years)
+    colleges = await retrieve_college_codes()
     print("Successfully fetched data from UIUC course catalog.")
 
     subjects_matching = { **subjects, **MANUAL_SUBJECTS }
@@ -117,4 +111,4 @@ def main():
     print("Feather file should be located at: " + FEATHER_FILE)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

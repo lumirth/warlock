@@ -1,5 +1,6 @@
-import requests
+import aiohttp
 from bs4 import BeautifulSoup
+import asyncio
 
 # NOTE: This script will NECESSARILY be less reliable because it scrapes the
 # HTML of the search form. If the search form changes, this script will break.
@@ -7,9 +8,10 @@ from bs4 import BeautifulSoup
 URL = "https://courses.illinois.edu/search/form"
 
 
-def fetch_html(url):
-    response = requests.get(url)
-    return response.text
+async def fetch_html(url):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            return await response.text()
 
 
 def parse_html(html_content):
@@ -30,11 +32,17 @@ def create_college_code_dict(option_elements):
     }
     return college_code_dict
 
-def retrieve_college_codes():
-    html_content = fetch_html(URL)
+
+async def retrieve_college_codes():
+    async with aiohttp.ClientSession() as session:
+        async with session.get(URL) as response:
+            html_content = await response.text()
     parsed_html = parse_html(html_content)
     option_elements = extract_college_code_options(parsed_html)
     return create_college_code_dict(option_elements)
 
+
 if __name__ == "__main__":
-    print(retrieve_college_codes())
+    loop = asyncio.get_event_loop()
+    college_codes = loop.run_until_complete(retrieve_college_codes())
+    print(college_codes)
