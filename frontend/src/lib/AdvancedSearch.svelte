@@ -5,9 +5,13 @@
   import Checkbox from "./Checkbox.svelte";
   import Radio from "./Radio.svelte";
 
+  type Term = "fall" | "spring" | "summer" | "winter";
+  type YearObject = { [year: string]: Term[] };
+  type TermsObject = { [year: string]: Term[] };
+
   import yearsJson from "../data/years.json";
   // TODO: add conditional semester dropdown that shows the correct semesters for the selected year
-  // import termsJson from "../data/terms.json";
+  import termsJson from "../data/terms.json";
   import collegesJson from "../data/colleges.json";
   import subjectsJson from "../data/subjects_display.json";
   import genEdsJson from "../data/gen_eds_display.json";
@@ -54,6 +58,11 @@
     { value: "winter", text: "Winter" },
   ];
 
+  $: termOptions = terms[selectedYear]?.map((term) => ({
+    value: term,
+    text: term.charAt(0).toUpperCase() + term.slice(1),
+  })) || [];
+
   // Create additional options arrays (not using JSON files)
   const keywordTypeOptions = [
     { value: "qs", text: "Default" },
@@ -76,7 +85,30 @@
     { value: "6", text: "600 Level" },
   ];
 
-  const defaultYear = yearOptions[0].value;
+  interface TermObject {
+    [year: string]: string[];
+  }
+
+  const terms: TermObject = termsJson;
+
+  let defaultYear: string | null = null;
+
+  for (const year of Object.keys(terms)) {
+    const termsInYear = terms[year];
+    if (termsInYear.includes("fall") || termsInYear.includes("spring")) {
+      defaultYear = year;
+    }
+  }
+
+  // If no year with fall or spring term was found, throw an error or set a default value
+  if (defaultYear === null) {
+    throw new Error("No year with fall or spring term found");
+    // or set a default value
+    // defaultYear = "2022";
+  }
+
+  console.log(`The default year is ${defaultYear}`);
+
   const defaultSemester = semesterOptions[0].value;
   const defaultKeywordType = keywordTypeOptions[0].value;
   // Define selected value variables for each dropdown
@@ -103,7 +135,7 @@
   let openSections: boolean;
   let evenings: boolean;
 
-  let genEdMatching = 'matchAll';
+  let genEdMatching = "matchAll";
   function handleGenEdMatchingChange(value: string) {
     genEdMatching = value;
   }
@@ -194,7 +226,7 @@
   <Dropdown
     id="semester"
     label="Semester"
-    options={semesterOptions}
+    options={termOptions}
     bind:selectedValue={selectedSemester}
     addEmptyOption={false}
   />
@@ -258,23 +290,23 @@
     options={genedReqsOptions}
     bind:selectedValue={selectedGenedReqs3}
   />
-  <div class="block my-4"></div>
-  <Radio 
-  id="matchAllGenedReqs" 
-  label="Match all GenEd requirements" 
-  value="matchAll" 
-  groupValue="{genEdMatching}" 
-  onChange="{handleGenEdMatchingChange}" 
-/>
+  <div class="block my-4" />
+  <Radio
+    id="matchAllGenedReqs"
+    label="Match all GenEd requirements"
+    value="matchAll"
+    groupValue={genEdMatching}
+    onChange={handleGenEdMatchingChange}
+  />
 
-<Radio 
-  id="matchAnyGenedReqs" 
-  label="Match any GenEd requirements" 
-  value="matchAny" 
-  groupValue="{genEdMatching}" 
-  onChange="{handleGenEdMatchingChange}" 
-/>
-<hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-base-100" />
+  <Radio
+    id="matchAnyGenedReqs"
+    label="Match any GenEd requirements"
+    value="matchAny"
+    groupValue={genEdMatching}
+    onChange={handleGenEdMatchingChange}
+  />
+  <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-base-100" />
 
   <Dropdown
     id="partOfTerm"
