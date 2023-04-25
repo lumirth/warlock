@@ -1,5 +1,6 @@
 import asyncio
 import aiohttp
+from aiohttp import TCPConnector
 if __name__ != "__main__":
     from .constants import AUTH_TOKEN
     from .queries import autocomplete_school_query, search_teacher_query, get_teacher_query
@@ -53,16 +54,15 @@ async def get_teacher_info(session, name, school_id):
     return teacher
 
 async def get_ratings_for_teachers(instructors, school_id=UNIVERSITY_ID):
-    # print("-- Getting ratings for {} instructors ---".format(len(instructors)))
-    async with aiohttp.ClientSession() as session:
+    conn = TCPConnector(limit=300)
+    async with aiohttp.ClientSession(connector=conn) as session:
         tasks = [get_teacher_info(session, instructor, school_id) for instructor in instructors]
-        results = await asyncio.gather(*tasks)
-    # print("--- Done getting ratings for instructors ---")
+        results = await asyncio.gather(*tasks, return_exceptions=True)
     return results
 
 import time
 if __name__ == "__main__":
-    instructors = ["Woodley", "Wade"] 
+    instructors = ["Woodley", "Wade"]
     # append instructors to itself  2000 times
     instructors = instructors * 2000
     school_id = "U2Nob29sLTExMTI="

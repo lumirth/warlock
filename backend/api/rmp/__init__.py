@@ -1,1 +1,1 @@
-from .main import get_ratings_for_teachers
+from .main import *

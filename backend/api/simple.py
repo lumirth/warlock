@@ -13,7 +13,6 @@ time_spent_getting_profs = 0
 time_spent_getting_ratings = 0
 rating_count = 0
 
-
 async def prepare_query_params(search_params: AdvancedSearchParameters) -> dict:
     query_params = {
         "year": search_params.year,
@@ -110,8 +109,7 @@ async def search_courses(search_params: AdvancedSearchParameters) -> Tuple[List[
     detailed_courses = add_gpa_data(detailed_courses)
     simple_courses = await add_prof_ratings(simple_courses)
 
-
-    return detailed_courses, [course.sections for course in detailed_courses]
+    return detailed_courses
 
 def parse_simple_course(course: ElementTree.Element) -> SimpleCourse:
     return SimpleCourse(
@@ -190,7 +188,7 @@ def add_gpa_data(simple_courses: List[SimpleCourse]) -> List[SimpleCourse]:
 # TODO: add communication in the frontend explaining that some fields don't qualify as fields that substantiate a search
 # TODO: add code to filter for open sections
 # TODO: add code for match_all/match_any geneds
-def main():
+def main():    
     search_params = AdvancedSearchParameters(
         year="2023",
         term="spring",
@@ -200,26 +198,45 @@ def main():
         # college="KV",
         # credit_hours="3",
         # part_of_term="A",
-        # gened_reqs=["HUM"],
+        # gened_reqs=["HUM", "1CLL"],
         # course_level="2",
         # keyword_type="qs",
         # keyword="ethical"
         # instructor="fagen-ulmschneider"
     )
-    simple_courses, detailed_sections_list = asyncio.run(search_courses(search_params))
-    print(time_spent_getting_profs)
-    print(time_spent_getting_ratings)
-    print(rating_count)
-    for i in range(len(simple_courses)):
-        print(f"Course: {simple_courses[i].id} - {simple_courses[i].label}")
-        print(f"    Average GPA: {simple_courses[i].gpa_average}")
-        print(f"    Average PROF: {simple_courses[i].prof_average}")
-        # for section in simple_courses[i].sections:
-        #     print(f"    Section: {section.sectionNumber} - {section.statusCode} - {section.partOfTerm} - {section.sectionStatusCode} - {section.enrollmentStatus} - {section.startDate} - {section.endDate}")
-        #     for meeting in section.meetings:
-        #         print(f"        Meeting: {meeting.type} - {meeting.start} - {meeting.end} - {meeting.daysOfTheWeek} - {meeting.roomNumber} - {meeting.buildingName}")
-        #         for instructor in meeting.instructors:
-        #             print(f"            Instructor: {instructor.lastName} - {instructor.firstName}")
+    def load_courses():
+        global time_spent_getting_profs
+        global time_spent_getting_ratings
+        global rating_count
+        simple_courses = asyncio.run(search_courses(search_params))
+        print(time_spent_getting_profs)
+        print(time_spent_getting_ratings)
+        print(rating_count)
+        time_spent_getting_profs = 0
+        time_spent_getting_ratings = 0
+        rating_count = 0
+        return simple_courses
+
+    def print_courses(simple_courses):
+        for i in range(len(simple_courses)):
+            print(f"Course: {simple_courses[i].id} - {simple_courses[i].label}")
+            print(f"    Average GPA: {simple_courses[i].gpa_average}")
+            print(f"    Average PROF: {simple_courses[i].prof_average}")
+            # for section in simple_courses[i].sections:
+            #     print(f"    Section: {section.sectionNumber} - {section.statusCode} - {section.partOfTerm} - {section.sectionStatusCode} - {section.enrollmentStatus} - {section.startDate} - {section.endDate}")
+            #     for meeting in section.meetings:
+            #         print(f"        Meeting: {meeting.type} - {meeting.start} - {meeting.end} - {meeting.daysOfTheWeek} - {meeting.roomNumber} - {meeting.buildingName} - {meeting.instructors}")
+            
+    
+    s = load_courses()
+    print_courses(s)
+    s = load_courses()
+    print_courses(s)
+    s = load_courses()
+    print_courses(s)
+    s = load_courses()
+    print_courses(s)
+
     
 if __name__ == "__main__":
     main()

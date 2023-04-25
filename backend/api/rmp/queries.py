@@ -1,8 +1,5 @@
 autocomplete_school_query = """
-query AutocompleteSearchQuery(
-  $query: String!
-)
-{
+query AutocompleteSearchQuery($query: String!) {
   autocomplete(query: $query) {
     schools {
       edges {
@@ -11,6 +8,7 @@ query AutocompleteSearchQuery(
           name
           city
           state
+          __typename
         }
       }
     }
@@ -19,20 +17,13 @@ query AutocompleteSearchQuery(
 """
 
 search_teacher_query = """
-query NewSearchTeachersQuery($text: String!, $schoolID: ID!)
-{
+query NewSearchTeachersQuery($text: String!, $schoolID: ID!) {
   newSearch {
     teachers(query: {text: $text, schoolID: $schoolID}) {
       edges {
-        cursor
         node {
           id
-          firstName
-          lastName
-          school {
-            name
-            id
-          }
+          __typename
         }
       }
     }
@@ -41,26 +32,14 @@ query NewSearchTeachersQuery($text: String!, $schoolID: ID!)
 """
 
 get_teacher_query = """
-query TeacherRatingsPageQuery(
-  $id: ID!
-) {
+query TeacherRatingsPageQuery($id: ID!) {
   node(id: $id) {
     ... on Teacher {
-      id
-      firstName
-      lastName
-      school {
-        name
-        id
-        city
-        state
-      }
       avgDifficulty
       avgRating
-      department
       numRatings
-      legacyId
       wouldTakeAgainPercent
+      __typename
     }
     id
   }
