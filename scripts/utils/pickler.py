@@ -51,4 +51,4 @@ def save_data_as_json(data, file_path):
         if not file_name.endswith(".json"):
             file_name += ".json"
         with open(os.path.join(file_path, file_name), "w") as file:
-            json.dump(data, file, indent=4)
+            json.dump(data, file, indent=4, sort_keys=True)
