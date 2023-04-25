@@ -1,4 +1,3 @@
-import requests
 from typing import List, Tuple
 from xml.etree import ElementTree
 from models import SimpleCourse, DetailedSection, AdvancedSearchParameters, Instructor, Meeting
@@ -222,20 +221,20 @@ def main():
             print(f"Course: {simple_courses[i].id} - {simple_courses[i].label}")
             print(f"    Average GPA: {simple_courses[i].gpa_average}")
             print(f"    Average PROF: {simple_courses[i].prof_average}")
-            # for section in simple_courses[i].sections:
-            #     print(f"    Section: {section.sectionNumber} - {section.statusCode} - {section.partOfTerm} - {section.sectionStatusCode} - {section.enrollmentStatus} - {section.startDate} - {section.endDate}")
-            #     for meeting in section.meetings:
-            #         print(f"        Meeting: {meeting.type} - {meeting.start} - {meeting.end} - {meeting.daysOfTheWeek} - {meeting.roomNumber} - {meeting.buildingName} - {meeting.instructors}")
+            for section in simple_courses[i].sections:
+                print(f"    Section: {section.sectionNumber} - {section.statusCode} - {section.partOfTerm} - {section.sectionStatusCode} - {section.enrollmentStatus} - {section.startDate} - {section.endDate}")
+                for meeting in section.meetings:
+                    print(f"        Meeting: {meeting.type} - {meeting.start} - {meeting.end} - {meeting.daysOfTheWeek} - {meeting.roomNumber} - {meeting.buildingName} - {meeting.instructors}")
             
     
     s = load_courses()
     print_courses(s)
-    s = load_courses()
-    print_courses(s)
-    s = load_courses()
-    print_courses(s)
-    s = load_courses()
-    print_courses(s)
+    # s = load_courses()
+    # print_courses(s)
+    # s = load_courses()
+    # print_courses(s)
+    # s = load_courses()
+    # print_courses(s)
 
     
 if __name__ == "__main__":
