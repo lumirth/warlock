@@ -71,9 +71,6 @@ def main():
         # instructor="woodley"
     )
 
-    import textwrap
-    import shutil
-
     def load_courses():
         simple_courses = asyncio.run(search_courses(search_params, PROFESSOR_CACHE, GPA_DATA))
         return simple_courses
