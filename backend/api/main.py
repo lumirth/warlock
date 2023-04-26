@@ -4,7 +4,11 @@ from fastapi.middleware.cors import CORSMiddleware
 import api.search as searching
 from api.courses import gpa_dataframe
 from api.courses import SimpleCourse, AdvancedSearchParameters, DetailedSection
-from api.courses import PROFESSOR_CACHE
+from api.courses import initialize_professor_cache, save_professor_cache
+from api.courses import load_gpa_data
+
+PROFESSOR_CACHE = None
+GPA_DATA = None
 
 app = FastAPI()
 
@@ -18,6 +22,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.on_event("startup")
+def publish_message():
+    global PROFESSOR_CACHE
+    global GPA_DATA
+    PROFESSOR_CACHE = initialize_professor_cache()
+    GPA_DATA = load_gpa_data()
+    print('Loaded data')
 
 @app.get("/")
 def read_root():
@@ -30,7 +41,7 @@ def read_item(item_id: int, q: str = None):
 @app.get("/search/simple", response_model=List[SimpleCourse])
 def search_simple(query: str):
     print('Received query: ' + query)
-    search_results = searching.search_simple(query)
+    search_results = searching.search_simple(query, PROFESSOR_CACHE, GPA_DATA)
     return search_results
 
 @app.post("/search/advanced", response_model=List[SimpleCourse])

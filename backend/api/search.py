@@ -5,7 +5,8 @@ import requests
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 from api.courses import SimpleCourse, AdvancedSearchParameters
-from api.courses import gpa_dataframe, search_courses
+from api.courses import search_courses
+from api.courses import initialize_professor_cache, save_professor_cache
 from api.query_parser import parse_advanced_query_string
 import polars as pl
 import asyncio
@@ -17,11 +18,11 @@ UNIVERSITY_API_BASE_URL = "https://courses.illinois.edu/cisapp/explorer"
 def search_advanced(params: AdvancedSearchParameters) -> Union[List[SimpleCourse], SimpleCourse]:
     return []
 
-def search_simple(query: str) -> List[SimpleCourse]:
+def search_simple(query: str, professor_cache, gpa_data) -> List[SimpleCourse]:
     print('Parsing query')
     query_obj = parse_advanced_query_string(query)
     print('Searching courses')
-    results = asyncio.run(search_courses(query_obj))
+    results = asyncio.run(search_courses(query_obj, professor_cache=professor_cache, gpa_data=gpa_data))
     # print(results)
     from api.try_searching_script import print_courses
     print_courses(results)

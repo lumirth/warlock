@@ -1,52 +1,36 @@
-from . import rmp
-from .gpa import gpa_dataframe
-from .models import SimpleCourse
-from typing import List
 import asyncio
 import os
 import pickle
 import polars as pl
-import threading
+from . import rmp
+from .models import SimpleCourse
+from typing import List
 
-abspath = os.path.abspath(__file__)
-dname = os.path.dirname(abspath)
-os.chdir(dname)
+def initialize_professor_cache(load_pickles=True, pickles_dir="../pickles"):
+    print("Initializing professor cache...")
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)
+    if load_pickles:
+        # load professor cache from pickle file
+        professor_cache = pickle.load(open(os.path.join(pickles_dir, "professor_cache.pkl"), "rb"))
+        print("Professor cache loaded.")
+    else:
+        # Initialize the professor cache
+        professor_cache = asyncio.run(rmp.fetch_all_professors())
+        print("Professor cache initialized.")
+    return professor_cache
 
-LOAD_PICKLES = True
-PICKLES_DIR = "../pickles"
-PROFESSOR_CACHE = {}
-
-print("Initializing professor cache...")
-if LOAD_PICKLES:
-    # load professor cache from pickle file
-    PROFESSOR_CACHE = pickle.load(open(os.path.join(PICKLES_DIR, "professor_cache.pkl"), "rb"))
-    print("Professor cache loaded.")
-else:
-    # Initialize the professor cache
-    PROFESSOR_CACHE = asyncio.run(rmp.fetch_all_professors())
-    print("Professor cache initialized.")
-
-print("Saving professor cache...")
-PICKLES_DIR = "pickles"
-# save professor cache to pickle file
-if not os.path.exists(PICKLES_DIR):
-    os.makedirs(PICKLES_DIR)
-pickle.dump(PROFESSOR_CACHE, open(os.path.join(PICKLES_DIR, "professor_cache.pkl"), "wb"))
-print("Professor cache saved.")
-
-# # A function to refresh the cache
-# def refresh_cache():
-#     while True:
-#         PROFESSOR_CACHE.clear()
-#         asyncio.run(rmp.fetch_all_professors())
-#         print("Professor cache refreshed.")
-#         # Wait for 6 hours before refreshing again
-#         time.sleep(6 * 60 * 60)
-
-# # Start the refresh_cache thread
-# cache_refresh_thread = threading.Thread(target=refresh_cache)
-# cache_refresh_thread.start()
-
+def save_professor_cache(professor_cache, pickles_dir="pickles"):
+    print("Saving professor cache...")
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)
+    # save professor cache to pickle file
+    if not os.path.exists(pickles_dir):
+        os.makedirs(pickles_dir)
+    pickle.dump(professor_cache, open(os.path.join(pickles_dir, "professor_cache.pkl"), "wb"))
+    print("Professor cache saved.")
 
 def get_list_of_instructors(simple_course: SimpleCourse) -> List[str]:
     instructors = set()
@@ -65,20 +49,19 @@ def average_gpa_by_course(gpa_dataframe: pl.DataFrame, subject: str, number: int
     else:
         return None
 
-def add_gpa_data(simple_courses: List[SimpleCourse]) -> List[SimpleCourse]:
+def add_gpa_data(simple_courses: List[SimpleCourse], gpa_data) -> List[SimpleCourse]:
     for course in simple_courses:
         subj, num = course.id.split(" ")
-        course.gpa_average = average_gpa_by_course(gpa_dataframe, subj, num)
+        course.gpa_average = average_gpa_by_course(gpa_data, subj, num)
     return simple_courses
 
-# TODO: add note to frontend that explains that professor matching is by last name, first initial only.
-def get_professor_data_from_cache(instructor_name: str) -> dict:
-    return PROFESSOR_CACHE.get(instructor_name)
+def get_professor_data_from_cache(professor_cache, instructor_name: str) -> dict:
+    return professor_cache.get(instructor_name)
 
-async def add_prof_ratings(simple_courses: List[SimpleCourse]) -> List[SimpleCourse]:
+async def add_prof_ratings(simple_courses: List[SimpleCourse], professor_cache) -> List[SimpleCourse]:
     for course in simple_courses:
         instructor_names = get_list_of_instructors(course)
-        instructor_data = [get_professor_data_from_cache(name) for name in instructor_names]
+        instructor_data = [get_professor_data_from_cache(professor_cache, name) for name in instructor_names]
 
         total_rating = 0
         num_ratings = 0
@@ -94,3 +77,14 @@ async def add_prof_ratings(simple_courses: List[SimpleCourse]) -> List[SimpleCou
             course.prof_average = None
 
     return simple_courses
+
+def main():
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)
+
+    professor_cache = initialize_professor_cache()
+    save_professor_cache(professor_cache)
+
+if __name__ == "__main__":
+    main()

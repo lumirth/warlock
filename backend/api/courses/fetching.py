@@ -49,7 +49,7 @@ async def get_course_details(simple_course: SimpleCourse) -> SimpleCourse:
     return simple_course
 
 
-async def search_courses(search_params: AdvancedSearchParameters) -> Tuple[List[SimpleCourse], List[List[DetailedSection]]]:
+async def search_courses(search_params: AdvancedSearchParameters, professor_cache, gpa_data) -> Tuple[List[SimpleCourse], List[List[DetailedSection]]]:
     # turn the received search parameters into a AdvancedSearchParameters object if it isn't already
     if not isinstance(search_params, AdvancedSearchParameters):
         search_params = AdvancedSearchParameters(**search_params)
@@ -77,7 +77,7 @@ async def search_courses(search_params: AdvancedSearchParameters) -> Tuple[List[
 
     detailed_courses = filter_courses_by_online_or_campus(detailed_courses, flag=flag)
 
-    detailed_courses = add_gpa_data(detailed_courses)
-    simple_courses = await add_prof_ratings(simple_courses)
+    detailed_courses = add_gpa_data(detailed_courses, gpa_data)
+    simple_courses = await add_prof_ratings(simple_courses, professor_cache)
 
     return detailed_courses
