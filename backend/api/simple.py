@@ -86,6 +86,7 @@ def get_list_of_instructors(simple_course: SimpleCourse) -> List[str]:
     return list(instructors)
 
 
+# TODO: add note to frontend that explains that professor matching is by last name, first initial only.
 def get_professor_data_from_cache(instructor_name: str) -> dict:
     return PROFESSOR_CACHE.get(instructor_name)
 
