@@ -10,14 +10,13 @@
   type TermsObject = { [year: string]: Term[] };
 
   import yearsJson from "../data/years.json";
-  // TODO: add conditional semester dropdown that shows the correct semesters for the selected year
   import termsJson from "../data/terms.json";
   import collegesJson from "../data/colleges.json";
   import subjectsJson from "../data/subjects_display.json";
   import genEdsJson from "../data/gen_eds_display.json";
   import potsJson from "../data/pots.json";
 
-  // Create arrays using imported JSON data, sorted alphabetically
+  // Arrays using imported JSON data, sorted alphabetically
   const collegeOptions = Object.entries(collegesJson)
     .sort()
     .map(([text, value]) => ({
@@ -42,7 +41,7 @@
       text,
       value: String(value),
     }));
-  // years is different because it is an array of numbers. make sure to reverse sort
+  // Years is different because it is an array of numbers. make sure to reverse sort
   const yearOptions = yearsJson
     .sort()
     .reverse()
@@ -50,7 +49,7 @@
       value: String(year),
       text: String(year),
     }));
-  // semester is different because it is pre-defined
+    
   const semesterOptions = [
     { value: "fall", text: "Fall" },
     { value: "spring", text: "Spring" },
@@ -71,10 +70,13 @@
     { value: "qw_o", text: "All Words" },
   ];
 
-  const sectionAttributesOptions = [
-    { value: "attribute1", text: "Attribute 1" },
-    { value: "attribute2", text: "Attribute 2" },
-  ];
+  // TODO: add section attributes back. this would require adding maintenance
+  // scripts to fetch attributes. the query parameter for it is not documented. it
+  // is degreeAtt
+  // const sectionAttributesOptions = [
+  //   { value: "attribute1", text: "Attribute 1" },
+  //   { value: "attribute2", text: "Attribute 2" },
+  // ];
 
   const courseLevelOptions = [
     { value: "1", text: "100 Level" },
@@ -100,11 +102,9 @@
     }
   }
 
-  // If no year with fall or spring term was found, throw an error or set a default value
+  // If no year with fall or spring term was found, throw an error
   if (defaultYear === null) {
     throw new Error("No year with fall or spring term found");
-    // or set a default value
-    // defaultYear = "2022";
   }
 
   console.log(`The default year is ${defaultYear}`);
@@ -321,6 +321,7 @@
     label="Open Sections*"
     bind:checked={openSections}
   />
+  <!-- NOTE: Evenings might be out of scope? It's a pain in the ass to implement evening filtering and it's not likely to be used very often-->
   <!-- <Checkbox id="evenings" label="Evenings" bind:checked={evenings} /> -->
   <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-base-100" />
   <div class="flex flex-row gap-4 justify-end">
