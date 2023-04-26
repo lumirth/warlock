@@ -295,20 +295,20 @@ def add_gpa_data(simple_courses: List[SimpleCourse]) -> List[SimpleCourse]:
 def main():
     # TODO: write tests for this
     search_params = AdvancedSearchParameters(
-        year="2022",
-        term="fall",
+        year="2023",
+        term="spring",
         # course_id="340",
         # online=True,
         # on_campus=True,
-        subject="CS",
+        subject="PHIL",
         # college="KV",
         # credit_hours="3",
         # part_of_term="A",
         # gened_reqs=["HUM"],
         # course_level="2",
-        # keyword_type="qs",
-        # keyword="ethical"
-        instructor="fagen-ulmschneider"
+        keyword_type="qs",
+        keyword="minds"
+        # instructor="woodley"
     )
 
     import textwrap
