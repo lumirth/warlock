@@ -198,8 +198,7 @@ def parse_instructor(instructor: ElementTree.Element) -> Instructor:
 
 
 def filter_courses_by_id(simple_courses: List[SimpleCourse], course_id: str) -> List[SimpleCourse]:
-    """
-    Filters a list of SimpleCourse objects by a given course ID.
+    """Filters a list of SimpleCourse objects by a given course ID.
 
     Args:
         simple_courses: A list of SimpleCourse objects to filter.
@@ -215,8 +214,7 @@ def filter_courses_by_id(simple_courses: List[SimpleCourse], course_id: str) -> 
     return filtered_courses
 
 def filter_courses_by_level(simple_courses: List[SimpleCourse], course_level: str) -> List[SimpleCourse]:
-    """
-    Filters a list of SimpleCourse objects by a given course level.
+    """Filters a list of SimpleCourse objects by a given course level.
 
     Args:
         simple_courses: A list of SimpleCourse objects to filter.
