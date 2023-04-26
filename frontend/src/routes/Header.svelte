@@ -3,7 +3,7 @@
 	import warlock from '$lib/images/warlock.svg';
 </script>
 
-<header class="mb-10 md:mb-20 lg:mb-30 xl:mb-40 ">
+<header class="mb-10 md:mb-20 lg:mb-32 xl:mb-40 ">
 	<nav class="h-16 border-b border-neutral bg-base-200 w-auto justify-between">
     <div class="navbar w-auto justify-between">
       <div class="flex space-x-0">
