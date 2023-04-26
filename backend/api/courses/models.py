@@ -45,7 +45,7 @@ class SimpleCourse(BaseModel):
     year: Optional[str]
     term: Optional[str]
     subject: Optional[str]
-    id: str
+    id: Optional[str]
     label: Optional[str]
     description: Optional[str]
     creditHours: Optional[str]
@@ -55,7 +55,7 @@ class SimpleCourse(BaseModel):
     sections: Optional[List[DetailedSection]]
     sectionDegreeAttributes: Optional[str]
     courseSectionInformation: Optional[str]
-    genEdCategories: List[Category]
+    genEdCategories: Optional[List[Category]]
 
     @classmethod
     def from_xml_element(cls, course_xml: Element) -> "SimpleCourse":
