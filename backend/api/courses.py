@@ -1,5 +1,5 @@
 import json
-from typing import List
+from typing import List, Union
 from dataclasses import dataclass
 import requests
 import xml.etree.ElementTree as ET
@@ -18,9 +18,8 @@ rmp = javascript.require("@mtucourses/rate-my-professors")
 UNIVERSITY_ID = 'U2Nob29sLTExMTI='
 
 
-def search_advanced(advanced_search: AdvancedSearchParameters) -> List[SimpleCourse]:
+def search_advanced(params: AdvancedSearchParameters) -> Union[List[SimpleCourse], SimpleCourse]:
     courses = []
-    # TODO: implement flow control for different endpoints based on parameters
     return courses
 
 def search_simple(query: str) -> List[SimpleCourse]:

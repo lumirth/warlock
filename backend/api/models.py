@@ -13,7 +13,8 @@ class Instructor(BaseModel):
 
 
 class Meeting(BaseModel):
-    type: dict
+    typeCode: Optional[str]
+    typeDesc: Optional[str]
     start: Optional[str]
     end: Optional[str]
     daysOfTheWeek: Optional[str]
@@ -41,14 +42,20 @@ class Category(BaseModel):
 
 
 class SimpleCourse(BaseModel):
+    year: Optional[str]
+    term: Optional[str]
+    subject: Optional[str]
     id: str
     label: Optional[str]
     description: Optional[str]
     creditHours: Optional[str]
     gpa_average: Optional[float]
     prof_average: Optional[float]
-    href: Optional[str]  # Add href attribute to store the link to detailed course data
+    href: Optional[str] 
     sections: Optional[List[DetailedSection]]
+    sectionDegreeAttributes: Optional[str]
+    courseSectionInformation: Optional[str]
+    genEdCategories: List[Category]
 
     @classmethod
     def from_xml_element(cls, course_xml: Element) -> "SimpleCourse":
@@ -66,16 +73,9 @@ class SimpleCourse(BaseModel):
             href=href,
         )
 
-
-class DetailedCourse(SimpleCourse):
-    sectionDegreeAttributes: Optional[str]
-    genEdCategories: List[Category]
-    detailedSections: List[DetailedSection]
-
-
 class AdvancedSearchParameters(BaseModel):
-    year: Optional[int]  # required
-    term: Optional[str]  # required
+    year: int  # required
+    term: str  # required
     keyword: Optional[str]  # substantive
     keyword_type: Optional[str]  # NOT substantive, but required if keyword is present
     instructor: Optional[str]  # substantive
