@@ -262,8 +262,10 @@ def filter_courses_by_online_or_campus(full_courses: List[SimpleCourse], flag: s
         keep_course = False
         for section in course.sections:
             for meeting in section.meetings:
-                if meeting_type_code_is_online(meeting.typeCode):
-                    keep_course = want_online
+                if want_online and meeting_type_code_is_online(meeting.typeCode):
+                    keep_course = True
+                if not want_online and not meeting_type_code_is_online(meeting.typeCode):
+                    keep_course = True
         if keep_course:
             courses.append(course)
     return courses
@@ -294,7 +296,8 @@ def main():
         year="2022",
         term="fall",
         # course_id="340",
-        online=True,
+        # online=True,
+        on_campus=True,
         subject="CS",
         # college="KV",
         # credit_hours="3",
