@@ -43,7 +43,7 @@
 </svelte:head>
 
 <section>
-  <SearchForm on:submit="{handleSearchSubmit}" bind:loading={loading} bind:query={query}/>
+  <SearchForm on:submit={handleSearchSubmit} bind:loading bind:query />
   <ModalButton modalId="modal-advanced" label="ADVANCED" />
   <ModalButton modalId="modal-syntax" label="SYNTAX" />
   <ModalButton modalId="modal-examples" label="EXAMPLES" />
@@ -58,8 +58,12 @@
   {/if}
 
   <Modal modalId="modal-advanced" title="ADVANCED SEARCH">
-    <p class="pt-2 text-xs text-neutral">• Please note that some field may override others (CRN, Course ID, etc.)</p>
-    <p class="pb-2 text-xs text-neutral">• Fields with an <code>*</code> must be combined with at least 1 other field.</p>
+    <p class="pt-2 text-xs text-neutral">
+      • Please note that some field may override others (CRN, Course ID, etc.)
+    </p>
+    <p class="pb-2 text-xs text-neutral">
+      • Fields with an <code>*</code> must be combined with at least 1 other field.
+    </p>
     <AdvancedSearch />
   </Modal>
 
@@ -108,7 +112,10 @@
 
   <Modal modalId="modal-examples" title="EXAMPLES">
     <div class="prose text-sm pt-2 select-text cursor-text">
-      <p>Find courses in the MACS department that match the Cultural Studies: Western GenEd:</p>
+      <p>
+        Find courses in the MACS department that match the Cultural Studies:
+        Western GenEd:
+      </p>
       <ul>
         <li><code>macs, western</code></li>
         <li><code>media and cinema studies, cultural studies western</code></li>
@@ -122,11 +129,11 @@
 </section>
 
 <style>
-.no-scrollbar {
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important; /* IE and Edge */
-}
-.no-scrollbar::-webkit-scrollbar {
-  display: none !important;
-}
+  .no-scrollbar {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important; /* IE and Edge */
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none !important;
+  }
 </style>
