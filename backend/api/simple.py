@@ -286,9 +286,7 @@ def add_gpa_data(simple_courses: List[SimpleCourse]) -> List[SimpleCourse]:
     return simple_courses
 
 
-# TODO: add code for filtering by on campus classes
 # TODO: add communication in the frontend explaining that some fields don't qualify as fields that substantiate a search
-# TODO: add code to filter for open sections
 # TODO: add code for match_all/match_any geneds
 def main():
     # TODO: write tests for this
