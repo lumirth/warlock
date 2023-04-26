@@ -11,6 +11,7 @@ __pycache__/
 
 # Ignore Node.js dependencies
 node_modules/
+pnpm-lock.yaml
 
 # Ignore Svelte/Vite build output
 public/build/
