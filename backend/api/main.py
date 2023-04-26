@@ -27,10 +27,8 @@ def read_item(item_id: int, q: str = None):
 
 @app.get("/search/simple", response_model=List[SimpleCourse])
 def search_simple(query: str):
-    # search_results = courses.search_simple(query)
-    # return search_results
-    simple = SimpleCourse(id="cs 110")
-    return [simple]
+    search_results = searching.search_simple(query)
+    return search_results
 
 @app.post("/search/advanced", response_model=List[SimpleCourse])
 def search_advanced(advanced_search: AdvancedSearchParameters):
