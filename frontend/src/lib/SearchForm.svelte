@@ -32,12 +32,19 @@
   const dispatch = createEventDispatcher();
 
   const handleSubmit = (event: Event) => {
+    queryBackend();
     event.preventDefault();
     dispatch("submit", query);
     loading = true;
     setTimeout(() => {
       loading = false;
     }, 10000);
+  };
+
+  const queryBackend = async () => {
+    const response = await fetch(
+      "http://localhost:8000/search/simple?query=" + query
+    );
   };
 
   export { placeholder_example };

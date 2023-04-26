@@ -14,24 +14,6 @@
     x++;
   };
 
-  const queryBackend = async () => {
-    const response = await fetch(
-      "http://localhost:8000/search/simple?query=" + query
-    );
-  };
-
-  const handleSearchSubmit = (event: Event) => {
-    event.preventDefault();
-    queryBackend();
-    if (output === "") {
-      output = "NO BACKEND RESPONSE";
-    }
-    loading = true;
-    setTimeout(() => {
-      loading = false;
-    }, 10000);
-  };
-
   onMount(() => {
     // code to execute when the component is mounted
   });
@@ -43,7 +25,7 @@
 </svelte:head>
 
 <section>
-  <SearchForm on:submit={handleSearchSubmit} bind:loading bind:query />
+  <SearchForm bind:loading bind:query />
   <ModalButton modalId="modal-advanced" label="ADVANCED" />
   <ModalButton modalId="modal-syntax" label="SYNTAX" />
   <ModalButton modalId="modal-examples" label="EXAMPLES" />
