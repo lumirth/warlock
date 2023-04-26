@@ -1,13 +1,14 @@
 if __name__ == "__main__":
-    from courses import SimpleCourse, AdvancedSearchParameters, DetailedSection, search_courses, initialize_professor_cache, save_professor_cache
+    from courses import SimpleCourse, AdvancedSearchParameters, DetailedSection, search_courses, initialize_professor_cache, save_professor_cache, load_gpa_data
 else:
-    from .courses import SimpleCourse, AdvancedSearchParameters, DetailedSection, search_courses, initialize_professor_cache, save_professor_cache
+    from .courses import SimpleCourse, AdvancedSearchParameters, DetailedSection, search_courses, initialize_professor_cache, save_professor_cache, load_gpa_data
 import asyncio
 import shutil 
 import textwrap
 
 PROFESSOR_CACHE = initialize_professor_cache()
 save_professor_cache(PROFESSOR_CACHE)
+GPA_DATA = load_gpa_data()
 
 
 def print_with_indent(text, indent=4, width=70):
@@ -74,7 +75,7 @@ def main():
     import shutil
 
     def load_courses():
-        simple_courses = asyncio.run(search_courses(search_params, PROFESSOR_CACHE))
+        simple_courses = asyncio.run(search_courses(search_params, PROFESSOR_CACHE, GPA_DATA))
         return simple_courses
 
     s = load_courses()
