@@ -1,8 +1,8 @@
 from typing import List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-import api.courses as courses
-from api.models import SimpleCourse, DetailedSection, AdvancedSearchParameters
+import api.search as searching
+from api.courses.models import SimpleCourse, DetailedSection, AdvancedSearchParameters
 
 app = FastAPI()
 
@@ -34,22 +34,14 @@ def search_simple(query: str):
 
 @app.post("/search/advanced", response_model=List[SimpleCourse])
 def search_advanced(advanced_search: AdvancedSearchParameters):
-    search_results = courses.search_advanced(advanced_search)
+    search_results = searching.search_advanced(advanced_search)
     return search_results
 
 @app.get("/course/{year}/{term}/{subj}/{id}", response_model=SimpleCourse)
 def get_course(year: int, term: int, subj: str, id: int):
-    course = courses.get_course(year, term, subj, id)
+    course = searching.get_course(year, term, subj, id)
     if course:
         return course
-    else:
-        raise HTTPException(status_code=404, detail="Course not found")
-    
-@app.get("/course/{year}/{term}/{subj}/{id}/sections", response_model=List[DetailedSection])
-def get_simple_course_sections(year: int, term: int, subj: str, id: int):
-    sections = courses.get_simple_course_sections(year, term, subj, id)
-    if sections:
-        return sections
     else:
         raise HTTPException(status_code=404, detail="Course not found")
     

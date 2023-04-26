@@ -18,7 +18,7 @@ from api.query_parser import (
     token_is_year,
     token_is_semester,
 )
-from api.models import AdvancedSearchParameters
+from api.courses import AdvancedSearchParameters
 
 
 def test_parse_advanced_query_string():

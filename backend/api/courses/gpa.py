@@ -9,7 +9,7 @@ dname = os.path.dirname(abspath)
 os.chdir(dname)
 
 def load_gpa_data() -> pl.DataFrame:
-    gpa_data = pl.read_ipc("data/gpa.feather")
+    gpa_data = pl.read_ipc("../data/gpa.feather")
     gpa_data = gpa_data.with_columns(
         [
             (

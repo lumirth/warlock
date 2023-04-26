@@ -1,14 +1,10 @@
-from typing import Optional
-
-if __name__ != "__main__":
-    from api.models import AdvancedSearchParameters
-else:
-    from models import AdvancedSearchParameters
-import time
-import re
-import pickle
+from api.courses import AdvancedSearchParameters
 from fuzzywuzzy import fuzz, process
+from typing import Optional
 import os
+import pickle
+import re
+import time
 
 DEBUG = True
 DEFAULT_YEAR = time.localtime().tm_year
@@ -136,9 +132,7 @@ def align_to_pattern(advanced_query: AdvancedSearchParameters):
         advanced_query.part_of_term = PART_OF_TERM[advanced_query.part_of_term]
 
 
-def parse_colon_arguments(
-    token: str, advanced_query: AdvancedSearchParameters
-) -> AdvancedSearchParameters:
+def parse_colon_arguments(token: str, advanced_query: AdvancedSearchParameters) -> AdvancedSearchParameters:
     key, value = token.split(":", 1)
     key, value = key.strip(), value.strip()
     if key in ("is"):
@@ -162,9 +156,7 @@ def parse_colon_arguments(
     raise ValueError(f"Invalid colon argument: {key}")
 
 
-def parse_subject_and_course_number(
-    token: str, advanced_query: AdvancedSearchParameters
-) -> AdvancedSearchParameters:
+def parse_subject_and_course_number(token: str, advanced_query: AdvancedSearchParameters) -> AdvancedSearchParameters:
     subject, course_number = re.match(r"^([a-zA-Z ]+)(?:\s+)?(\d+)$", token).groups()
     subject, course_number = subject.strip(), int(course_number)
 
@@ -203,16 +195,10 @@ def parse_subject_and_course_number(
     return advanced_query
 
 
-def parse_optional_digits_pattern(
-    token: str, advanced_query: AdvancedSearchParameters
-) -> AdvancedSearchParameters:
+def parse_optional_digits_pattern(token: str, advanced_query: AdvancedSearchParameters) -> AdvancedSearchParameters:
     # match token with subject and gen eds
-    subj_match = process.extractOne(
-        token, SUBJECTS.keys(), scorer=fuzz.token_set_ratio, score_cutoff=FUZZ_THRESH
-    )
-    gened_match = process.extractOne(
-        token, GEN_EDS.keys(), scorer=fuzz.token_set_ratio, score_cutoff=FUZZ_THRESH
-    )
+    subj_match = process.extractOne(token, SUBJECTS.keys(), scorer=fuzz.token_set_ratio, score_cutoff=FUZZ_THRESH)
+    gened_match = process.extractOne(token, GEN_EDS.keys(), scorer=fuzz.token_set_ratio, score_cutoff=FUZZ_THRESH)
 
     # check which it matches better
     subj_score = subj_match[1] if subj_match is not None else 0
@@ -244,9 +230,7 @@ def parse_optional_digits_pattern(
     return advanced_query
 
 
-def parse_token(
-    token: str, advanced_query: AdvancedSearchParameters
-) -> AdvancedSearchParameters:
+def parse_token(token: str, advanced_query: AdvancedSearchParameters) -> AdvancedSearchParameters:
     token = token.strip()
     token = token.lower()
 
