@@ -50,6 +50,9 @@ async def get_course_details(simple_course: SimpleCourse) -> SimpleCourse:
 
 
 async def search_courses(search_params: AdvancedSearchParameters) -> Tuple[List[SimpleCourse], List[List[DetailedSection]]]:
+    # turn the received search parameters into a AdvancedSearchParameters object if it isn't already
+    if not isinstance(search_params, AdvancedSearchParameters):
+        search_params = AdvancedSearchParameters(**search_params)
     query_params = await prepare_query_params(search_params)
     course_xml = await get_course_xml(query_params)
 

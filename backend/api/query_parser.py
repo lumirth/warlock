@@ -1,4 +1,7 @@
-from courses import AdvancedSearchParameters
+if __name__ == "__main__":
+    from courses import AdvancedSearchParameters
+else:
+    from .courses import AdvancedSearchParameters
 from fuzzywuzzy import fuzz, process
 from typing import Optional
 import os
@@ -130,6 +133,11 @@ def align_to_pattern(advanced_query: AdvancedSearchParameters):
         if advanced_query.part_of_term.lower() not in PART_OF_TERM:
             raise ValueError("Part of term not found")
         advanced_query.part_of_term = PART_OF_TERM[advanced_query.part_of_term]
+    if advanced_query.year is None:
+        advanced_query.year = DEFAULT_YEAR
+    if advanced_query.term is None:
+        advanced_query.term = DEFAULT_SEMESTER
+        
 
 
 def parse_colon_arguments(token: str, advanced_query: AdvancedSearchParameters) -> AdvancedSearchParameters:

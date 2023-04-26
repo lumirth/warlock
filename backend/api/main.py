@@ -2,7 +2,7 @@ from typing import List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import api.search as searching
-from api.courses.models import SimpleCourse, DetailedSection, AdvancedSearchParameters
+from api.courses import SimpleCourse, DetailedSection, AdvancedSearchParameters
 
 app = FastAPI()
 

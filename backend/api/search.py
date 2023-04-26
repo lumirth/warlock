@@ -9,17 +9,22 @@ from api.courses import gpa_dataframe, search_courses
 from api.query_parser import parse_advanced_query_string
 import polars as pl
 import asyncio
+import pydantic
 
 # Constants
 UNIVERSITY_API_BASE_URL = "https://courses.illinois.edu/cisapp/explorer"
 
 def search_advanced(params: AdvancedSearchParameters) -> Union[List[SimpleCourse], SimpleCourse]:
-    courses = []
-    return courses
+    return []
 
 def search_simple(query: str) -> List[SimpleCourse]:
-    query_obj = search_advanced(parse_advanced_query_string(query))
+    print('Parsing query')
+    query_obj = parse_advanced_query_string(query)
+    print('Searching courses')
     results = asyncio.run(search_courses(query_obj))
+    # print(results)
+    from api.try_searching_script import print_courses
+    print_courses(results)
     return results
 
 # courses = search_simple("Phys 325")
