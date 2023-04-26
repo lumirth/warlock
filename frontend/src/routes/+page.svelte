@@ -1,37 +1,15 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Counter from "./Counter.svelte";
   import AdvancedSearch from "../lib/AdvancedSearch.svelte";
+  import Modal from "../lib/Modal.svelte";
+  import ModalButton from "../lib/ModalButton.svelte";
+  import SearchForm from "../lib/SearchForm.svelte";
 
   let x = 0;
-  let query = "";
   let output = "";
+  let query = "";
   let loading = false;
 
-  const examples = [
-    'CS 222',
-    'math257',
-    'pysch 101',
-    'MACS, western',
-    'hrs:1, is:online',
-    'gen:HUM, is:campus',
-    'adv comp, pot:b',
-    'prof: wade',
-    'keyword: data',
-    'life sciences',
-    'natural sciences, quant1',
-    'PSYC, non-western',
-    'fall, 2021, cs 128',
-    'anthropology, 2019',
-    '2005, mathematics, hrs:2'
-  ]
-
-  let placeholder_example = ""
-
-  const randomExample = () => {
-    placeholder_example = "\"" + examples[Math.floor(Math.random() * examples.length)] + "\"";
-  }
-  
   const increment = () => {
     x++;
   };
@@ -42,7 +20,7 @@
     );
   };
 
-  const handleSubmit = (event: Event) => {
+  const handleSearchSubmit = (event: Event) => {
     event.preventDefault();
     queryBackend();
     if (output === "") {
@@ -55,7 +33,6 @@
   };
 
   onMount(() => {
-    randomExample()
     // code to execute when the component is mounted
   });
 </script>
@@ -65,41 +42,11 @@
   <meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<!-- <div class="radial-progress text-xs bg-primary text-primary-content border-4 border-primary" style="--value:70; --size:2rem; --thickness: 3px;">3.5</div> -->
 <section>
-  <form on:submit={handleSubmit} class="flex gap-4 mx-auto  sm:mt-0">
-    <input
-      type="text"
-      placeholder='{placeholder_example}'
-      class="flex-grow input hover:border-primary input-bordered w-2/3 md:w-4/5 lg:w-4/5 xl:w-5/6 bg-base-200 text-lg font-normal placeholder-neutral focus:outline-none focus:border-primary focus:placeholder-transparent"
-      bind:value={query}
-    />
-    {#if loading}
-      <button
-      class="btn bg-base-200 font-normal text-lg loading"
-      >LOADING</button>
-    {:else}
-      <button
-        type="submit"
-        class="btn bg-base-200 font-normal text-lg"
-        >SEARCH</button>
-    {/if}
-  </form>
-  <label
-    for="modal-advanced"
-    class="btn btn-xs mt-4 font-normal bg-base-100 border-none h-3 underline"
-    >ADVANCED</label
-  >
-  <label
-    for="modal-syntax"
-    class="btn btn-xs mt-4 font-normal bg-base-100 border-none h-3 underline"
-    >SYNTAX</label
-  >
-  <label
-    for="modal-examples"
-    class="btn btn-xs mt-4 font-normal bg-base-100 border-none h-3 underline"
-    >EXAMPLES</label
-  >
+  <SearchForm on:submit="{handleSearchSubmit}" bind:loading={loading} bind:query={query}/>
+  <ModalButton modalId="modal-advanced" label="ADVANCED" />
+  <ModalButton modalId="modal-syntax" label="SYNTAX" />
+  <ModalButton modalId="modal-examples" label="EXAMPLES" />
   {#if output}
     <div class="toast">
       <div class="alert alert-info bg-primary">
@@ -110,110 +57,68 @@
     </div>
   {/if}
 
-  <input type="checkbox" id="modal-advanced" class="modal-toggle" />
-  <label
-    for="modal-advanced"
-    class="modal modal-bottom sm:modal-middle cursor-pointer"
-  >
-    <label class="modal-box relative no-scrollbar" for="">
-      <label
-        for="modal-advanced"
-        class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200"
-        >✕</label
-      >
-      <h3 class="text-lg font-bold">ADVANCED SEARCH</h3>
-      <!-- <p class="py-4">TODO: implement full advanced search with correct forms</p> -->
-      <p class="pt-2 text-xs text-neutral">• Please note that some field may override others (CRN, Course ID, etc.)</p>
-      <p class="pb-2 text-xs text-neutral">• Fields with an <code>*</code> must be combined with at least 1 other field.</p>
-      <AdvancedSearch />
-    </label>
-  </label>
-  <input type="checkbox" id="modal-syntax" class="modal-toggle" />
-  <label
-    for="modal-syntax"
-    class="modal modal-bottom sm:modal-middle cursor-pointer"
-  >
-    <label class="modal-box relative no-scrollbar" for="">
-      <label
-        for="modal-syntax"
-        class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200"
-        >✕</label
-      >
-      <div class="prose select-text cursor-text">
-        <h3 class="text-lg font-bold">QUERY SYNTAX</h3>
-        <p>
-          The search box takes a comma-separated list of arguments. It will
-          attempt to intelligently match your input for the following:
-        </p>
-        <ul>
-          <li>
-            Subject/course codes (<code>CS 225; macs356; mathematics</code>)
-          </li>
-          <li>
-            GenEds (<code>adv comp; humanities & the arts; life sciences</code>)
-          </li>
-        </ul>
-        <p>You can also input the following:</p>
-        <ul>
-          <li>CRNs (<code>12345; 54321</code>)</li>
-          <li>Years (<code>2022; 2004</code>)</li>
-          <li>
-            Terms (<code>fall; spring; summer; winter; fa; sp; su; wi</code>)
-          </li>
-        </ul>
-        <p>Or you can declare values explicitly:</p>
-        <ul>
-          <li>Subject/department (<code>subj:CS; d:MATH; dept: CPSC</code>)</li>
-          <li>Course ID (<code>course:225; id: 107</code>)</li>
-          <li>Year (<code>yr:2009; year:2011</code>)</li>
-          <li>Term (<code>term:fall; t:sp</code>)</li>
-          <li>CRN (<code>crn:12345</code>)</li>
-          <li>Credit hours (<code>hrs:3; hr: 1</code>)</li>
-          <li>GenEd (<code>gen:adv comp; g:hum</code>)</li>
-          <li>
-            Part of Term (<code>pot:first; p: whole; part-of-term:all</code>)
-          </li>
-          <li>
-            Keyword (<code
-              >q: minds and machines; keyword: advanced applications</code
-            >)
-          </li>
-        </ul>
-      </div>
-    </label>
-  </label>
-  <input type="checkbox" id="modal-examples" class="modal-toggle" />
-  <label
-    for="modal-examples"
-    class="modal modal-bottom sm:modal-middle cursor-pointer"
-  >
-    <label class="modal-box relative no-scrollbar" for="">
-      <label
-        for="modal-examples"
-        class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200"
-        >✕</label
-      >
-      <div class="prose select-text cursor-text">
-        <h3 class="text-lg font-bold">EXAMPLES</h3>
-        <p>Search for courses in the CS department in Fall 2021:</p>
-        <ul>
-          <li><code>comp sci, fall, 2021</code></li>
-          <li><code>fall, 2021, Computer Science</code></li>
-          <li><code>year:2021, sem:fa, subj:CS</code></li>
-        </ul>
-        
-        <p>Find courses in the MACS department that match the Cultural Studies: Western GenEd:</p>
-        <ul>
-          <li><code>macs, western</code></li>
-          <li><code>media and cinema studies, cultural studies western</code></li>
-          <li>Specifically at the 300 level: <code>MACS 3, g:west</code></li>
-          <li>Worth 3 credit hours: <code>MACS, g:west, hrs:3</code></li>
-          <li>Online: <code>MACS, western, is:online</code></li>
-          <li>First eight weeks: <code>macs, western, pot:a</code></li>
-        </ul>
-      </div>
-    </label>
-  </label>
+  <Modal modalId="modal-advanced" title="ADVANCED SEARCH">
+    <p class="pt-2 text-xs text-neutral">• Please note that some field may override others (CRN, Course ID, etc.)</p>
+    <p class="pb-2 text-xs text-neutral">• Fields with an <code>*</code> must be combined with at least 1 other field.</p>
+    <AdvancedSearch />
+  </Modal>
+
+  <Modal modalId="modal-syntax" title="QUERY SYNTAX">
+    <div class="prose text-sm pt-2 select-text cursor-text">
+      <p>
+        The search box takes a comma-separated list of arguments. It will
+        attempt to intelligently match your input for the following:
+      </p>
+      <ul>
+        <li>
+          Subject/course codes (<code>CS 225; macs356; mathematics</code>)
+        </li>
+        <li>
+          GenEds (<code>adv comp; humanities & the arts; life sciences</code>)
+        </li>
+      </ul>
+      <p>You can also input the following:</p>
+      <ul>
+        <li>CRNs (<code>12345; 54321</code>)</li>
+        <li>Years (<code>2022; 2004</code>)</li>
+        <li>
+          Terms (<code>fall; spring; summer; winter; fa; sp; su; wi</code>)
+        </li>
+      </ul>
+      <p>Or you can declare values explicitly:</p>
+      <ul>
+        <li>Subject/department (<code>subj:CS; d:MATH; dept: CPSC</code>)</li>
+        <li>Course ID (<code>course:225; id: 107</code>)</li>
+        <li>Year (<code>yr:2009; year:2011</code>)</li>
+        <li>Term (<code>term:fall; t:sp</code>)</li>
+        <li>CRN (<code>crn:12345</code>)</li>
+        <li>Credit hours (<code>hrs:3; hr: 1</code>)</li>
+        <li>GenEd (<code>gen:adv comp; g:hum</code>)</li>
+        <li>
+          Part of Term (<code>pot:first; p: whole; part-of-term:all</code>)
+        </li>
+        <li>
+          Keyword (<code
+            >q: minds and machines; keyword: advanced applications</code
+          >)
+        </li>
+      </ul>
+    </div>
+  </Modal>
+
+  <Modal modalId="modal-examples" title="EXAMPLES">
+    <div class="prose text-sm pt-2 select-text cursor-text">
+      <p>Find courses in the MACS department that match the Cultural Studies: Western GenEd:</p>
+      <ul>
+        <li><code>macs, western</code></li>
+        <li><code>media and cinema studies, cultural studies western</code></li>
+        <li>Specifically at the 300 level: <code>MACS 3, g:west</code></li>
+        <li>Worth 3 credit hours: <code>MACS, g:west, hrs:3</code></li>
+        <li>Online: <code>MACS, western, is:online</code></li>
+        <li>First eight weeks: <code>macs, western, pot:a</code></li>
+      </ul>
+    </div>
+  </Modal>
 </section>
 
 <style>
