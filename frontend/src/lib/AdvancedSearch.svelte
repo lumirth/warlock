@@ -16,40 +16,25 @@
   import genEdsJson from "../data/gen_eds_display.json";
   import potsJson from "../data/pots.json";
 
+  // Helper function to generate options objects
+  function createOptions(data: object) {
+    return Object.entries(data)
+      .sort()
+      .map(([text, value]) => ({ text, value: String(value) }));
+  }
+
   // Arrays using imported JSON data, sorted alphabetically
-  const collegeOptions = Object.entries(collegesJson)
-    .sort()
-    .map(([text, value]) => ({
-      text,
-      value: String(value),
-    }));
-  const subjectOptions = Object.entries(subjectsJson)
-    .sort()
-    .map(([text, value]) => ({
-      text,
-      value: String(value),
-    }));
-  const genedReqsOptions = Object.entries(genEdsJson)
-    .sort()
-    .map(([text, value]) => ({
-      text,
-      value: String(value),
-    }));
-  const partOfTermOptions = Object.entries(potsJson)
-    .sort()
-    .map(([text, value]) => ({
-      text,
-      value: String(value),
-    }));
+  const collegeOptions = createOptions(collegesJson);
+  const subjectOptions = createOptions(subjectsJson);
+  const genedReqsOptions = createOptions(genEdsJson);
+  const partOfTermOptions = createOptions(potsJson);
+
   // Years is different because it is an array of numbers. make sure to reverse sort
   const yearOptions = yearsJson
     .sort()
     .reverse()
-    .map((year) => ({
-      value: String(year),
-      text: String(year),
-    }));
-    
+    .map((year) => ({ value: String(year), text: String(year) }));
+
   const semesterOptions = [
     { value: "fall", text: "Fall" },
     { value: "spring", text: "Spring" },
