@@ -1,4 +1,7 @@
 <script lang="ts">
+  // NOTE: Modal requires a ModalButton component on the same page
+  // to trigger the modal.
+  
   export let modalId = "";
   export let title = "";
   export let content = null;
