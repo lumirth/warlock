@@ -1,4 +1,4 @@
-from api.courses import AdvancedSearchParameters
+from courses import AdvancedSearchParameters
 from fuzzywuzzy import fuzz, process
 from typing import Optional
 import os
