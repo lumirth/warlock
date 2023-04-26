@@ -1,14 +1,15 @@
+from data_loader import gpa_dataframe
+from models import SimpleCourse, DetailedSection, AdvancedSearchParameters, Instructor, Meeting
 from typing import List, Tuple
 from xml.etree import ElementTree
-from models import SimpleCourse, DetailedSection, AdvancedSearchParameters, Instructor, Meeting
-import polars as pl
-from data_loader import gpa_dataframe
-import asyncio
 import aiohttp
-import rmp
-import time
-import pickle
+import asyncio
 import os
+import pickle
+import polars as pl
+import rmp
+import threading
+import time
 
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
@@ -35,6 +36,18 @@ if not os.path.exists(PICKLES_DIR):
 pickle.dump(PROFESSOR_CACHE, open(os.path.join(PICKLES_DIR, "professor_cache.pkl"), "wb"))
 print("Professor cache saved.")
 
+# # A function to refresh the cache
+# def refresh_cache():
+#     while True:
+#         PROFESSOR_CACHE.clear()
+#         asyncio.run(rmp.fetch_all_professors())
+#         print("Professor cache refreshed.")
+#         # Wait for 6 hours before refreshing again
+#         time.sleep(6 * 60 * 60)
+
+# # Start the refresh_cache thread
+# cache_refresh_thread = threading.Thread(target=refresh_cache)
+# cache_refresh_thread.start()
 
 async def prepare_query_params(search_params: AdvancedSearchParameters) -> dict:
     query_params = {
