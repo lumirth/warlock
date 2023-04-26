@@ -40,7 +40,7 @@ TERMS = pickle.load(open(os.path.join(PICKLES_DIR, "terms.pkl"), "rb"))
 # These two dicts below must match fields of AdvancedSearchParameters
 COLON_ARGS = {
     "year": ("year", "yr", "y"),
-    "semester": ("semester", "sem", "term", "s", "t"),
+    "term": ("semester", "sem", "term", "s", "t"),
     "subject": ("subject", "subj", "department", "dept", "d"),
     "course_id": ("course_id", "courseid", "id", "course", "number", "num", "n"),
     "crn": ("crn", "r"),
