@@ -8,5 +8,4 @@ pandas # for dataframes
 polars # for dataframes
 pyarrow # for feather files
 pydantic # for data models
-javascript # for npm in python
 requests # for http requests
