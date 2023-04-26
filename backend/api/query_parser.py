@@ -14,7 +14,7 @@ DEBUG = True
 DEFAULT_YEAR = time.localtime().tm_year
 DEFAULT_SEMESTER = "fall" if time.localtime().tm_mon > 3 else "spring"
 
-FUZZ_THRESH = 70
+FUZZ_THRESH = 85
 
 # change directory to the directory of this file
 abspath = os.path.abspath(__file__)
@@ -321,7 +321,8 @@ if __name__ == "__main__":
         "PSYC, non-western",
         "fall, 2021, cs 128",
         "anthropology, 2019",
-        "2005, mathematics, hrs:2"
+        "2005, mathematics, hrs:2",
+        "design lab",
         # "crn: 12345, gen ed: Humanities - Hist & Phil",
         # "id: 101, subj: ece, pot: first, instructor: John Smith",
     ]
