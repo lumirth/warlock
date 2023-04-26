@@ -48,7 +48,7 @@ def load_gpa_data() -> pl.DataFrame:
     
     return gpa_data
 
-
+print("Loading GPA data...")
 gpa_dataframe = load_gpa_data()
-
+print("GPA data loaded:")
 print(gpa_dataframe)

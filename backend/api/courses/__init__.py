@@ -7,3 +7,4 @@ from .models import (
     Meeting
 )
 from .fetching import search_courses
+from .data import *

@@ -2,7 +2,7 @@ from typing import List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import api.search as searching
-from api.courses import SimpleCourse, DetailedSection, AdvancedSearchParameters
+import api.courses
 
 app = FastAPI()
 
@@ -27,6 +27,7 @@ def read_item(item_id: int, q: str = None):
 
 @app.get("/search/simple", response_model=List[SimpleCourse])
 def search_simple(query: str):
+    print('Received query: ' + query)
     search_results = searching.search_simple(query)
     return search_results
 
