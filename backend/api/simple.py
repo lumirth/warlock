@@ -44,7 +44,7 @@ async def prepare_query_params(search_params: AdvancedSearchParameters) -> dict:
         "subject": search_params.subject,
         "collegeCode": search_params.college,
         "creditHours": search_params.credit_hours,
-        "gened": " ".join(search_params.gened_reqs) if search_params.gened_reqs else None,
+        "gened": " ".join(search_params.gened_reqs) if search_params.gened_reqs and not search_params.match_any_gened_reqs else None,
         "instructor": search_params.instructor if search_params.instructor else None,
         "sessionId": search_params.part_of_term,
         "qs": search_params.keyword if search_params.keyword_type == "qs" else None,
@@ -154,9 +154,7 @@ def parse_simple_course(course: ElementTree.Element) -> SimpleCourse:
         href=course.get("href"),
         sectionDegreeAttributes=course.find("sectionDegreeAttributes").text if course.find("sectionDegreeAttributes") is not None else None,
         courseSectionInformation=course.find("courseSectionInformation").text if course.find("courseSectionInformation") is not None else None,
-        genEdCategories=[genEdCategory.text for genEdCategory in course.findall(".//genEdCategory")]
-        if course.findall(".//genEdCategory") is not None
-        else None,
+        genEdCategories=[genEdCategory.text for genEdCategory in course.findall(".//genEdCategory")] if course.findall(".//genEdCategory") is not None else None,
     )
 
 
@@ -213,6 +211,7 @@ def filter_courses_by_id(simple_courses: List[SimpleCourse], course_id: str) -> 
             filtered_courses.append(course)
     return filtered_courses
 
+
 def filter_courses_by_level(simple_courses: List[SimpleCourse], course_level: str) -> List[SimpleCourse]:
     """Filters a list of SimpleCourse objects by a given course level.
 
@@ -228,6 +227,7 @@ def filter_courses_by_level(simple_courses: List[SimpleCourse], course_level: st
         if course.id.split(" ")[1][0] == course_level:
             filtered_courses.append(course)
     return filtered_courses
+
 
 def meeting_type_code_is_online(type_code: str):
     """Returns True if the meeting type code is online or electronic
@@ -288,8 +288,9 @@ def add_gpa_data(simple_courses: List[SimpleCourse]) -> List[SimpleCourse]:
     return simple_courses
 
 
-# TODO: add communication in the frontend explaining that some fields don't qualify as fields that substantiate a search
 # TODO: add code for match_all/match_any geneds
+# - this will require filtering courses by their gen ed requirements
+# TODO: rework logic to visit the individual course API page and get gened reqs from there because schedule/courses API doesn't have gened reqs
 def main():
     # TODO: write tests for this
     search_params = AdvancedSearchParameters(
@@ -338,29 +339,19 @@ def main():
             print_with_indent(f"Subject: {simple_courses[i].subject}") if simple_courses[i].subject is not None else None
             print_with_indent(f"Description: {simple_courses[i].description}") if simple_courses[i].description is not None else None
             print_with_indent(f"Credit Hours: {simple_courses[i].creditHours}") if simple_courses[i].creditHours is not None else None
-            print_with_indent(f"Attributes: {simple_courses[i].sectionDegreeAttributes}") if simple_courses[
-                i
-            ].sectionDegreeAttributes is not None else None
+            print_with_indent(f"Attributes: {simple_courses[i].sectionDegreeAttributes}") if simple_courses[i].sectionDegreeAttributes is not None else None
             # print_with_indent(f"Section Info: {simple_courses[i].courseSectionInformation}") if simple_courses[i].courseSectionInformation is not None else None
             print_with_indent(f"GPA : {simple_courses[i].gpa_average}") if simple_courses[i].gpa_average is not None else None
             print_with_indent(f"PROF: {simple_courses[i].prof_average}") if simple_courses[i].prof_average is not None else None
 
             for section in simple_courses[i].sections:
                 if section.enrollmentStatus != "UNKNOWN":
-                    print_with_indent(
-                        f"Section: {section.sectionNumber} - POT {section.partOfTerm} - {section.enrollmentStatus} - {section.startDate} - {section.endDate}",
-                        indent=8,
-                    )
+                    print_with_indent(f"Section: {section.sectionNumber} - POT {section.partOfTerm} - {section.enrollmentStatus} - {section.startDate} - {section.endDate}", indent=8)
                 else:
-                    print_with_indent(
-                        f"Section: {section.sectionNumber} - POT {section.partOfTerm} - {section.startDate} - {section.endDate}", indent=8
-                    )
+                    print_with_indent(f"Section: {section.sectionNumber} - POT {section.partOfTerm} - {section.startDate} - {section.endDate}", indent=8)
                 for meeting in section.meetings:
                     days = meeting.daysOfTheWeek.strip() if meeting.daysOfTheWeek is not None else None
-                    print_with_indent(
-                        f"Meeting: {meeting.typeCode} - {meeting.start} - {meeting.end} - {days} - {meeting.roomNumber} - {meeting.buildingName}",
-                        indent=12,
-                    )
+                    print_with_indent(f"Meeting: {meeting.typeCode} - {meeting.start} - {meeting.end} - {days} - {meeting.roomNumber} - {meeting.buildingName}", indent=12)
                     for instructor in meeting.instructors:
                         print_with_indent(f"Instructor: {instructor.lastName}, {instructor.firstName}", indent=16)
 
