@@ -14,6 +14,7 @@ os.chdir(dname)
 
 LOAD_PICKLES = True
 PICKLES_DIR = "../pickles"
+PROFESSOR_CACHE = {}
 
 print("Initializing professor cache...")
 if LOAD_PICKLES:

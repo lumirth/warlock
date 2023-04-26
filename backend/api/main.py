@@ -2,7 +2,9 @@ from typing import List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import api.search as searching
-import api.courses
+from api.courses import gpa_dataframe
+from api.courses import SimpleCourse, AdvancedSearchParameters, DetailedSection
+from api.courses import PROFESSOR_CACHE
 
 app = FastAPI()
 

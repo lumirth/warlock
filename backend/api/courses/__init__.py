@@ -7,4 +7,4 @@ from .models import (
     Meeting
 )
 from .fetching import search_courses
-from .data import *
+from .data import PROFESSOR_CACHE
