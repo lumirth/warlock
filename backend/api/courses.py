@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import requests
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
-from api.models import Query, SimpleCourse, AdvancedSearchParameters, DetailedCourse
+from api.models import Query, SimpleCourse, AdvancedSearchParameters
 from api.data_loader import gpa_dataframe
 from api.query_parser import parse_advanced_query_string
 import javascript

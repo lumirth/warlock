@@ -74,8 +74,8 @@ class SimpleCourse(BaseModel):
         )
 
 class AdvancedSearchParameters(BaseModel):
-    year: int  # required
-    term: str  # required
+    year: Optional[int]  # required
+    term: Optional[str]  # required
     keyword: Optional[str]  # substantive
     keyword_type: Optional[str]  # NOT substantive, but required if keyword is present
     instructor: Optional[str]  # substantive

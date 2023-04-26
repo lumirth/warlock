@@ -2,7 +2,7 @@ from typing import List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import api.courses as courses
-from api.models import SimpleCourse, DetailedCourse, DetailedSection, AdvancedSearchParameters
+from api.models import SimpleCourse, DetailedSection, AdvancedSearchParameters
 
 app = FastAPI()
 
@@ -37,7 +37,7 @@ def search_advanced(advanced_search: AdvancedSearchParameters):
     search_results = courses.search_advanced(advanced_search)
     return search_results
 
-@app.get("/course/{year}/{term}/{subj}/{id}", response_model=DetailedCourse)
+@app.get("/course/{year}/{term}/{subj}/{id}", response_model=SimpleCourse)
 def get_course(year: int, term: int, subj: str, id: int):
     course = courses.get_course(year, term, subj, id)
     if course:
