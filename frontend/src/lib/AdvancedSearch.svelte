@@ -240,7 +240,7 @@
     addEmptyOption={false}
   />
   <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-base-100" />
-  <TextInput id="instructor" label="Instructor" value={instructorValue} />
+  <TextInput id="instructor" label="Instructor (Last Name)" value={instructorValue} />
   <Dropdown
     id="college"
     label="College"
