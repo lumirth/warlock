@@ -126,11 +126,12 @@ async def search_courses(search_params: AdvancedSearchParameters) -> Tuple[List[
         simple_courses_filtered = filter_courses_by_level(detailed_courses, search_params.course_level)
         detailed_courses = simple_courses_filtered
 
-    if search_params.online == True:
+    flag = "both"
+    if search_params.online:
         flag = "online"
-    if search_params.on_campus == True:
+    if search_params.on_campus:
         flag = "campus"
-    if search_params.online == True and search_params.on_campus == True:
+    if search_params.online and search_params.on_campus:
         flag = "both"
 
     detailed_courses = filter_courses_by_online_or_campus(detailed_courses, flag=flag)
@@ -252,7 +253,7 @@ def filter_courses_by_online_or_campus(full_courses: List[SimpleCourse], flag: s
         List[SimpleCourse]: List of courses that have online or on campus sections depending on the flag
     """
     if flag == "both":
-        return
+        return full_courses
     elif flag == "online":
         want_online = True
     elif flag == "campus":
@@ -298,7 +299,7 @@ def main():
         term="fall",
         # course_id="340",
         # online=True,
-        on_campus=True,
+        # on_campus=True,
         subject="CS",
         # college="KV",
         # credit_hours="3",
@@ -307,7 +308,7 @@ def main():
         # course_level="2",
         # keyword_type="qs",
         # keyword="ethical"
-        # instructor="fagen-ulmschneider"
+        instructor="fagen-ulmschneider"
     )
 
     import textwrap
