@@ -84,10 +84,10 @@ Note:
 Thus, it may be advantageous to store Waf's GPA Datasets in a database(or maybe a feather file?), and update it every semester, but query the Course API and RateMyProfessor every time the frontend is loaded.
 
 ## On Parsing Queries
-There's a draft of the format by which to parse queries available in [PARSE_QUERIES.md](PARSE_QUERIES.md)
+There's a draft of the format by which to parse queries available in [PARSE_QUERIES.md](info/PARSE_QUERIES.md)
 ## On Data Formatting
 
-A basic idea of the format for the frontend to receive the data in(and for the backend to construct the data into) can be seen in the [DATA_FORMAT.md](DATA_FORMAT.md) file.
+A basic idea of the format for the frontend to receive the data in(and for the backend to construct the data into) can be seen in the [DATA_FORMAT.md](info/DATA_FORMAT.md) file.
 
 ## On the course API
 

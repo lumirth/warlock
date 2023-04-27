@@ -2,6 +2,7 @@
 
 # Ignore Python cache files and directories
 __pycache__/
+.pytest_cache/
 *.pyc
 *.pyo
 *.pyd

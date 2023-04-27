@@ -1,10 +1,30 @@
-from .models import SimpleCourse, DetailedSection, Instructor, Meeting
-from typing import List
-from xml.etree import ElementTree
+from ..models import Course, Section, Parameters, Meeting, Instructor
+import aiohttp
+import xml.etree.ElementTree as ElementTree
 
-def parse_simple_course(course: ElementTree.Element) -> SimpleCourse:
+async def get_course_xml(query_params: dict) -> ElementTree.Element:
+    base_url = "https://courses.illinois.edu/cisapp/explorer/schedule"
+    courses_endpoint = f"{base_url}/courses.xml"
+    async with aiohttp.ClientSession() as session:
+        async with session.get(courses_endpoint, params=query_params) as response:
+            print(response.url)
+            response.raise_for_status()
+            content = await response.read()
+    return ElementTree.fromstring(content)
+
+async def get_course_details(simple_course: Course) -> Course:
+    async with aiohttp.ClientSession() as session:
+        async with session.get(simple_course.href, params={"mode": "cascade"}) as response:
+            response.raise_for_status()
+            content = await response.read()
+    course_xml_data = ElementTree.fromstring(content)
+    detailed_sections = [parse_detailed_section(detailed_section) for detailed_section in course_xml_data.findall(".//detailedSection")]
+    simple_course.sections = detailed_sections
+    return simple_course
+
+def parse_simple_course(course: ElementTree.Element) -> Course:
     parents = course.find("parents")
-    return SimpleCourse(
+    return Course(
         year=parents.find("calendarYear").attrib["id"] if parents.find("calendarYear") is not None else None,
         term=parents.find("term").text.split(" ")[0] if parents.find("term") is not None else None,
         subject=parents.find("subject").text if parents.find("subject") is not None else None,
@@ -19,8 +39,8 @@ def parse_simple_course(course: ElementTree.Element) -> SimpleCourse:
     )
 
 
-def parse_detailed_section(detailed_section: ElementTree.Element) -> DetailedSection:
-    section = DetailedSection(
+def parse_detailed_section(detailed_section: ElementTree.Element) -> Section:
+    section = Section(
         id=detailed_section.get("id"),
         sectionNumber=detailed_section.find("sectionNumber").text if detailed_section.find("sectionNumber") is not None else None,
         statusCode=detailed_section.find("statusCode").text,

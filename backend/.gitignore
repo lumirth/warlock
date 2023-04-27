@@ -1,0 +1,59 @@
+# General Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyi
+*.pyc
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+ENV.bak/
+.cache
+.python-version
+*.log
+*.bak
+*.swp
+*.swo
+
+# FastAPI
+*.db
+*.sqlite
+*.sqlite3
+
+# Jupyter notebooks
+.ipynb_checkpoints
+
+# VSCode
+.vscode
+
+# PyCharm
+.idea
+
+# macOS
+.DS_Store
+
+# Other
+*.egg-info/
+dist/
+build/
+*.egg
+*.so
+*.o
+*.a
+*.lib
+*.dll
+*.exe
+*.msi
+*.pdb
+*.ilk
+*.exp
+*.manifest
+
+# dotenv
+.env
+.env.*
+!.env.example

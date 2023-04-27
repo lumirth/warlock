@@ -7,9 +7,9 @@ import json
 import asyncio
 
 # Directory of pickles for GEN_EDS, GEN_ED_CODES, valid years, and valid subjects.
-PICKLE_DIR = "backend/api/pickles"
+PICKLE_DIR = "backend/data"
 JSON_DIR = "frontend/src/data"
-GPA_DATA_DIR = "backend/api/data"
+GPA_DATA_DIR = "backend/data/gpa"
 SHA_FILE = GPA_DATA_DIR + "/" + "commit_sha.txt"
 CSV_FILE = GPA_DATA_DIR + "/" + "gpa.csv"
 FEATHER_FILE = GPA_DATA_DIR + "/" + "gpa.feather"

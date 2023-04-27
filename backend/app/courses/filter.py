@@ -1,8 +1,8 @@
-from .models import SimpleCourse
+from ..models import Course
 from typing import List
 
 
-def filter_courses_by_id(simple_courses: List[SimpleCourse], course_id: str) -> List[SimpleCourse]:
+def filter_courses_by_id(simple_courses: List[Course], course_id: str) -> List[Course]:
     """Filters a list of SimpleCourse objects by a given course ID.
 
     Args:
@@ -19,7 +19,7 @@ def filter_courses_by_id(simple_courses: List[SimpleCourse], course_id: str) -> 
     return filtered_courses
 
 
-def filter_courses_by_level(simple_courses: List[SimpleCourse], course_level: str) -> List[SimpleCourse]:
+def filter_courses_by_level(simple_courses: List[Course], course_level: str) -> List[Course]:
     """Filters a list of SimpleCourse objects by a given course level.
 
     Args:
@@ -48,7 +48,7 @@ def meeting_type_code_is_online(type_code: str):
     return type_code[0] == "O" or type_code[0] == "E"
 
 
-def filter_courses_by_online_or_campus(full_courses: List[SimpleCourse], flag: str = "both") -> List[SimpleCourse]:
+def filter_courses_by_online_or_campus(full_courses: List[Course], flag: str = "both") -> List[Course]:
     """Returns a list of courses that have online or on campus sections depending on the flag
 
     Args:
