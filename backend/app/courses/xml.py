@@ -2,6 +2,8 @@ from ..models import Course, Section, Parameters, Meeting, Instructor
 import aiohttp
 import xml.etree.ElementTree as ElementTree
 
+# TODO: Add code that gets the GenEd attributes for a course
+
 async def get_course_xml(query_params: dict) -> ElementTree.Element:
     base_url = "https://courses.illinois.edu/cisapp/explorer/schedule"
     courses_endpoint = f"{base_url}/courses.xml"
