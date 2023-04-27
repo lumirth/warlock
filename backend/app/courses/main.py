@@ -21,6 +21,11 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
         course_xml = await get_section_xml_from_crn(search_params)
         course = await parse_course_from_section(course_xml)
         return [course]
+
+    if search_params.course_id is not None and search_params.subject is not None:
+        course_xml = await get_single_course_xml(search_params)
+        course = parse_course_from_full_course(course_xml)
+        return [course]
     
     if search_params.subject is not None:
         print('searching by subject')
@@ -149,6 +154,21 @@ async def get_section_xml_from_crn(search_params: Parameters) -> ElementTree.Ele
     async with aiohttp.ClientSession() as session:
         async with session.get(courses_endpoint, params=params) as response:
             print(response.url)
+            response.raise_for_status()
+            content = await response.read()
+    return ElementTree.fromstring(content)
+
+async def get_single_course_xml(search_params: Parameters) -> ElementTree.Element:
+    base_url = "https://courses.illinois.edu/cisapp/explorer/schedule"
+    endpoint = "{base_url}/{year}/{term}/{subject}/{course_id}.xml?mode=cascade".format(
+        base_url=base_url,
+        year=search_params.year,
+        term=search_params.term,
+        subject=search_params.subject,
+        course_id=search_params.course_id,
+    )
+    async with aiohttp.ClientSession() as session:
+        async with session.get(endpoint) as response:
             response.raise_for_status()
             content = await response.read()
     return ElementTree.fromstring(content)
