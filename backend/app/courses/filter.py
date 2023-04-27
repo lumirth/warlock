@@ -122,3 +122,14 @@ def filter_courses_by_part_of_term(courses: List[Course], part_of_term: str) -> 
                 filtered_courses.append(course)
                 break
     return filtered_courses 
+
+def filter_courses_by_instructor_last_name(courses: List[Course], last_name: str) -> List[Course]:
+    filtered_courses = []
+    for course in courses:
+        for section in course.sections:
+            for meeting in section.meetings:
+                for instructor in meeting.instructors:
+                    if instructor.lastName.lower() == last_name.lower():
+                        filtered_courses.append(course)
+                        break
+    return filtered_courses

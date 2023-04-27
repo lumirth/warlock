@@ -1,6 +1,6 @@
 from ..models import Course, Parameters, Section, Meeting, Instructor, GenEd
 from .data import add_prof_ratings, add_gpa_data
-from .filter import filter_courses_by_id, filter_courses_by_level, filter_courses_by_online_or_campus, filter_courses_by_gen_eds, filter_courses_by_credit_hours, filter_courses_by_part_of_term
+from .filter import filter_courses_by_id, filter_courses_by_level, filter_courses_by_online_or_campus, filter_courses_by_gen_eds, filter_courses_by_credit_hours, filter_courses_by_part_of_term, filter_courses_by_instructor_last_name
 # from .xml import get_course_xml, parse_simple_course
 from typing import List, Union, Tuple
 import asyncio
@@ -48,6 +48,8 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
         if search_params.credit_hours is not None:
             detailed_courses = filter_courses_by_credit_hours(detailed_courses, search_params.credit_hours)
         print('This many after filtering by credit hours:', len(detailed_courses))
+        if search_params.instructor is not None:
+            detailed_courses = filter_courses_by_instructor_last_name(detailed_courses, search_params.instructor)
         
         print(search_params.part_of_term)
         if search_params.part_of_term is not None:
