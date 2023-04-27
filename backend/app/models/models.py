@@ -51,6 +51,9 @@ class Course(BaseModel):
     sectionDegreeAttributes: Optional[str]
     courseSectionInformation: Optional[str]
     genEdAttributes: Optional[List[GenEd]]
+    
+    def __hash__(self):
+        return hash(self.href)
 
     @classmethod
     def from_xml_element(cls, course_xml: Element) -> "Course":

@@ -54,14 +54,18 @@ def search_simple(query: str):
         time.sleep(10)
     query_obj = parse_string_into_parameters(query, PICKLES)
     results = search_advanced(query_obj)
+    print('Got results in simple')
+    print(len(results))
     for result in results:
         print(result)
     return results
 
 @app.post("/search/advanced", response_model=List[Course])
 def search_advanced(params: Parameters):
+    print('Sending search request for params')
     if PROFESSOR_CACHE is {} or GPA_DATAFRAME is None or PICKLES is None:
         print('Waiting for data to load')
         time.sleep(10)
     results = asyncio.run(search_courses(params, professor_cache=PROFESSOR_CACHE, gpa_data=GPA_DATAFRAME))
+    print('Got results')
     return results

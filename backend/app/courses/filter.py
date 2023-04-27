@@ -1,4 +1,4 @@
-from ..models import Course
+from ..models import Course, GenEd
 from typing import List
 
 
@@ -76,3 +76,45 @@ def filter_courses_by_online_or_campus(full_courses: List[Course], flag: str = "
         if keep_course:
             courses.append(course)
     return courses
+
+
+def filter_courses_by_gen_eds(courses: List[Course], gened_ids: List[str], match_any: bool=False):
+    if match_any:
+        return filter_courses_by_any_gen_eds(courses, gened_ids)
+    else:
+        return filter_courses_by_all_gen_eds(courses, gened_ids)
+    
+def filter_courses_by_any_gen_eds(courses: List[Course], gened_ids: List[str]) -> List[Course]:
+    filtered_courses = []
+    for course in courses:
+        if course.genEdAttributes is not None:
+            for gened in course.genEdAttributes:
+                if gened.id in gened_ids:
+                    filtered_courses.append(course)
+                    break
+    return filtered_courses
+
+def filter_courses_by_all_gen_eds(courses: List[Course], gened_ids: List[str]) -> List[Course]:
+    filtered_courses = []
+    for course in courses:
+        if course.genEdAttributes is not None:
+            gened_ids_set = set(gened_ids)
+            course_gened_ids_set = set([gened.id for gened in course.genEdAttributes])
+
+            if gened_ids_set.issubset(course_gened_ids_set):
+                filtered_courses.append(course)
+    return filtered_courses
+
+def filter_courses_by_credit_hours(courses: List[Course], credit_hours: int) -> List[Course]:
+    filtered_courses = []
+
+    for course in courses:
+        if course.creditHours is not None:
+            try:
+                course_credit_hours = int(course.creditHours)
+                if course_credit_hours == credit_hours:
+                    filtered_courses.append(course)
+            except ValueError:
+                pass
+
+    return filtered_courses
