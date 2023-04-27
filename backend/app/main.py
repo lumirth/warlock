@@ -7,6 +7,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 import asyncio
+import time
 
 PROFESSOR_CACHE = {}
 GPA_DATAFRAME = None
@@ -47,6 +48,10 @@ def read_root():
 
 @app.get("/search/simple", response_model=List[Course])
 def search_simple(query: str):
+    print('Searching for query:', query)
+    if PROFESSOR_CACHE is {} or GPA_DATAFRAME is None or PICKLES is None:
+        print('Waiting for data to load')
+        time.sleep(10)
     query_obj = parse_string_into_parameters(query, PICKLES)
     results = search_advanced(query_obj)
     for result in results:
@@ -55,5 +60,8 @@ def search_simple(query: str):
 
 @app.post("/search/advanced", response_model=List[Course])
 def search_advanced(params: Parameters):
+    if PROFESSOR_CACHE is {} or GPA_DATAFRAME is None or PICKLES is None:
+        print('Waiting for data to load')
+        time.sleep(10)
     results = asyncio.run(search_courses(params, professor_cache=PROFESSOR_CACHE, gpa_data=GPA_DATAFRAME))
     return results

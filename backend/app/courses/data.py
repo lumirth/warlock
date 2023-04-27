@@ -1,6 +1,7 @@
 from ..models import Course
 from typing import List
 import polars as pl
+from ..utils import log_entry_exit
 
 def get_list_of_instructors(simple_course: Course) -> List[str]:
     instructors = set()

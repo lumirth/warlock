@@ -69,7 +69,7 @@ class Course(BaseModel):
         )
         
     def __str__(self) -> str:
-        def print_with_indent(text, indent=4, width=70):
+        def print_with_indent(text, indent=4, width=130):
             # Create a TextWrapper object with the specified indentation and width
             wrapper = textwrap.TextWrapper(initial_indent=" " * indent, subsequent_indent=" " * indent, width=width)
             # Remove all newlines from the text

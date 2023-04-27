@@ -10,3 +10,4 @@ pyarrow # for feather files
 pydantic # for data models
 requests # for http requests
 aiohttp # for async http requests
+aiosonic

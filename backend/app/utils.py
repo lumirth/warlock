@@ -10,10 +10,8 @@ def log_entry_exit(func):
     async def wrapper(*args, **kwargs):
         start_time = time.time()
         logger.debug(f"----- BEGIN {func.__name__} -----")
-        logger.debug(f"Function arguments: {args}, {kwargs}")
         result = await func(*args, **kwargs)
         elapsed_time = time.time() - start_time
-        logger.debug(f"Function return value: {result}")
         logger.debug(f"Execution time: {elapsed_time:.2f} seconds")
         logger.debug(f"----- END {func.__name__} -----")
         return result
