@@ -94,9 +94,9 @@ class Course(BaseModel):
         if self.sections:
             for section in self.sections:
                 if section.enrollmentStatus != "UNKNOWN":
-                    course_str += print_with_indent(f"Section: {section.sectionNumber} - POT {section.partOfTerm} - {section.enrollmentStatus} - {section.startDate} - {section.endDate}", indent=8)
+                    course_str += print_with_indent(f"Section: {section.id} - {section.sectionNumber} - POT {section.partOfTerm} - {section.enrollmentStatus} - {section.startDate} - {section.endDate}", indent=8)
                 else:
-                    course_str += print_with_indent(f"Section: {section.sectionNumber} - POT {section.partOfTerm} - {section.startDate} - {section.endDate}", indent=8)
+                    course_str += print_with_indent(f"Section: {section.id} - {section.sectionNumber} - POT {section.partOfTerm} - {section.startDate} - {section.endDate}", indent=8)
                 # Add information about meetings within each section
                 if section.meetings:
                     for meeting in section.meetings:
