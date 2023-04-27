@@ -33,8 +33,8 @@ class Section(BaseModel):
     meetings: List[Meeting]
     
 class GenEd(BaseModel):
-    id: str
-    name: str    
+    id: Optional[str]
+    name: Optional[str]    
 
 class Course(BaseModel):
     year: Optional[str]
@@ -89,6 +89,9 @@ class Course(BaseModel):
         course_str += print_with_indent(f"Credit Hours: {self.creditHours}") if self.creditHours is not None else ""
         course_str += print_with_indent(f"GPA : {self.gpa_average}") if self.gpa_average is not None else ""
         course_str += print_with_indent(f"PROF: {self.prof_average}") if self.prof_average is not None else ""
+        if self.genEdAttributes:
+            for gened in self.genEdAttributes:
+                course_str += print_with_indent(f"GenEd: {gened.name} - {gened.id}", indent=4)
 
         # Add information about sections
         if self.sections:
@@ -106,7 +109,6 @@ class Course(BaseModel):
                         if meeting.instructors:
                             for instructor in meeting.instructors:
                                 course_str += print_with_indent(f"Instructor: {instructor.lastName}, {instructor.firstName}", indent=16)
-
         return course_str
 
 class Parameters(BaseModel):

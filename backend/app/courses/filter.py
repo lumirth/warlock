@@ -100,7 +100,8 @@ def filter_courses_by_all_gen_eds(courses: List[Course], gened_ids: List[str]) -
         if course.genEdAttributes is not None:
             gened_ids_set = set(gened_ids)
             course_gened_ids_set = set([gened.id for gened in course.genEdAttributes])
-
+            print(course.id)
+            print(gened_ids_set, course_gened_ids_set)
             if gened_ids_set.issubset(course_gened_ids_set):
                 filtered_courses.append(course)
     return filtered_courses

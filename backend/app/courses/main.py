@@ -136,6 +136,7 @@ async def get_course_xml_from_dept(search_params: Parameters) -> ElementTree.Ele
         term=search_params.term,
         subject=search_params.subject,
     )
+    print(endpoint)
     async with aiohttp.ClientSession() as session:
         async with session.get(endpoint) as response:
             response.raise_for_status()
@@ -222,12 +223,12 @@ def parse_course_from_full_course(course: ElementTree.Element) -> Course:
 
         sections.append(Section(id=section_id, sectionNumber=section_number, meetings=meetings, partOfTerm=part_of_term))
 
+    # get gen ed attributes
     gen_ed_attributes = []
-    for category in course.findall(".//genEdCategories/category"):
-        gen_ed_id = category.get("id")
-        gen_ed_description = category.find("description").text
-        gen_ed_attributes.append(GenEd(id=gen_ed_id, name=gen_ed_description))
-
+    for attribute in course.findall(".//genEdAttribute"):
+        code = attribute.attrib["code"] if attribute.attrib["code"] is not None else None
+        gen_ed_attributes.append(GenEd(id=code, name=attribute.text))
+    
     return Course(id=course_id, label=label, description=description, creditHours=credit_hours, href=href,
                             sections=sections, genEdAttributes=gen_ed_attributes)
 
@@ -267,10 +268,10 @@ def parse_simple_courses_from_dept(department: ElementTree.Element) -> List[Cour
             sections.append(Section(id=section_id, sectionNumber=section_number, meetings=meetings, partOfTerm=part_of_term))
 
         gen_ed_attributes = []
-        for category in cascading_course.findall(".//genEdCategories/category"):
-            gen_ed_id = category.get("id")
-            gen_ed_description = category.find("description").text
-            gen_ed_attributes.append(GenEd(id=gen_ed_id, name=gen_ed_description))
+        for attribute in cascading_course.findall(".//genEdAttribute"):
+            code = attribute.attrib["code"] if attribute.attrib["code"] is not None else None
+            name = attribute.text if attribute.text is not None else None
+            gen_ed_attributes.append(GenEd(id=code, name=name))
 
         courses.append(Course(id=course_id, label=label, description=description, creditHours=credit_hours, href=href, 
                               sections=sections, genEdAttributes=gen_ed_attributes))
