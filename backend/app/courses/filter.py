@@ -107,16 +107,10 @@ def filter_courses_by_all_gen_eds(courses: List[Course], gened_ids: List[str]) -
 
 def filter_courses_by_credit_hours(courses: List[Course], credit_hours: int) -> List[Course]:
     filtered_courses = []
-
     for course in courses:
         if course.creditHours is not None:
-            try:
-                course_credit_hours = int(course.creditHours)
-                if course_credit_hours == credit_hours:
+                if course.creditHours == credit_hours:
                     filtered_courses.append(course)
-            except ValueError:
-                pass
-
     return filtered_courses
 
 def filter_courses_by_part_of_term(courses: List[Course], part_of_term: str) -> List[Course]:

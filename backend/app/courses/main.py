@@ -119,7 +119,7 @@ def parse_simple_courses_from_dept(department: ElementTree.Element) -> List[Cour
         course_id = cascading_course.get("id") 
         label = cascading_course.find("label").text
         description = cascading_course.find("description").text
-        credit_hours = cascading_course.find("creditHours").text
+        credit_hours = cascading_course.find("creditHours").text[0]
         href = cascading_course.get("href")
 
         sections = []
