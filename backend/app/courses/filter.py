@@ -133,3 +133,41 @@ def filter_courses_by_instructor_last_name(courses: List[Course], last_name: str
                         filtered_courses.append(course)
                         break
     return filtered_courses
+
+def filter_courses_by_keyword(courses: List[Course], keyword: str, keyword_type: str) -> List[Course]:
+    filtered_courses = []
+    
+    # Helper function to check if text contains all/any of the words in the keyword_list
+    def check_words(text, keyword_list, search_type):
+        if search_type == "all":
+            return all(word in text.lower() for word in keyword_list)
+        elif search_type == "any":
+            return any(word in text.lower() for word in keyword_list)
+    
+    # Prepare the keyword list based on keyword_type
+    if keyword_type == "qs":
+        keyword_list = [keyword.lower()]
+        search_type = "any"
+    elif keyword_type == "qp":
+        keyword_list = [keyword.lower().replace("+", " ")]
+        search_type = "any"
+    elif keyword_type == "qw_a":
+        keyword_list = keyword.lower().split(" ")
+        search_type = "all"
+    elif keyword_type == "qw_o":
+        keyword_list = keyword.lower().split(" ")
+        search_type = "any"
+    else:
+        raise ValueError("Invalid keyword_type")
+
+    for course in courses:
+        title_desc = course.label + " " + course.description
+        course_section_info = course.courseSectionInformation if course.courseSectionInformation else ""
+        section_degree_attr = course.sectionDegreeAttributes if course.sectionDegreeAttributes else ""
+        
+        if check_words(title_desc, keyword_list, search_type) or \
+           check_words(course_section_info, keyword_list, search_type) or \
+           check_words(section_degree_attr, keyword_list, search_type):
+            filtered_courses.append(course)
+            
+    return filtered_courses
