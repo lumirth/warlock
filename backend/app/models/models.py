@@ -34,8 +34,7 @@ class Section(BaseModel):
     
 class GenEd(BaseModel):
     id: str
-    name: str
-    
+    name: str    
 
 class Course(BaseModel):
     year: Optional[str]
