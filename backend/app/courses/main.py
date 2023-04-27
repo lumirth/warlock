@@ -105,7 +105,6 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
 
     detailed_courses = add_gpa_data(detailed_courses, gpa_data)
     await add_prof_ratings(detailed_courses, professor_cache=professor_cache)
-    return detailed_courses
     print('returning courses')
     return detailed_courses
 
