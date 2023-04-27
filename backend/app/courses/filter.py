@@ -118,3 +118,13 @@ def filter_courses_by_credit_hours(courses: List[Course], credit_hours: int) -> 
                 pass
 
     return filtered_courses
+
+def filter_courses_by_part_of_term(courses: List[Course], part_of_term: str) -> List[Course]:
+    # if any section has matching part of term, keep course
+    filtered_courses = []
+    for course in courses:
+        for section in course.sections:
+            if section.partOfTerm == part_of_term:
+                filtered_courses.append(course)
+                break
+    return filtered_courses 

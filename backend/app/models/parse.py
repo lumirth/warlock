@@ -269,6 +269,7 @@ PART_OF_TERM = {
     "second": "B",
     "whole": "1",
     "full": "1",
+    "1": "1",
     "a": "A",
     "b": "B",
     "all": "1",

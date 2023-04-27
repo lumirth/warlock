@@ -1,6 +1,6 @@
 from ..models import Course, Parameters, Section, Meeting, Instructor, GenEd
 from .data import add_prof_ratings, add_gpa_data
-from .filter import filter_courses_by_id, filter_courses_by_level, filter_courses_by_online_or_campus, filter_courses_by_gen_eds, filter_courses_by_credit_hours
+from .filter import filter_courses_by_id, filter_courses_by_level, filter_courses_by_online_or_campus, filter_courses_by_gen_eds, filter_courses_by_credit_hours, filter_courses_by_part_of_term
 # from .xml import get_course_xml, parse_simple_course
 from typing import List, Union, Tuple
 import asyncio
@@ -48,6 +48,11 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
         if search_params.credit_hours is not None:
             detailed_courses = filter_courses_by_credit_hours(detailed_courses, search_params.credit_hours)
         print('This many after filtering by credit hours:', len(detailed_courses))
+        
+        print(search_params.part_of_term)
+        if search_params.part_of_term is not None:
+            detailed_courses = filter_courses_by_part_of_term(detailed_courses, search_params.part_of_term)
+        
         detailed_courses = add_gpa_data(detailed_courses, gpa_data)
         print('This many after adding gpa data:', len(detailed_courses))
         await add_prof_ratings(detailed_courses, professor_cache=professor_cache)
@@ -121,7 +126,7 @@ def parse_simple_courses_from_dept(department: ElementTree.Element) -> List[Cour
         for detailed_section in cascading_course.findall(".//detailedSection"):
             section_id = detailed_section.get("id")
             section_number = detailed_section.find("sectionNumber").text if detailed_section.find("sectionNumber") is not None else None
-
+            part_of_term = detailed_section.find("partOfTerm").text if detailed_section.find("partOfTerm") is not None else None
             meetings = []
             for meeting in detailed_section.findall(".//meeting"):
                 type_code = meeting.find("type").get("code") if meeting.find("type") is not None else None
@@ -140,7 +145,7 @@ def parse_simple_courses_from_dept(department: ElementTree.Element) -> List[Cour
                 meetings.append(Meeting(typeCode=type_code, start=start, end=end, daysOfTheWeek=days_of_the_week,
                                         roomNumber=room_number, buildingName=building_name, instructors=instructors))
 
-            sections.append(Section(id=section_id, sectionNumber=section_number, meetings=meetings))
+            sections.append(Section(id=section_id, sectionNumber=section_number, meetings=meetings, partOfTerm=part_of_term))
 
         gen_ed_attributes = []
         for category in cascading_course.findall(".//genEdCategories/category"):
