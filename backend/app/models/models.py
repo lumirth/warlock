@@ -48,6 +48,7 @@ class Course(BaseModel):
     prof_average: Optional[float]
     href: Optional[str] 
     sections: Optional[List[Section]]
+    sectionRegistrationNotes: Optional[str]
     sectionDegreeAttributes: Optional[str]
     courseSectionInformation: Optional[str]
     genEdAttributes: Optional[List[GenEd]]

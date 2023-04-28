@@ -1,6 +1,16 @@
 from ..models import Course, Parameters, Section, Meeting, Instructor, GenEd
 from .data import add_prof_ratings, add_gpa_data
-from .filter import filter_courses_by_id, filter_courses_by_level, filter_courses_by_online_or_campus, filter_courses_by_gen_eds, filter_courses_by_credit_hours, filter_courses_by_part_of_term, filter_courses_by_instructor_last_name, filter_courses_by_keyword
+from .filter import (
+    filter_courses_by_id,
+    filter_courses_by_level,
+    filter_courses_by_online_or_campus,
+    filter_courses_by_gen_eds,
+    filter_courses_by_credit_hours,
+    filter_courses_by_part_of_term,
+    filter_courses_by_instructor_last_name,
+    filter_courses_by_keyword,
+)
+
 # from .xml import get_course_xml, parse_simple_course
 from typing import List, Union, Tuple
 import asyncio
@@ -8,15 +18,32 @@ import polars as pl
 import aiohttp
 import xml.etree.ElementTree as ElementTree
 
+SECTION_DEGREE_ATTRIBUTES_GEN_EDS = {
+    "Composition I": "COMP1",
+    "Advanced Composition": "1CLL",
+    "Quantitative Reasoning I": "1QR1",
+    "Quantitative Reasoning II": "1QR2",
+    "Nat Sci & Tech - Life Sciences": "1LS",
+    "Nat Sci & Tech - Phys Sciences": "1PS",
+    "Humanities - Hist & Phil": "1HP",
+    "Humanities - Lit & Arts": "1LA",
+    "Cultural Studies - Western": "1WCC",
+    "Cultural Studies - Non-West": "1NW",
+    "Cultural Studies - US Minority": "1US",
+    "Social & Beh Sci - Soc Sci": "1SS",
+    "Social & Beh Sci - Beh Sci": "1BSC",
+}
+
+
 async def search_courses(search_params: Parameters, professor_cache: dict, gpa_data: pl.DataFrame) -> List[Course]:
-    print('searching courses')
+    print("searching courses")
     # turn the received search parameters into a AdvancedSearchParameters object if it isn't already
     if not isinstance(search_params, Parameters):
         search_params = Parameters(**search_params)
-        
+
     detailed_courses = []
     simple_courses = []
-    
+
     if search_params.crn is not None:
         course_xml = await get_section_xml_from_crn(search_params)
         course = await parse_course_from_section(course_xml)
@@ -26,24 +53,17 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
         course_xml = await get_single_course_xml(search_params)
         course = parse_course_from_full_course(course_xml)
         return [course]
-    
+
     if search_params.subject is not None:
-        print('searching by subject')
-        print('getting course xml from dept')
         course_xml = await get_course_xml_from_dept(search_params)
-        print('parsing simple courses from dept')
         detailed_courses = parse_simple_courses_from_dept(course_xml)
-        print('Got this many courses:', len(detailed_courses))
-        print('filtering courses')
         if search_params.course_id is not None:
             simple_courses_filtered = filter_courses_by_id(detailed_courses, search_params.course_id)
             detailed_courses = simple_courses_filtered
-        print('This many after filtering by id:', len(detailed_courses))
         if search_params.course_level is not None:
             simple_courses_filtered = filter_courses_by_level(detailed_courses, search_params.course_level)
             detailed_courses = simple_courses_filtered
-        print('This many after filtering by level:', len(detailed_courses))
-            
+
         flag = "both"
         if search_params.online:
             flag = "online"
@@ -54,16 +74,12 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
 
         if search_params.gened_reqs is not None:
             detailed_courses = filter_courses_by_gen_eds(detailed_courses, search_params.gened_reqs, search_params.match_any_gened_reqs)
-        print('This many after filtering by gen eds:', len(detailed_courses))
         if search_params.credit_hours is not None:
             detailed_courses = filter_courses_by_credit_hours(detailed_courses, search_params.credit_hours)
-        print('This many after filtering by credit hours:', len(detailed_courses))
         if search_params.instructor is not None:
             detailed_courses = filter_courses_by_instructor_last_name(detailed_courses, search_params.instructor)
-        print('This many after filtering by instructor:', len(detailed_courses))
         if search_params.part_of_term is not None:
             detailed_courses = filter_courses_by_part_of_term(detailed_courses, search_params.part_of_term)
-        print('This many after filtering by part of term:', len(detailed_courses))
         if search_params.keyword is not None:
             if search_params.keyword_type is None:
                 if len(search_params.keyword.split()) == 1:
@@ -72,10 +88,6 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
                     search_params.keyword_type = "qp"
             detailed_courses = filter_courses_by_keyword(detailed_courses, search_params.keyword, search_params.keyword_type)
         detailed_courses = add_gpa_data(detailed_courses, gpa_data)
-        print('This many after adding gpa data:', len(detailed_courses))
-        await add_prof_ratings(detailed_courses, professor_cache=professor_cache)
-        print('This many after adding prof ratings:', len(detailed_courses))
-        print('done filtering courses')
         return detailed_courses
 
     # the slow way
@@ -83,15 +95,14 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
     course_xml = await get_course_xml(query_params)
 
     simple_courses = list(map(parse_simple_course, course_xml.findall(".//course")))
-    detailed_courses = await asyncio.gather(*(get_course_details(course) for course in simple_courses))
 
     if search_params.course_id is not None:
-        simple_courses_filtered = filter_courses_by_id(detailed_courses, search_params.course_id)
-        detailed_courses = simple_courses_filtered
+        simple_courses_filtered = filter_courses_by_id(simple_courses, search_params.course_id)
+        simple_courses = simple_courses_filtered
 
     if search_params.course_level is not None:
-        simple_courses_filtered = filter_courses_by_level(detailed_courses, search_params.course_level)
-        detailed_courses = simple_courses_filtered
+        simple_courses_filtered = filter_courses_by_level(simple_courses, search_params.course_level)
+        simple_courses = simple_courses_filtered
 
     flag = "both"
     if search_params.online:
@@ -101,22 +112,9 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
     if search_params.online and search_params.on_campus:
         flag = "both"
 
-    detailed_courses = filter_courses_by_online_or_campus(detailed_courses, flag=flag)
-
-    detailed_courses = add_gpa_data(detailed_courses, gpa_data)
-    await add_prof_ratings(detailed_courses, professor_cache=professor_cache)
-    print('returning courses')
-    return detailed_courses
-
-async def get_course_details(simple_course: Course) -> Course:
-    async with aiohttp.ClientSession() as session:
-        async with session.get(simple_course.href, params={"mode": "cascade"}) as response:
-            response.raise_for_status()
-            content = await response.read()
-    course_xml_data = ElementTree.fromstring(content)
-    detailed_sections = [parse_detailed_section(detailed_section) for detailed_section in course_xml_data.findall(".//detailedSection")]
-    simple_course.sections = detailed_sections
-    return simple_course
+    simple_courses = filter_courses_by_online_or_campus(simple_courses, flag=flag)
+    simple_courses = add_gpa_data(simple_courses, gpa_data)
+    return simple_courses
 
 async def get_course_xml(query_params: dict) -> ElementTree.Element:
     base_url = "https://courses.illinois.edu/cisapp/explorer/schedule"
@@ -127,6 +125,7 @@ async def get_course_xml(query_params: dict) -> ElementTree.Element:
             response.raise_for_status()
             content = await response.read()
     return ElementTree.fromstring(content)
+
 
 async def get_course_xml_from_dept(search_params: Parameters) -> ElementTree.Element:
     base_url = "https://courses.illinois.edu/cisapp/explorer/schedule"
@@ -143,6 +142,7 @@ async def get_course_xml_from_dept(search_params: Parameters) -> ElementTree.Ele
             content = await response.read()
     return ElementTree.fromstring(content)
 
+
 async def get_section_xml_from_crn(search_params: Parameters) -> ElementTree.Element:
     base_url = "https://courses.illinois.edu/cisapp/explorer/schedule"
     courses_endpoint = f"{base_url}/sections.xml"
@@ -157,6 +157,7 @@ async def get_section_xml_from_crn(search_params: Parameters) -> ElementTree.Ele
             response.raise_for_status()
             content = await response.read()
     return ElementTree.fromstring(content)
+
 
 async def get_single_course_xml(search_params: Parameters) -> ElementTree.Element:
     base_url = "https://courses.illinois.edu/cisapp/explorer/schedule"
@@ -173,23 +174,20 @@ async def get_single_course_xml(search_params: Parameters) -> ElementTree.Elemen
             content = await response.read()
     return ElementTree.fromstring(content)
 
+
 async def parse_course_from_section(section: ElementTree.Element) -> List[Course]:
-    print(section.text)
-    # find parents tag
     sections = section.find("sections")
     section = sections.find("section")
     parents = section.find("parents")
-    # find href of course tag in parents
     href = parents.find("course").get("href")
-    # get course xml from href
     async with aiohttp.ClientSession() as session:
-        async with session.get(href + '?mode=cascade') as response:
+        async with session.get(href + "?mode=cascade") as response:
             response.raise_for_status()
             content = await response.read()
     course_xml_data = ElementTree.fromstring(content)
-    # parse course from course xml
     course = parse_course_from_full_course(course_xml_data)
     return course
+
 
 def parse_course_from_full_course(course: ElementTree.Element) -> Course:
     course_id = course.get("id")
@@ -218,8 +216,7 @@ def parse_course_from_full_course(course: ElementTree.Element) -> Course:
                 first_name = instructor.get("firstName")
                 instructors.append(Instructor(lastName=last_name, firstName=first_name))
 
-            meetings.append(Meeting(typeCode=type_code, start=start, end=end, daysOfTheWeek=days_of_the_week,
-                                    roomNumber=room_number, buildingName=building_name, instructors=instructors))
+            meetings.append(Meeting(typeCode=type_code, start=start, end=end, daysOfTheWeek=days_of_the_week, roomNumber=room_number, buildingName=building_name, instructors=instructors))
 
         sections.append(Section(id=section_id, sectionNumber=section_number, meetings=meetings, partOfTerm=part_of_term))
 
@@ -228,15 +225,15 @@ def parse_course_from_full_course(course: ElementTree.Element) -> Course:
     for attribute in course.findall(".//genEdAttribute"):
         code = attribute.attrib["code"] if attribute.attrib["code"] is not None else None
         gen_ed_attributes.append(GenEd(id=code, name=attribute.text))
-    
-    return Course(id=course_id, label=label, description=description, creditHours=credit_hours, href=href,
-                            sections=sections, genEdAttributes=gen_ed_attributes)
+
+    return Course(id=course_id, label=label, description=description, creditHours=credit_hours, href=href, sections=sections, genEdAttributes=gen_ed_attributes)
+
 
 def parse_simple_courses_from_dept(department: ElementTree.Element) -> List[Course]:
     courses = []
 
     for cascading_course in department.findall(".//cascadingCourse"):
-        course_id = cascading_course.get("id") 
+        course_id = cascading_course.get("id")
         label = cascading_course.find("label").text
         description = cascading_course.find("description").text
         credit_hours = cascading_course.find("creditHours").text[0]
@@ -262,8 +259,7 @@ def parse_simple_courses_from_dept(department: ElementTree.Element) -> List[Cour
                     first_name = instructor.get("firstName")
                     instructors.append(Instructor(lastName=last_name, firstName=first_name))
 
-                meetings.append(Meeting(typeCode=type_code, start=start, end=end, daysOfTheWeek=days_of_the_week,
-                                        roomNumber=room_number, buildingName=building_name, instructors=instructors))
+                meetings.append(Meeting(typeCode=type_code, start=start, end=end, daysOfTheWeek=days_of_the_week, roomNumber=room_number, buildingName=building_name, instructors=instructors))
 
             sections.append(Section(id=section_id, sectionNumber=section_number, meetings=meetings, partOfTerm=part_of_term))
 
@@ -273,14 +269,13 @@ def parse_simple_courses_from_dept(department: ElementTree.Element) -> List[Cour
             name = attribute.text if attribute.text is not None else None
             gen_ed_attributes.append(GenEd(id=code, name=name))
 
-        courses.append(Course(id=course_id, label=label, description=description, creditHours=credit_hours, href=href, 
-                              sections=sections, genEdAttributes=gen_ed_attributes))
-
+        courses.append(Course(id=course_id, label=label, description=description, creditHours=credit_hours, href=href, sections=sections, genEdAttributes=gen_ed_attributes))
     return courses
+
 
 def parse_simple_course(course: ElementTree.Element) -> Course:
     parents = course.find("parents")
-    return Course(
+    course = Course(
         year=parents.find("calendarYear").attrib["id"] if parents.find("calendarYear") is not None else None,
         term=parents.find("term").text.split(" ")[0] if parents.find("term") is not None else None,
         subject=parents.find("subject").text if parents.find("subject") is not None else None,
@@ -289,10 +284,18 @@ def parse_simple_course(course: ElementTree.Element) -> Course:
         description=course.find("description").text if course.find("description") is not None else None,
         creditHours=course.find("creditHours").text,
         href=course.get("href"),
+        sectionRegistrationNotes=course.find("sectionRegistrationNotes").text if course.find("sectionRegistrationNotes") is not None else None,
         sectionDegreeAttributes=course.find("sectionDegreeAttributes").text if course.find("sectionDegreeAttributes") is not None else None,
         courseSectionInformation=course.find("courseSectionInformation").text if course.find("courseSectionInformation") is not None else None,
-        genEdCategories=[genEdCategory.text for genEdCategory in course.findall(".//genEdCategory")] if course.findall(".//genEdCategory") is not None else None,
     )
+    # check sectionDegreeAttributes for any matches from the pickles["gen_eds"] dictionary and save them to the GenEds field
+    if course.sectionDegreeAttributes is not None:
+        course.genEdAttributes = []
+        for gen_ed in SECTION_DEGREE_ATTRIBUTES_GEN_EDS:
+            if gen_ed in course.sectionDegreeAttributes:
+                course.genEdAttributes.append(GenEd(id=SECTION_DEGREE_ATTRIBUTES_GEN_EDS[gen_ed], name=gen_ed))
+    return course
+
 
 def parse_detailed_section(detailed_section: ElementTree.Element) -> Section:
     section = Section(
@@ -330,6 +333,7 @@ def parse_meeting(meeting: ElementTree.Element) -> Meeting:
 def parse_instructor(instructor: ElementTree.Element) -> Instructor:
     return Instructor(lastName=instructor.get("lastName"), firstName=instructor.get("firstName"))
 
+
 async def prepare_query_params(search_params: Parameters) -> dict:
     query_params = {
         "year": search_params.year,
@@ -347,4 +351,3 @@ async def prepare_query_params(search_params: Parameters) -> dict:
         "qw_o": search_params.keyword if search_params.keyword_type == "qw_o" else None,
     }
     return {k: v for k, v in query_params.items() if v is not None}
-

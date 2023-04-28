@@ -1,1 +1,1 @@
-from .main import search_courses
+from .main import search_courses, get_single_course_xml
