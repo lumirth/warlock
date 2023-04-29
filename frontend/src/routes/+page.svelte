@@ -4,6 +4,7 @@
   import Modal from "../lib/Modal.svelte";
   import ModalButton from "../lib/ModalButton.svelte";
   import SearchForm from "../lib/SearchForm.svelte";
+  import CourseCard from "../lib/CourseCard/CourseCard.svelte";
 
   let x = 0;
   let output = "";
@@ -25,6 +26,7 @@
 </svelte:head>
 
 <section>
+  <CourseCard />
   <SearchForm bind:loading bind:query />
   <ModalButton modalId="modal-advanced" label="ADVANCED" />
   <ModalButton modalId="modal-syntax" label="SYNTAX" />

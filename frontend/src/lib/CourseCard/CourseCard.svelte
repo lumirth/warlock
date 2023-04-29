@@ -1,0 +1,42 @@
+<script lang="ts">
+    import CourseCardHeader from "./CourseCardHeader.svelte";
+    import CourseCardContent from "./CourseCardContent.svelte";
+    import CourseCardFooter from "./CourseCardFooter.svelte";
+    import CourseCardSections from "./CourseCardSections.svelte";
+    // Define type for props
+    export let link_enabled: boolean = true;
+    export let link_external: boolean = true;
+    export let href: string = "https://example.com";
+    export let course_id: string = "CS 222";
+    export let course_detail: string = "Software Programming Lab";
+    export let sem_code: string = "SP23";
+    export let credit_hours: string = "1";
+    export let description: string =
+      "Design and implementation of novel software solutions. Problem identification and definition; idea generation and evaluation; and software implementation, testing, and deployment. Emphasizes software development best practices—including framework selection, code review, documentation, appropriate library usage, project management, continuous integration and testing, and teamwork. Prerequisite: CS 128; credit or concurrent registration in CS 225. Restricted to majors in Computer Science undergraduate curricula only.";
+    export let average_rating: number = 1.5;
+    export let average_gpa: number = 3.1;
+    export let tags_enabled: boolean = true;
+    export let tags_icon: Array<string> = [];
+    export let tags_text: Array<string> = ["MIN", "HUM"];
+    export let image_source: string = "";
+    export let image_alt: string = "Example Image";
+  </script>
+  
+  <div class="bg-base-200 border-neutral border-[1px] flex flex-col">
+    <CourseCardHeader
+      {course_id}
+      {course_detail}
+      {credit_hours}
+      {sem_code}
+    />
+    <div class="border-t border-neutral w-full mx-auto"></div>
+    <CourseCardContent
+      {description}
+      />
+      <div class="border-t border-neutral w-full mx-auto"></div>
+      <CourseCardFooter
+      {average_gpa}
+      {tags_text}
+      />
+  </div>
+  <CourseCardSections/>
