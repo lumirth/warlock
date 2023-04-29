@@ -6,20 +6,20 @@
   $: gpa_string = average_gpa.toFixed(1)
 </script>
 
-<div class="flex justify-between items-center p-1">
-  <div class="flex flex-nowrap gap-1">
+<div class="flex justify-between items-center py-1 px-2">
+  <div class="flex flex-nowrap gap-2">
 
     <div class="flex flex-row items-center">
       <div class="flex items-center">
         <RadialRating value={average_gpa} maxValue={4.0} />
       </div>
-      <p class="pl-1 mb-[1.4px] text-base leading-4 flex items-center">{gpa_string} GPA</p>
+      <p class="pl-2 mb-[1.4px] text-lg leading-4 flex items-center">{gpa_string} GPA</p>
     </div>
   </div>
-  <div class="flex flex-wrap gap-1">
+  <div class="flex flex-wrap gap-2">
     {#each tags_text as tag}
       <div
-        class="px-2 bg-base-200 border border-neutral text-xs font-mono"
+        class="px-2 h-6 bg-base-200 border border-neutral text-base font-mono flex flex-col justify-center"
       >
         {tag}
       </div>

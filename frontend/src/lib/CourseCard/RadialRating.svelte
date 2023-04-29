@@ -2,8 +2,8 @@
 <script lang="ts">
   export let value: number;
   export let maxValue: number;
-  export let size: string = "0.75rem";
-  export let thickness: string = "2px";
+  export let size: string = "1rem";
+  export let thickness: string = "3px";
 
   $: progressPercentage = (value / maxValue) * 100;
 </script>
