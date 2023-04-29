@@ -3,6 +3,7 @@
 
   export let query = "";
   export let loading = false;
+  export let results: any = [];
 
   const examples = [
     "CS 222",
@@ -32,6 +33,7 @@
   const dispatch = createEventDispatcher();
 
   const handleSubmit = (event: Event) => {
+    results = [];
     queryBackend();
     event.preventDefault();
     dispatch("submit", query);
@@ -45,6 +47,8 @@
     const response = await fetch(
       "http://localhost:8000/search/simple?query=" + query
     );
+    const data = await response.json();
+    results = data;
   };
 
   export { placeholder_example };

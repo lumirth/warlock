@@ -7,10 +7,49 @@
   import CourseCard from "../lib/CourseCard/CourseCard.svelte";
 
   let x = 0;
-  let output = "";
   let query = "";
   let loading = false;
+  let results: any = [];
 
+  $: {
+    console.log("Results updated:", results);
+    // update loading to false if results are not empty
+    if (results.length > 0) {
+      loading = false;
+    }
+  }
+  const sortByGPA = () => {
+    // if already sorted by GPA, reverse the array
+    let isAlreadySorted = true;
+    for (let i = 0; i < results.length - 1; i++) {
+      if (results[i].gpa_average < results[i + 1].gpa_average) {
+        isAlreadySorted = false;
+        break;
+      }
+    }
+    if (isAlreadySorted) {
+      results = results.reverse();
+    } else {
+      results = results.sort((a:any, b:any) => b.gpa_average - a.gpa_average);
+    }
+  }
+  const sortByHours = () => {
+    // if already sorted by hours, reverse the array
+    let isAlreadySorted = true;
+    for (let i = 0; i < results.length - 1; i++) {
+      if (results[i].creditHours < results[i + 1].creditHours) {
+        isAlreadySorted = false;
+        break;
+      }
+    }
+    if (isAlreadySorted) {
+      results = results.reverse();
+    } else {
+      results = results.sort((a:any, b:any) => b.creditHours - a.creditHours);
+    }
+
+  }
+  
   const increment = () => {
     x++;
   };
@@ -26,21 +65,10 @@
 </svelte:head>
 
 <section>
-  <CourseCard />
-  <SearchForm bind:loading bind:query />
+  <SearchForm bind:loading bind:query bind:results />
   <ModalButton modalId="modal-advanced" label="ADVANCED" />
   <ModalButton modalId="modal-syntax" label="SYNTAX" />
   <ModalButton modalId="modal-examples" label="EXAMPLES" />
-  {#if output}
-    <div class="toast">
-      <div class="alert alert-info bg-primary">
-        <div>
-          <span class="font-mono">OUTPUT: {output}</span>
-        </div>
-      </div>
-    </div>
-  {/if}
-
   <Modal modalId="modal-advanced" title="ADVANCED SEARCH">
     <p class="pt-2 text-xs text-neutral">
       • Please note that some field may override others (CRN, Course ID, etc.)
@@ -110,6 +138,39 @@
       </ul>
     </div>
   </Modal>
+</section>
+<section class="pt-20">
+  <!-- for each result-->
+  {#if results.length > 0}
+    <!-- sort by GPA-->
+    <div class="flex justify-end">
+    <button
+      class="flex justify-end btn btn-sm bg-transparent border-transparent underline mb-5"
+      on:click={sortByGPA}
+    >
+      Sort by GPA
+    </button>
+    <button class="flex justify-end btn btn-sm bg-transparent border-transparent underline mb-5" on:click={sortByHours}>
+      Sort by Credit Hours
+    </button>
+  </div>
+  {/if}
+  {#each results as result}
+    <CourseCard
+      course_id={result.id}
+      course_detail={result.label}
+      sem_code={result.term[0] +
+        result.term[1] +
+        result.year[2] +
+        result.year[3]}
+      credit_hours={result.creditHours}
+      description={result.description}
+      average_gpa={result.gpa_average ? result.gpa_average : 0}
+      tags_text={result.genEdAttributes
+        ? result.genEdAttributes.map((genEd) => genEd.id)
+        : []}
+    />
+  {/each}
 </section>
 
 <style>

@@ -103,16 +103,16 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
     if search_params.course_level is not None:
         simple_courses_filtered = filter_courses_by_level(simple_courses, search_params.course_level)
         simple_courses = simple_courses_filtered
+    #TODO: filtering by online is now broken without detailed sections
+    # flag = "both"
+    # if search_params.online:
+    #     flag = "online"
+    # if search_params.on_campus:
+    #     flag = "campus"
+    # if search_params.online and search_params.on_campus:
+    #     flag = "both"
 
-    flag = "both"
-    if search_params.online:
-        flag = "online"
-    if search_params.on_campus:
-        flag = "campus"
-    if search_params.online and search_params.on_campus:
-        flag = "both"
-
-    simple_courses = filter_courses_by_online_or_campus(simple_courses, flag=flag)
+    # simple_courses = filter_courses_by_online_or_campus(simple_courses, flag=flag)
     simple_courses = add_gpa_data(simple_courses, gpa_data)
     return simple_courses
 
@@ -195,6 +195,8 @@ def parse_course_from_full_course(course: ElementTree.Element) -> Course:
     description = course.find("description").text
     credit_hours = course.find("creditHours").text[0]
     href = course.get("href")
+    year = course.find("parents").find("calendarYear").attrib["id"]
+    term = course.find("parents").find("term").text.split(" ")[0]
 
     sections = []
     for detailed_section in course.findall(".//detailedSection"):
@@ -226,7 +228,7 @@ def parse_course_from_full_course(course: ElementTree.Element) -> Course:
         code = attribute.attrib["code"] if attribute.attrib["code"] is not None else None
         gen_ed_attributes.append(GenEd(id=code, name=attribute.text))
 
-    return Course(id=course_id, label=label, description=description, creditHours=credit_hours, href=href, sections=sections, genEdAttributes=gen_ed_attributes)
+    return Course(id=course_id, label=label, description=description, creditHours=credit_hours, href=href, sections=sections, genEdAttributes=gen_ed_attributes, term=term, year=year)
 
 
 def parse_simple_courses_from_dept(department: ElementTree.Element) -> List[Course]:
@@ -238,6 +240,8 @@ def parse_simple_courses_from_dept(department: ElementTree.Element) -> List[Cour
         description = cascading_course.find("description").text
         credit_hours = cascading_course.find("creditHours").text[0]
         href = cascading_course.get("href")
+        term = cascading_course.find("parents").find("term").text
+        year = cascading_course.find("parents").find("calendarYear").attrib["id"]
 
         sections = []
         for detailed_section in cascading_course.findall(".//detailedSection"):
@@ -269,7 +273,7 @@ def parse_simple_courses_from_dept(department: ElementTree.Element) -> List[Cour
             name = attribute.text if attribute.text is not None else None
             gen_ed_attributes.append(GenEd(id=code, name=name))
 
-        courses.append(Course(id=course_id, label=label, description=description, creditHours=credit_hours, href=href, sections=sections, genEdAttributes=gen_ed_attributes))
+        courses.append(Course(id=course_id, label=label, description=description, creditHours=credit_hours, href=href, sections=sections, genEdAttributes=gen_ed_attributes, term=term, year=year))
     return courses
 
 
@@ -282,7 +286,7 @@ def parse_simple_course(course: ElementTree.Element) -> Course:
         id=course.get("id"),
         label=course.find("label").text,
         description=course.find("description").text if course.find("description") is not None else None,
-        creditHours=course.find("creditHours").text,
+        creditHours=course.find("creditHours").text[0] if course.find("creditHours") is not None else None,
         href=course.get("href"),
         sectionRegistrationNotes=course.find("sectionRegistrationNotes").text if course.find("sectionRegistrationNotes") is not None else None,
         sectionDegreeAttributes=course.find("sectionDegreeAttributes").text if course.find("sectionDegreeAttributes") is not None else None,
@@ -345,6 +349,10 @@ async def prepare_query_params(search_params: Parameters) -> dict:
         "gened": " ".join(search_params.gened_reqs) if search_params.gened_reqs and not search_params.match_any_gened_reqs else None,
         "instructor": search_params.instructor if search_params.instructor else None,
         "sessionId": search_params.part_of_term,
+        "sectionTypeCode": "ONL" if search_params.online else None,
+        # TODO: add a bunch of type codes that make sure a course is on campus
+        # "sectionTypeCode": "LCD" if search_params.on_campus else None,
+        # "sectionTypeCode": "LEC" if search_params.on_campus else None,
         "qs": search_params.keyword if search_params.keyword_type == "qs" else None,
         "qp": search_params.keyword if search_params.keyword_type == "qp" else None,
         "qw_a": search_params.keyword if search_params.keyword_type == "qw_a" else None,
