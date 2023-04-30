@@ -43,13 +43,20 @@
   };
 
   const queryBackend = async () => {
-    const response = await fetch(
-      "https://warlock-backend.fly.dev/search/simple?query=" + query
-    );
-    const data = await response.json();
-    results = data;
-    returned_results = true;
-    loading = false;
+    try {
+      const response = await fetch(
+        "https://warlock-backend.fly.dev/search/simple?query=" + query
+      );
+      const data = await response.json();
+      results = data;
+      returned_results = true;
+      loading = false;
+    } catch (error) {
+      console.error(error);
+      loading = false;
+      returned_results = true;
+      results = [];
+    }
   };
 
   export { placeholder_example };

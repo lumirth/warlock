@@ -44,20 +44,27 @@
   }
 
   const queryBackend = async () => {
-    const response = await fetch(
-      "https://warlock-backend.fly.dev/search/advanced",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(adv_params),
-      }
-    );
-    const data = await response.json();
-    results = data;
-    returned_results = true;
-    updateLoading(false);
+    try {
+      const response = await fetch(
+        "https://warlock-backend.fly.dev/search/advanced",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(adv_params),
+        }
+      );
+      const data = await response.json();
+      results = data;
+      returned_results = true;
+      updateLoading(false);
+    } catch (error) {
+      console.error(error);
+      loading = false;
+      returned_results = true;
+      results = [];
+    }
   };
 
   onMount(() => {
