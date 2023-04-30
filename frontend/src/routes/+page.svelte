@@ -95,7 +95,8 @@
     <Help />
   </Modal>
 </section>
-<section class="pt-2">
+<hr class="border-neutral border-t my-4"/>
+<section class="">
   {#if returned_results && results.length == 0}
     <div class="flex justify-center bg-base-200 my-5 py-2 border border-neutral opacity-50">
       <p class="text-2xl font-mono uppercase text-neutral ">No results found</p>

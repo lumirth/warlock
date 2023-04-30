@@ -19,21 +19,21 @@
     <CourseCardHeader
       {course_id}
       {course_detail}
-      {credit_hours}
-      {sem_code}
-      {href}
+      bind:href
     />
     <div class="border-t border-neutral w-full mx-auto"></div>
     <CourseCardContent
       {description}
       />
     <!-- show if either tags_text has a length or if gpa_average isnt 0-->
-    {#if tags_text.length > 0 || average_gpa != 0}
+    <!-- {#if tags_text.length > 0 || average_gpa != 0} -->
       <div class="border-t border-neutral w-full mx-auto"></div>
       <CourseCardFooter
+      {credit_hours}
+      {sem_code}
       {average_gpa}
       {tags_text}
       />
-      {/if}
+      <!-- {/if} -->
   </div>
   <!-- <CourseCardSections/> -->

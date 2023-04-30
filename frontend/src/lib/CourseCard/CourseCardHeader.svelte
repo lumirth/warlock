@@ -4,8 +4,8 @@
 
   export let course_id: string;
   export let course_detail: string;
-  export let credit_hours: string;
-  export let sem_code: string;
+  // export let credit_hours: string;
+  // export let sem_code: string;
   export let href: string;
 
   let link = convertCourseURL(href);
@@ -24,11 +24,6 @@
       <div class="text-lg text-neutral font-light uppercase">{course_detail}&nbsp;&nbsp;&nbsp;</div>
     </div>
     <div class="absolute top-0 right-1 h-full w-4 bg-gradient-to-l from-base-200 to-transparent"></div>
-  </div>
-  <div class="text-lg flex flex-row flex-grow font-mono whitespace-nowrap pl-3 pr-1 border-l border-neutral min-h-full items-center">
-    <div class="pr-2">{credit_hours}HRS</div>
-    <div class="bg-neutral w-[1px] flex-1 h-6"></div>
-    <div class="pl-2 uppercase">{sem_code}</div>
   </div>
 </div>
 
