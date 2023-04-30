@@ -55,6 +55,18 @@ def parse_string_into_parameters(input_string: str, data: dict) -> Optional[Para
 
     return advanced_query
 
+def _save_as_keyword(token:str, advanced_query: Parameters) -> Parameters:
+    if advanced_query.keyword is None:
+        advanced_query.keyword = token
+        if len(token.split()) == 1:
+            advanced_query.keyword_type = "qs"
+        else:
+            advanced_query.keyword_type = "qp"
+    else:
+        advanced_query.keyword += " " + token
+        advanced_query.keyword_type = "qw_a"
+    return advanced_query
+
 
 def _align_to_pattern(advanced_query: Parameters, data: dict):
     # subject should be max 4 alphabetic characters, all caps
@@ -99,6 +111,9 @@ def _parse_colon_arguments(token: str, advanced_query: Parameters, data: dict) -
                 setattr(advanced_query, arg, True)
                 return advanced_query
     for arg, aliases in COLON_ARGS.items():
+        if key in aliases and arg in ("keyword"):
+            advanced_query = _save_as_keyword(value, advanced_query)
+            return advanced_query
         if key in aliases and arg not in ("gened_reqs"):
             setattr(advanced_query, arg, value)
             return advanced_query
@@ -117,11 +132,11 @@ def _parse_subject_and_course_number(token: str, advanced_query: Parameters, dat
     subject, course_number = re.match(r"^([a-zA-Z ]+)(?:\s+)?(\d+)$", token).groups()
     subject, course_number = subject.strip(), int(course_number)
 
-    if course_number == 1:
+    if course_number == 1 or course_number == 2:
         fuzzy_match = process.extractOne(
-            subject,
+            token,
             data["gen_eds"].keys(),
-            scorer=fuzz.token_set_ratio,
+            scorer=fuzz.token_sort_ratio,
             score_cutoff=FUZZ_THRESH,
         )
         if fuzzy_match is not None:
@@ -175,7 +190,7 @@ def _parse_optional_digits_pattern(token: str, advanced_query: Parameters, data:
                 advanced_query.gened_reqs = []
             advanced_query.gened_reqs.append(data["gen_eds"][gened_match[0]].upper())
     else:
-        advanced_query.keyword = token
+        advanced_query = _save_as_keyword(token, advanced_query)
 
     return advanced_query
 
@@ -206,6 +221,8 @@ def _parse_token(token: str, advanced_query: Parameters, data: dict) -> Paramete
 
     if re.match(r"^([a-zA-Z\- ]+)(?:\s+)?(\d+)?$", token):
         return _parse_optional_digits_pattern(token, advanced_query, data)
+    
+    advanced_query = _save_as_keyword(token, advanced_query)
 
     return advanced_query
 

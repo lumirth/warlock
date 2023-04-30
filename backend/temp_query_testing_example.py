@@ -22,10 +22,15 @@ example_queries = [
     "anthropology, 2019",
     "2005, mathematics, hrs:2",
     "design lab",
+    "math, quant 1",
+    "math, quant 2",
+    "cs 2",
+    "k: data structures"
     # "crn: 12345, gen ed: Humanities - Hist & Phil",
     # "id: 101, subj: ece, pot: first, instructor: John Smith",
 ]
 
 for query in example_queries:
+    print(query)
     print(parse_string_into_parameters(query, pickles))
     print()
