@@ -12,6 +12,8 @@ from .filter import (
 )
 import logging
 
+logger = logging.getLogger(__name__)
+
 # TODO: spring cleaning. it's a mess in here
 # TODO: fix searching for gen ed categories (because filtering only works on subcategories)
 
@@ -22,6 +24,8 @@ import polars as pl
 import aiohttp
 import xml.etree.ElementTree as ElementTree
 import time
+from contextlib import asynccontextmanager
+from functools import wraps
 
 SECTION_DEGREE_ATTRIBUTES_GEN_EDS = {
     "Composition I": "COMP1",
@@ -39,58 +43,86 @@ SECTION_DEGREE_ATTRIBUTES_GEN_EDS = {
     "Social & Beh Sci - Beh Sci": "1BSC",
 }
 
+# TODO: move wrapper to utils
+def log_time_func(func):
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        start = time.time()
+        result = await func(*args, **kwargs)
+        end = time.time()
+        logger.info(f"FUNC: {func.__name__} took {end - start} seconds")
+        return result
+
+    return wrapper
+
+@asynccontextmanager
+async def log_time(statement_name: str):
+    start = time.time()
+    yield
+    end = time.time()
+    logger.info(f"STATEMENT: {statement_name} took {end - start} seconds")
+
 async def search_courses(search_params: Parameters, gpa_data: pl.DataFrame) -> List[Course]:
-    print("searching courses")
+    search_params = validate_and_prepare_search_params(search_params)
+    courses = await get_courses_based_on_search_params(search_params, gpa_data)
+    return courses
+
+def validate_and_prepare_search_params(search_params: Parameters) -> Parameters:
     if not isinstance(search_params, Parameters):
         search_params = Parameters(**search_params)
-    
+
     if search_params.course_id is not None and len(str(search_params.course_id)) != 3:
         search_params.course_level = str(search_params.course_id)[0]
         search_params.course_id = None
 
+    return search_params
+
+async def get_courses_based_on_search_params(search_params: Parameters, gpa_data: pl.DataFrame) -> List[Course]:
     if search_params.crn is not None:
-        course_xml = await get_section_xml_from_crn(search_params)
-        course = await parse_course_from_section(course_xml)
-        courses = [course]
-        courses = add_gpa_data(courses, gpa_data)
-        return courses
+        return await get_courses_by_crn(search_params, gpa_data)
 
     if search_params.course_id is not None and search_params.subject is not None:
-        course_xml = await get_single_course_xml(search_params)
-        course = parse_course_from_full_course(course_xml)
-        courses = [course]
-        courses = add_gpa_data(courses, gpa_data)
-        return courses
+        return await get_single_course(search_params, gpa_data)
 
-    start = time.time()
-    query_params = await prepare_query_params(search_params)
-    end = time.time()
-    print(f"prepare_query_params took {end - start} seconds")
-    start = time.time()
-    course_xml = await get_course_search_xml(query_params)
-    end = time.time()
-    print(f"get_course_xml took {end - start} seconds")
-    
-    start = time.time()
-    simple_courses = list(map(parse_simple_course, course_xml.findall(".//course")))
-    end = time.time()
-    print(f"parse_simple_course took {end - start} seconds")
+    return await get_courses_by_query_params(search_params, gpa_data)
 
-    start = time.time()
-    if search_params.course_id is not None:
-        simple_courses_filtered = filter_courses_by_id(simple_courses, search_params.course_id)
-        simple_courses = simple_courses_filtered
+@log_time_func
+async def get_courses_by_crn(search_params: Parameters, gpa_data: pl.DataFrame) -> List[Course]:
+    course_xml = await get_section_xml_from_crn(search_params)
+    course = await parse_course_from_section(course_xml)
+    courses = [course]
+    courses = add_gpa_data(courses, gpa_data)
+    return courses
 
-    if search_params.course_level is not None:
-        simple_courses_filtered = filter_courses_by_level(simple_courses, search_params.course_level)
-        simple_courses = simple_courses_filtered
-    end = time.time()
-    print(f"filter_courses_by_id took {end - start} seconds")
-    
-    start = time.time()
-    simple_courses = add_gpa_data(simple_courses, gpa_data)
-    end = time.time()
-    print(f"add_gpa_data took {end - start} seconds")
+@log_time_func
+async def get_single_course(search_params: Parameters, gpa_data: pl.DataFrame) -> List[Course]:
+    course_xml = await get_single_course_xml(search_params)
+    course = parse_course_from_full_course(course_xml)
+    courses = [course]
+    courses = add_gpa_data(courses, gpa_data)
+    return courses
+
+@log_time_func
+async def get_courses_by_query_params(search_params: Parameters, gpa_data: pl.DataFrame) -> List[Course]:
+    async with log_time("prepare_query_params"):
+        query_params = await prepare_query_params(search_params)
+
+    async with log_time("get_course_xml"):
+        course_xml = await get_course_search_xml(query_params)
+
+    async with log_time("parse_simple_course"):
+        simple_courses = list(map(parse_simple_course, course_xml.findall(".//course")))
+
+    async with log_time("filter_courses_by_id"):
+        if search_params.course_id is not None:
+            simple_courses = filter_courses_by_id(simple_courses, search_params.course_id)
+
+        if search_params.course_level is not None:
+            simple_courses = filter_courses_by_level(simple_courses, search_params.course_level)
+
+    async with log_time("add_gpa_data"):
+        simple_courses = add_gpa_data(simple_courses, gpa_data)
+
     return simple_courses
 
 async def get_course_search_xml(query_params: dict) -> ElementTree.Element:
@@ -98,8 +130,8 @@ async def get_course_search_xml(query_params: dict) -> ElementTree.Element:
     courses_endpoint = f"{base_url}/courses.xml"
     async with aiohttp.ClientSession() as session:
         async with session.get(courses_endpoint, params=query_params) as response:
-            logging.info('Getting course xml, URL:')
-            logging.info(response.url)
+            logger.info('Getting course xml, URL:')
+            logger.info(response.url)
             response.raise_for_status()
             content = await response.read()
     return ElementTree.fromstring(content)
@@ -114,8 +146,8 @@ async def get_section_xml_from_crn(search_params: Parameters) -> ElementTree.Ele
     }
     async with aiohttp.ClientSession() as session:
         async with session.get(courses_endpoint, params=params) as response:
-            logging.info('Getting section xml from crn, URL:')
-            logging.info(response.url)
+            logger.info('Getting section xml from crn, URL:')
+            logger.info(response.url)
             response.raise_for_status()
             content = await response.read()
     return ElementTree.fromstring(content)
@@ -132,8 +164,8 @@ async def get_single_course_xml(search_params: Parameters) -> ElementTree.Elemen
     )
     async with aiohttp.ClientSession() as session:
         async with session.get(endpoint) as response:
-            logging.info('Getting single course xml, URL:')
-            logging.info(response.url)
+            logger.info('Getting single course xml, URL:')
+            logger.info(response.url)
             response.raise_for_status()
             content = await response.read()
     return ElementTree.fromstring(content)
@@ -146,8 +178,8 @@ async def parse_course_from_section(section: ElementTree.Element) -> List[Course
     href = parents.find("course").get("href")
     async with aiohttp.ClientSession() as session:
         async with session.get(href + "?mode=cascade") as response:
-            logging.info('Getting single course xml from section, URL:')
-            logging.info(response.url)
+            logger.info('Getting single course xml from section, URL:')
+            logger.info(response.url)
             response.raise_for_status()
             content = await response.read()
     course_xml_data = ElementTree.fromstring(content)
