@@ -328,10 +328,12 @@ def parse_simple_course(course: ElementTree.Element) -> Course:
     )
 
     # check sectionDegreeAttributes for any matches from the pickles["gen_eds"] dictionary and save them to the GenEds field
-    if course.sectionDegreeAttributes is not None:
+    sectionDegreeAttributes = course.sectionDegreeAttributes
+    if sectionDegreeAttributes is not None:
         course.genEdAttributes = []
         for gen_ed in SECTION_DEGREE_ATTRIBUTES_GEN_EDS:
-            if gen_ed in course.sectionDegreeAttributes:
+            if gen_ed in sectionDegreeAttributes:
+                sectionDegreeAttributes = sectionDegreeAttributes.replace(gen_ed, "")
                 course.genEdAttributes.append(GenEd(id=SECTION_DEGREE_ATTRIBUTES_GEN_EDS[gen_ed], name=gen_ed))
     return course
 

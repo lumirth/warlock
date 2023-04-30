@@ -27,10 +27,13 @@ example_queries = [
     "cs 2",
     "k: data structures",
     "math, quant",
-    "nat sci tech, quant"
+    "nat sci tech, quant",
+    "nat sci tech, quant 1",
+    "nat sci tech, g:QR1"
     # "crn: 12345, gen ed: Humanities - Hist & Phil",
     # "id: 101, subj: ece, pot: first, instructor: John Smith",
 ]
+# TODO: investigate why quant is buggy.
 
 for query in example_queries:
     print(query)
