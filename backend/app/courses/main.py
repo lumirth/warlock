@@ -342,7 +342,6 @@ async def prepare_query_params(search_params: Parameters) -> dict:
     query_params = {
         "year": search_params.year,
         "term": search_params.term,
-        # "sectionTypeCode": "ONL" if search_params.online else None,
         "subject": search_params.subject,
         "collegeCode": search_params.college,
         "creditHours": search_params.credit_hours,
@@ -350,9 +349,7 @@ async def prepare_query_params(search_params: Parameters) -> dict:
         "instructor": search_params.instructor if search_params.instructor else None,
         "sessionId": search_params.part_of_term,
         "sectionTypeCode": "ONL" if search_params.online else None,
-        # TODO: add a bunch of type codes that make sure a course is on campus
-        # "sectionTypeCode": "LCD" if search_params.on_campus else None,
-        # "sectionTypeCode": "LEC" if search_params.on_campus else None,
+        # TODO: replace "on campus" with "section type code" in parameters
         "qs": search_params.keyword if search_params.keyword_type == "qs" else None,
         "qp": search_params.keyword if search_params.keyword_type == "qp" else None,
         "qw_a": search_params.keyword if search_params.keyword_type == "qw_a" else None,
