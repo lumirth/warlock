@@ -10,6 +10,7 @@ from .filter import (
     filter_courses_by_instructor_last_name,
     filter_courses_by_keyword,
 )
+import logging
 
 # TODO: spring cleaning. it's a mess in here
 # TODO: write a way to filter for open sections that only downloads the sections when needed
@@ -147,7 +148,8 @@ async def get_course_xml(query_params: dict) -> ElementTree.Element:
     courses_endpoint = f"{base_url}/courses.xml"
     async with aiohttp.ClientSession() as session:
         async with session.get(courses_endpoint, params=query_params) as response:
-            print(response.url)
+            logging.info('Getting course xml, URL:')
+            logging.info(response.url)
             response.raise_for_status()
             content = await response.read()
     return ElementTree.fromstring(content)
@@ -161,9 +163,10 @@ async def get_course_xml_from_dept(search_params: Parameters) -> ElementTree.Ele
         term=search_params.term,
         subject=search_params.subject,
     )
-    print(endpoint)
     async with aiohttp.ClientSession() as session:
         async with session.get(endpoint) as response:
+            logging.info('Getting course xml from dept, URL:')
+            logging.info(response.url)
             response.raise_for_status()
             content = await response.read()
     return ElementTree.fromstring(content)
@@ -179,7 +182,8 @@ async def get_section_xml_from_crn(search_params: Parameters) -> ElementTree.Ele
     }
     async with aiohttp.ClientSession() as session:
         async with session.get(courses_endpoint, params=params) as response:
-            print(response.url)
+            logging.info('Getting section xml from crn, URL:')
+            logging.info(response.url)
             response.raise_for_status()
             content = await response.read()
     return ElementTree.fromstring(content)
@@ -196,6 +200,8 @@ async def get_single_course_xml(search_params: Parameters) -> ElementTree.Elemen
     )
     async with aiohttp.ClientSession() as session:
         async with session.get(endpoint) as response:
+            logging.info('Getting single course xml, URL:')
+            logging.info(response.url)
             response.raise_for_status()
             content = await response.read()
     return ElementTree.fromstring(content)
@@ -208,6 +214,8 @@ async def parse_course_from_section(section: ElementTree.Element) -> List[Course
     href = parents.find("course").get("href")
     async with aiohttp.ClientSession() as session:
         async with session.get(href + "?mode=cascade") as response:
+            logging.info('Getting single course xml from section, URL:')
+            logging.info(response.url)
             response.raise_for_status()
             content = await response.read()
     course_xml_data = ElementTree.fromstring(content)
