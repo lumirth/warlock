@@ -247,7 +247,6 @@ COLON_ARGS = {
 
 IS_ARGS = {
     "online": ("online", "on", "o"),
-    "on_campus": ("campus", "on-campus", "on campus", "oncampus", "c"),
     "open_sections": ("open", "o"),
 }
 
