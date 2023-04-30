@@ -292,6 +292,7 @@ def parse_simple_course(course: ElementTree.Element) -> Course:
         sectionDegreeAttributes=course.find("sectionDegreeAttributes").text if course.find("sectionDegreeAttributes") is not None else None,
         courseSectionInformation=course.find("courseSectionInformation").text if course.find("courseSectionInformation") is not None else None,
     )
+
     # check sectionDegreeAttributes for any matches from the pickles["gen_eds"] dictionary and save them to the GenEds field
     if course.sectionDegreeAttributes is not None:
         course.genEdAttributes = []

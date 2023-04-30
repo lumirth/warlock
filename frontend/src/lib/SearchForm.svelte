@@ -38,9 +38,6 @@
     event.preventDefault();
     dispatch("submit", query);
     loading = true;
-    setTimeout(() => {
-      loading = false;
-    }, 10000);
   };
 
   const queryBackend = async () => {
