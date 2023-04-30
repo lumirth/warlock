@@ -2,7 +2,7 @@ from .courses import search_courses, get_single_course_xml
 from .datautils import load_gpa_data, initialize_professor_cache, save_professor_cache
 from .models import Course, Parameters
 from .models import parse_string_into_parameters, load_pickles
-from .utils import logger, log_entry_exit
+from .utils import log_time_sync
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
@@ -50,17 +50,10 @@ def read_root():
 def search_simple(query: str):
     if PROFESSOR_CACHE is {} or GPA_DATAFRAME is None or PICKLES is None:
         time.sleep(10)
-    start = time.time()
-    query_obj = parse_string_into_parameters(query, PICKLES)
-    end = time.time()
-    print(f"Time to parse query: {end - start}")
-    start = time.time()
-    results = search_advanced(query_obj)
-    end = time.time()
-    print(f"Time to search: {end - start}")
-    # print(len(results))
-    # for result in results:
-    #     print(result)
+    with log_time_sync("parse_string_into_parameters"):
+        query_obj = parse_string_into_parameters(query, PICKLES)
+    with log_time_sync("search_courses"):
+        results = search_advanced(query_obj)
     return results
 
 @app.post("/search/advanced", response_model=List[Course])

@@ -1,31 +1,26 @@
 from ..models import Course, Parameters, Section, Meeting, Instructor, GenEd
+from ..utils import logger, log_time_func, log_time_async
 from .data import add_prof_ratings, add_gpa_data
 from .filter import (
-    filter_courses_by_id,
-    filter_courses_by_level,
-    filter_courses_by_online_or_campus,
-    filter_courses_by_gen_eds,
     filter_courses_by_credit_hours,
-    filter_courses_by_part_of_term,
+    filter_courses_by_gen_eds,
+    filter_courses_by_id,
     filter_courses_by_instructor_last_name,
     filter_courses_by_keyword,
+    filter_courses_by_level,
+    filter_courses_by_online_or_campus,
+    filter_courses_by_part_of_term,
 )
-import logging
-
-logger = logging.getLogger(__name__)
+from typing import List, Union, Tuple
+import aiohttp
+import asyncio
+import polars as pl
+import time
+import xml.etree.ElementTree as ElementTree
 
 # TODO: spring cleaning. it's a mess in here
 # TODO: fix searching for gen ed categories (because filtering only works on subcategories)
-
-# from .xml import get_course_xml, parse_simple_course
-from typing import List, Union, Tuple
-import asyncio
-import polars as pl
-import aiohttp
-import xml.etree.ElementTree as ElementTree
-import time
-from contextlib import asynccontextmanager
-from functools import wraps
+# TODO: fix match all vs match any gen ed reqs, it doesnt work at all right now
 
 SECTION_DEGREE_ATTRIBUTES_GEN_EDS = {
     "Composition I": "COMP1",
@@ -43,29 +38,11 @@ SECTION_DEGREE_ATTRIBUTES_GEN_EDS = {
     "Social & Beh Sci - Beh Sci": "1BSC",
 }
 
-# TODO: move wrapper to utils
-def log_time_func(func):
-    @wraps(func)
-    async def wrapper(*args, **kwargs):
-        start = time.time()
-        result = await func(*args, **kwargs)
-        end = time.time()
-        logger.info(f"FUNC: {func.__name__} took {end - start} seconds")
-        return result
-
-    return wrapper
-
-@asynccontextmanager
-async def log_time(statement_name: str):
-    start = time.time()
-    yield
-    end = time.time()
-    logger.info(f"STATEMENT: {statement_name} took {end - start} seconds")
-
 async def search_courses(search_params: Parameters, gpa_data: pl.DataFrame) -> List[Course]:
     search_params = validate_and_prepare_search_params(search_params)
     courses = await get_courses_based_on_search_params(search_params, gpa_data)
     return courses
+
 
 def validate_and_prepare_search_params(search_params: Parameters) -> Parameters:
     if not isinstance(search_params, Parameters):
@@ -77,6 +54,7 @@ def validate_and_prepare_search_params(search_params: Parameters) -> Parameters:
 
     return search_params
 
+
 async def get_courses_based_on_search_params(search_params: Parameters, gpa_data: pl.DataFrame) -> List[Course]:
     if search_params.crn is not None:
         return await get_courses_by_crn(search_params, gpa_data)
@@ -86,6 +64,7 @@ async def get_courses_based_on_search_params(search_params: Parameters, gpa_data
 
     return await get_courses_by_query_params(search_params, gpa_data)
 
+
 @log_time_func
 async def get_courses_by_crn(search_params: Parameters, gpa_data: pl.DataFrame) -> List[Course]:
     course_xml = await get_section_xml_from_crn(search_params)
@@ -93,6 +72,7 @@ async def get_courses_by_crn(search_params: Parameters, gpa_data: pl.DataFrame) 
     courses = [course]
     courses = add_gpa_data(courses, gpa_data)
     return courses
+
 
 @log_time_func
 async def get_single_course(search_params: Parameters, gpa_data: pl.DataFrame) -> List[Course]:
@@ -102,39 +82,42 @@ async def get_single_course(search_params: Parameters, gpa_data: pl.DataFrame) -
     courses = add_gpa_data(courses, gpa_data)
     return courses
 
+
 @log_time_func
 async def get_courses_by_query_params(search_params: Parameters, gpa_data: pl.DataFrame) -> List[Course]:
-    async with log_time("prepare_query_params"):
+    async with log_time_async("prepare_query_params"):
         query_params = await prepare_query_params(search_params)
 
-    async with log_time("get_course_xml"):
+    async with log_time_async("get_course_search_xml"):
         course_xml = await get_course_search_xml(query_params)
 
-    async with log_time("parse_simple_course"):
+    async with log_time_async("parse_simple_course"):
         simple_courses = list(map(parse_simple_course, course_xml.findall(".//course")))
 
-    async with log_time("filter_courses_by_id"):
+    async with log_time_async("filter_courses_by_id"):
         if search_params.course_id is not None:
             simple_courses = filter_courses_by_id(simple_courses, search_params.course_id)
 
         if search_params.course_level is not None:
             simple_courses = filter_courses_by_level(simple_courses, search_params.course_level)
 
-    async with log_time("add_gpa_data"):
+    async with log_time_async("add_gpa_data"):
         simple_courses = add_gpa_data(simple_courses, gpa_data)
 
     return simple_courses
+
 
 async def get_course_search_xml(query_params: dict) -> ElementTree.Element:
     base_url = "https://courses.illinois.edu/cisapp/explorer/schedule"
     courses_endpoint = f"{base_url}/courses.xml"
     async with aiohttp.ClientSession() as session:
         async with session.get(courses_endpoint, params=query_params) as response:
-            logger.info('Getting course xml, URL:')
+            logger.info("Getting course xml, URL:")
             logger.info(response.url)
             response.raise_for_status()
             content = await response.read()
     return ElementTree.fromstring(content)
+
 
 async def get_section_xml_from_crn(search_params: Parameters) -> ElementTree.Element:
     base_url = "https://courses.illinois.edu/cisapp/explorer/schedule"
@@ -146,7 +129,7 @@ async def get_section_xml_from_crn(search_params: Parameters) -> ElementTree.Ele
     }
     async with aiohttp.ClientSession() as session:
         async with session.get(courses_endpoint, params=params) as response:
-            logger.info('Getting section xml from crn, URL:')
+            logger.info("Getting section xml from crn, URL:")
             logger.info(response.url)
             response.raise_for_status()
             content = await response.read()
@@ -164,7 +147,7 @@ async def get_single_course_xml(search_params: Parameters) -> ElementTree.Elemen
     )
     async with aiohttp.ClientSession() as session:
         async with session.get(endpoint) as response:
-            logger.info('Getting single course xml, URL:')
+            logger.info("Getting single course xml, URL:")
             logger.info(response.url)
             response.raise_for_status()
             content = await response.read()
@@ -178,13 +161,14 @@ async def parse_course_from_section(section: ElementTree.Element) -> List[Course
     href = parents.find("course").get("href")
     async with aiohttp.ClientSession() as session:
         async with session.get(href + "?mode=cascade") as response:
-            logger.info('Getting single course xml from section, URL:')
+            logger.info("Getting single course xml from section, URL:")
             logger.info(response.url)
             response.raise_for_status()
             content = await response.read()
     course_xml_data = ElementTree.fromstring(content)
     course = parse_course_from_full_course(course_xml_data)
     return course
+
 
 def parse_course_from_full_course(course: ElementTree.Element) -> Course:
     course_id = course.get("id")
@@ -226,6 +210,7 @@ def parse_course_from_full_course(course: ElementTree.Element) -> Course:
         gen_ed_attributes.append(GenEd(id=code, name=attribute.text))
 
     return Course(id=course_id, label=label, description=description, creditHours=credit_hours, href=href, sections=sections, genEdAttributes=gen_ed_attributes, term=term, year=year)
+
 
 def parse_simple_course(course: ElementTree.Element) -> Course:
     parents = course.find("parents")

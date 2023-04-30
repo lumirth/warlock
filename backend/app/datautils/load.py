@@ -1,4 +1,3 @@
-from ..utils import log_entry_exit, logger
 from .rmp import fetch_all_professors
 import asyncio
 import glob
