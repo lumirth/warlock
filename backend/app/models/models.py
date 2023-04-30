@@ -130,8 +130,8 @@ class Parameters(BaseModel):
     match_any_gened_reqs: Optional[bool]  # NOT substantive
     # but this or match_all_gened_reqs is required if gened_reqs is present. If both, match_all_gened_reqs takes precedence
     part_of_term: Optional[str]  # substantive
-    # online: Optional[bool]  # substantive
-    on_campus: Optional[bool]  # substantive
+    online: Optional[bool]  # substantive
+    # on_campus: Optional[bool]  # substantive
     open_sections: Optional[bool]  # NOT substantive
 
     def __str__(self) -> str:
