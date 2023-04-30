@@ -17,6 +17,7 @@ import asyncio
 import polars as pl
 import aiohttp
 import xml.etree.ElementTree as ElementTree
+import time
 
 SECTION_DEGREE_ATTRIBUTES_GEN_EDS = {
     "Composition I": "COMP1",
@@ -91,11 +92,21 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
         return detailed_courses
 
     # the slow way
+    start = time.time()
     query_params = await prepare_query_params(search_params)
+    end = time.time()
+    print(f"prepare_query_params took {end - start} seconds")
+    start = time.time()
     course_xml = await get_course_xml(query_params)
-
+    end = time.time()
+    print(f"get_course_xml took {end - start} seconds")
+    
+    start = time.time()
     simple_courses = list(map(parse_simple_course, course_xml.findall(".//course")))
+    end = time.time()
+    print(f"parse_simple_course took {end - start} seconds")
 
+    start = time.time()
     if search_params.course_id is not None:
         simple_courses_filtered = filter_courses_by_id(simple_courses, search_params.course_id)
         simple_courses = simple_courses_filtered
@@ -103,6 +114,8 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
     if search_params.course_level is not None:
         simple_courses_filtered = filter_courses_by_level(simple_courses, search_params.course_level)
         simple_courses = simple_courses_filtered
+    end = time.time()
+    print(f"filter_courses_by_id took {end - start} seconds")
     #TODO: filtering by online is now broken without detailed sections
     # flag = "both"
     # if search_params.online:
@@ -113,7 +126,10 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
     #     flag = "both"
 
     # simple_courses = filter_courses_by_online_or_campus(simple_courses, flag=flag)
+    start = time.time()
     simple_courses = add_gpa_data(simple_courses, gpa_data)
+    end = time.time()
+    print(f"add_gpa_data took {end - start} seconds")
     return simple_courses
 
 async def get_course_xml(query_params: dict) -> ElementTree.Element:

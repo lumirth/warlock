@@ -11,19 +11,16 @@ def get_list_of_instructors(simple_course: Course) -> List[str]:
                 instructors.add(f"{instructor.firstName} {instructor.lastName}")
     return list(instructors)
 
-def average_gpa_by_course(gpa_dataframe: pl.DataFrame, subject: str, number: int) -> pl.DataFrame:
-    gpa_dataframe = gpa_dataframe.groupby(["Subject", "Number"]).agg(pl.col("GPA").mean().alias("Average_GPA"))
-    course_average_gpa = gpa_dataframe.filter((gpa_dataframe["Subject"] == subject) & (gpa_dataframe["Number"] == number)).select("Average_GPA")
-    if course_average_gpa.height > 0:
-        average_gpa_value = course_average_gpa["Average_GPA"].to_list()[0]
-        return average_gpa_value
-    else:
-        return None
+def average_gpa_by_course(gpa_dataframe: pl.DataFrame) -> pl.DataFrame:
+    return gpa_dataframe.groupby(["Subject", "Number"]).agg(pl.col("GPA").mean().alias("Average_GPA"))
 
 def add_gpa_data(simple_courses: List[Course], gpa_data) -> List[Course]:
+    average_gpa_dataframe = average_gpa_by_course(gpa_data)
     for course in simple_courses:
         subj, num = course.id.split(" ")
-        course.gpa_average = average_gpa_by_course(gpa_data, subj, num)
+        course_average_gpa = average_gpa_dataframe.filter((average_gpa_dataframe["Subject"] == subj) & (average_gpa_dataframe["Number"] == int(num))).select("Average_GPA")
+        if course_average_gpa.height > 0:
+            course.gpa_average = course_average_gpa["Average_GPA"].to_list()[0]
     return simple_courses
 
 def get_professor_data_from_cache(professor_cache: dict, instructor_name: str) -> dict:
