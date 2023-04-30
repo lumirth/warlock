@@ -11,6 +11,7 @@ from .filter import (
     filter_courses_by_keyword,
 )
 
+# TODO: spring cleaning. it's a mess in here
 # TODO: write a way to filter for open sections that only downloads the sections when needed
 
 # from .xml import get_course_xml, parse_simple_course
@@ -64,7 +65,7 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
         courses = add_gpa_data(courses, gpa_data)
         return courses
 
-    if search_params.subject is not None:
+    if search_params.subject is not None and search_params.open_sections is None:
         course_xml = await get_course_xml_from_dept(search_params)
         detailed_courses = parse_simple_courses_from_dept(course_xml)
         if search_params.course_id is not None:
@@ -126,7 +127,6 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
         simple_courses = simple_courses_filtered
     end = time.time()
     print(f"filter_courses_by_id took {end - start} seconds")
-    #TODO: filtering by online is now broken without detailed sections
     # flag = "both"
     # if search_params.online:
     #     flag = "online"
