@@ -48,12 +48,16 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
     if search_params.crn is not None:
         course_xml = await get_section_xml_from_crn(search_params)
         course = await parse_course_from_section(course_xml)
-        return [course]
+        courses = [course]
+        courses = add_gpa_data(courses, gpa_data)
+        return courses
 
     if search_params.course_id is not None and search_params.subject is not None:
         course_xml = await get_single_course_xml(search_params)
         course = parse_course_from_full_course(course_xml)
-        return [course]
+        courses = [course]
+        courses = add_gpa_data(courses, gpa_data)
+        return courses
 
     if search_params.subject is not None:
         course_xml = await get_course_xml_from_dept(search_params)
