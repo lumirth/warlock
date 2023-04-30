@@ -1,24 +1,16 @@
 from ..models import Course, Parameters, Section, Meeting, Instructor, GenEd
 from ..utils import logger, log_time_func, log_time_async
-from .data import add_prof_ratings, add_gpa_data
+from .data import add_gpa_data
 from .filter import (
-    filter_courses_by_credit_hours,
-    filter_courses_by_gen_eds,
     filter_courses_by_id,
-    filter_courses_by_instructor_last_name,
-    filter_courses_by_keyword,
     filter_courses_by_level,
-    filter_courses_by_online_or_campus,
-    filter_courses_by_part_of_term,
 )
-from typing import List, Union, Tuple
+from .xml import get_course_search_xml, get_section_xml_from_crn, get_single_course_xml
+from typing import List
 import aiohttp
-import asyncio
 import polars as pl
-import time
 import xml.etree.ElementTree as ElementTree
 
-# TODO: spring cleaning. it's a mess in here
 # TODO: fix searching for gen ed categories (because filtering only works on subcategories)
 # TODO: fix match all vs match any gen ed reqs, it doesnt work at all right now
 
@@ -105,53 +97,6 @@ async def get_courses_by_query_params(search_params: Parameters, gpa_data: pl.Da
         simple_courses = add_gpa_data(simple_courses, gpa_data)
 
     return simple_courses
-
-
-async def get_course_search_xml(query_params: dict) -> ElementTree.Element:
-    base_url = "https://courses.illinois.edu/cisapp/explorer/schedule"
-    courses_endpoint = f"{base_url}/courses.xml"
-    async with aiohttp.ClientSession() as session:
-        async with session.get(courses_endpoint, params=query_params) as response:
-            logger.info("Getting course xml, URL:")
-            logger.info(response.url)
-            response.raise_for_status()
-            content = await response.read()
-    return ElementTree.fromstring(content)
-
-
-async def get_section_xml_from_crn(search_params: Parameters) -> ElementTree.Element:
-    base_url = "https://courses.illinois.edu/cisapp/explorer/schedule"
-    courses_endpoint = f"{base_url}/sections.xml"
-    params = {
-        "year": search_params.year,
-        "term": search_params.term,
-        "crn": search_params.crn,
-    }
-    async with aiohttp.ClientSession() as session:
-        async with session.get(courses_endpoint, params=params) as response:
-            logger.info("Getting section xml from crn, URL:")
-            logger.info(response.url)
-            response.raise_for_status()
-            content = await response.read()
-    return ElementTree.fromstring(content)
-
-
-async def get_single_course_xml(search_params: Parameters) -> ElementTree.Element:
-    base_url = "https://courses.illinois.edu/cisapp/explorer/schedule"
-    endpoint = "{base_url}/{year}/{term}/{subject}/{course_id}.xml?mode=cascade".format(
-        base_url=base_url,
-        year=search_params.year,
-        term=search_params.term,
-        subject=search_params.subject,
-        course_id=search_params.course_id,
-    )
-    async with aiohttp.ClientSession() as session:
-        async with session.get(endpoint) as response:
-            logger.info("Getting single course xml, URL:")
-            logger.info(response.url)
-            response.raise_for_status()
-            content = await response.read()
-    return ElementTree.fromstring(content)
 
 
 async def parse_course_from_section(section: ElementTree.Element) -> List[Course]:
