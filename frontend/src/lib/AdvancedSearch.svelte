@@ -280,7 +280,7 @@
     options={genedReqsOptions}
     bind:selectedValue={selectedGenedReqs3}
   />
-  <div class="block my-4" />
+  <!-- <div class="block my-4" /> -->
   <!-- <Radio
     id="matchAllGenedReqs"
     label="Match all GenEd requirements"
@@ -295,8 +295,8 @@
     value="matchAny"
     groupValue={genEdMatching}
     onChange={handleGenEdMatchingChange}
-  />
-  <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-base-100" /> -->
+  />-->
+  <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-base-100" /> 
 
   <Dropdown
     id="partOfTerm"
