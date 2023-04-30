@@ -17,7 +17,7 @@
     <div class="pl-2 uppercase">{sem_code}</div>
   </div>
   <div class="flex flex-row flex-nowrap gap-2 py-2 flex-grow pl-3">
-    <div class="flex flex-row items-center">
+    <div class="flex flex-row items-center flex-nowrap whitespace-nowrap flex-shrink-0">
       {#if average_gpa}
       <div class="flex items-center tooltip tooltip-neutral tooltip-bottom before:font-mono before:uppercase before:text-xs" data-tip="Historic average GPA">
         <div class="flex items-center">
@@ -28,18 +28,18 @@
         </p>
         </div>
       {:else}
-      <div class="flex items-center tooltip tooltip-neutral tooltip-bottom before:font-mono before:uppercase before:text-xs" data-tip="No GPA data available">
+      <div class="flex items-center tooltip tooltip-neutral tooltip-bottom before:font-mono before:uppercase before:text-xs " data-tip="No GPA data available">
         <div class="flex items-center">
           <div    class="radial-progress bg-neutral text-neutral border-2 border-neutral" style="--value:0; --size:1rem; --thickness:3px;"/>
         </div>
-        <p class="pl-2 mb-[1.4px] text-lg leading-4 flex items-center text-neutral">
+        <p class="pl-2 mb-[1.4px] text-lg leading-4 flex items-center text-neutral flex-nowrap whitespace-nowrap flex-shrink-0">
           NO GPA
         </p>
       </div>
       {/if}
     </div>
   </div>
-  <div class="flex flex-wrap gap-2 mr-[-4px]">
+  <div class="flex gap-2 flex-nowrap">
     <!-- TODO: add tooltips for full name of gened -->
     {#each tags_text as tag}
       <div
