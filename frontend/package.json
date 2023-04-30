@@ -26,6 +26,7 @@
 	"type": "module",
 	"dependencies": {
 		"@sveltejs/adapter-static": "^2.0.2",
-		"daisyui": "^2.51.5"
+		"daisyui": "^2.51.5",
+		"gh-pages": "^5.0.0"
 	}
 }

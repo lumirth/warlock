@@ -42,7 +42,7 @@
 
   const queryBackend = async () => {
     const response = await fetch(
-      "http://localhost:8000/search/simple?query=" + query
+      "https://warlock-backend.fly.dev/search/simple?query=" + query
     );
     const data = await response.json();
     results = data;
