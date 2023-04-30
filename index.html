@@ -5,13 +5,13 @@
 		<link rel="icon" href="./warlock-favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta http-equiv="content-security-policy" content="">
-		<link href="./_app/immutable/assets/_layout-e71fecca.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/_layout-c7669646.css" rel="stylesheet">
 		<link href="./_app/immutable/assets/_page-9dbb4c05.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/start-6c2e3ba7.js">
+		<link rel="modulepreload" href="./_app/immutable/start-d8ae226d.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/index-367b9575.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/singletons-c638245a.js">
-		<link rel="modulepreload" href="./_app/immutable/components/pages/_layout.svelte-69b07dde.js">
-		<link rel="modulepreload" href="./_app/immutable/components/pages/_page.svelte-77976cdc.js">
+		<link rel="modulepreload" href="./_app/immutable/components/pages/_layout.svelte-51603bce.js">
+		<link rel="modulepreload" href="./_app/immutable/components/pages/_page.svelte-7be4a0b2.js">
 		<link rel="modulepreload" href="./_app/immutable/modules/pages/_page.ts-dc85b7cd.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/_page-da46b06b.js"><title>Course Warlock</title><!-- HEAD_svelte-1nd7cdc_START --><meta name="description" content="Svelte demo app"><!-- HEAD_svelte-1nd7cdc_END -->
 	</head>
@@ -36,11 +36,7 @@
   
 
 
-<label for="modal-syntax" class="btn btn-xs mt-4 font-normal bg-base-100 border-none h-3 underline">SYNTAX</label>
-  
-
-
-<label for="modal-examples" class="btn btn-xs mt-4 font-normal bg-base-100 border-none h-3 underline">EXAMPLES</label>
+<label for="modal-help" class="btn btn-xs mt-4 font-normal bg-base-100 border-none h-3 underline">HELP</label>
   <input type="checkbox" id="modal-advanced" class="modal-toggle">
 <label for="modal-advanced" class="modal modal-bottom sm:modal-middle cursor-pointer"><label class="modal-box relative no-scrollbar" for=""><label for="modal-advanced" class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200">✕</label>
     <h3 class="text-lg font-bold">ADVANCED SEARCH</h3>
@@ -104,46 +100,77 @@
     <button type="submit" class="btn btn-sm bg-base-200 font-normal text-lg">SEARCH
       </button></div></form></label></label>
 
-  <input type="checkbox" id="modal-syntax" class="modal-toggle">
-<label for="modal-syntax" class="modal modal-bottom sm:modal-middle cursor-pointer"><label class="modal-box relative no-scrollbar" for=""><label for="modal-syntax" class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200">✕</label>
-    <h3 class="text-lg font-bold">QUERY SYNTAX</h3>
-    <div class="prose text-sm pt-2 select-text cursor-text"><p>The search box takes a comma-separated list of arguments. It will
-        attempt to intelligently match your input for the following:
-      </p>
-      <ul><li>Subject/course codes (<code>CS 225; macs356; mathematics</code>)
-        </li>
-        <li>GenEds (<code>adv comp; humanities &amp; the arts; life sciences</code>)
-        </li></ul>
-      <p>You can also input the following:</p>
-      <ul><li>CRNs (<code>12345; 54321</code>)</li>
-        <li>Years (<code>2022; 2004</code>)</li>
-        <li>Terms (<code>fall; spring; summer; winter; fa; sp; su; wi</code>)
-        </li></ul>
-      <p>Or you can declare values explicitly:</p>
-      <ul><li>Subject/department (<code>subj:CS; d:MATH; dept: CPSC</code>)</li>
-        <li>Course ID (<code>course:225; id: 107</code>)</li>
-        <li>Year (<code>yr:2009; year:2011</code>)</li>
-        <li>Term (<code>term:fall; t:sp</code>)</li>
-        <li>CRN (<code>crn:12345</code>)</li>
-        <li>Credit hours (<code>hrs:3; hr: 1</code>)</li>
-        <li>GenEd (<code>gen:adv comp; g:hum</code>)</li>
-        <li>Part of Term (<code>pot:first; p: whole; part-of-term:all</code>)
-        </li>
-        <li>Keyword (<code>q: minds and machines; keyword: advanced applications</code>)
-        </li></ul></div></label></label>
+  <input type="checkbox" id="modal-help" class="modal-toggle">
+<label for="modal-help" class="modal modal-bottom sm:modal-middle cursor-pointer"><label class="modal-box relative no-scrollbar" for=""><label for="modal-help" class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200">✕</label>
+    <h3 class="text-lg font-bold">HELP</h3>
+    <div class="prose text-sm pt-2 select-text cursor-text"><p>To search, simply type a department name (with or without a course number),
+    or a gened. For example, &quot;comp sci&quot; or &quot;adv comp&quot;.
+  </p>
+  <p>You can also combine search terms using commas. For example:</p>
+  <ul><li><code>&quot;comp sci, adv comp&quot;</code> will return all courses in the CS
+      department that satisfy the advanced composition gened.
+    </li></ul>
+  <p>You can also specify a term, year, or CRN:
+  </p>
+  <ul><li><code>&quot;macs, western, fall&quot;</code> will return all courses in the MACS
+      department that satisfy the cultural studies - western gened and are offered in
+      the fall.
+    </li> 
+    <li><code>&quot;phil, humanities &amp; the arts, 2021&quot;</code> will return all courses in the PHIL
+      department that satisfy the humanities &amp; the arts gened and are offered in
+      2021.
+    </li>
+    <li><code>&quot;74331&quot;</code> will return the single course with a section matching the CRN.
+    </li></ul>
+  <p>Note that if you don&#39;t specify either a year or a term, each will default to the most recent
+    valid value. For example, during the latter spring semester, searching &quot;macs, western, 2021&quot;
+    will return courses offered in the <i>fall</i> of 2021. 
+  </p>
+  <div class="text-lg font-bold text-gray-200">TIPS</div>
+  <ul><li><code>&quot;hrs:X&quot;</code> can be used to specify an amount of credit hours</li>
+    <li><code>&quot;pot:X&quot;</code> can be used to specify a part of term (A, B, full)</li>
+    
+    <li><code>&quot;CS 3&quot;</code> you can get a specific level of courses (300, 200, etc)</li></ul>
+  <br>
 
-  <input type="checkbox" id="modal-examples" class="modal-toggle">
-<label for="modal-examples" class="modal modal-bottom sm:modal-middle cursor-pointer"><label class="modal-box relative no-scrollbar" for=""><label for="modal-examples" class="btn btn-sm absolute right-2 top-2 border-neutral bg-base-200">✕</label>
-    <h3 class="text-lg font-bold">EXAMPLES</h3>
-    <div class="prose text-sm pt-2 select-text cursor-text"><p>Find courses in the MACS department that match the Cultural Studies:
-        Western GenEd:
-      </p>
-      <ul><li><code>macs, western</code></li>
-        <li><code>media and cinema studies, cultural studies western</code></li>
-        <li>Specifically at the 300 level: <code>MACS 3, g:west</code></li>
-        <li>Worth 3 credit hours: <code>MACS, g:west, hrs:3</code></li>
-        <li>Online: <code>MACS, western, is:online</code></li>
-        <li>First eight weeks: <code>macs, western, pot:a</code></li></ul></div></label></label></section>
+<div class="collapse collapse-plus"><input type="checkbox">
+    <div class="collapse-title text-lg font-bold bg-base-200">ADVANCED QUERIES
+    </div>
+    <div class="collapse-content"><p>If you&#39;re okay with a little more complexity, you can use the search box to get more specific results.
+        </p>
+          <p>The search box takes a comma-separated list of arguments. It will attempt to
+            intelligently match your input for the following:
+          </p>
+          <ul><li>Subject/course codes (<code>CS 225; macs356; mathematics</code>)
+            </li>
+            <li>GenEds (<code>adv comp; humanities &amp; the arts; life sciences</code>)
+            </li></ul>
+          <p>You can also input the following:</p>
+          <ul><li>CRNs (<code>12345; 54321</code>)</li>
+            <li>Years (<code>2022; 2004</code>)</li>
+            <li>Terms (<code>fall; spring; summer; winter; fa; sp; su; wi</code>)
+            </li></ul>
+          <p>Most notably, you can declare search parameters explicitly:</p>
+          <ul><li>Subject/department (<code>subj:CS; d:MATH; dept: CPSC</code>)</li>
+            <li>Course ID (<code>course:225; id: 107</code>)</li>
+            <li>Year (<code>yr:2009; year:2011</code>)</li>
+            <li>Term (<code>term:fall; t:sp</code>)</li>
+            <li>CRN (<code>crn:12345</code>)</li>
+            <li>Credit hours (<code>hrs:3; hr: 1</code>)</li>
+            
+            <li>GenEd (<code>gen:ADVCOMP; g:HUM</code>)</li>
+            <li>Part of Term (<code>pot:first; p: whole; part-of-term:all</code>)
+            </li>
+            <li>Keyword (<code>q: minds and machines; keyword: advanced applications</code>)
+            </li></ul>
+          <p>Here are some further examples with the MACS department:
+          </p>
+          <ul><li><code>macs, western</code></li>
+            <li><code>media and cinema studies, cultural studies western</code></li>
+            <li>Specifically at the 300 level: <code>MACS 3, g:west</code></li>
+            <li>Worth 3 credit hours: <code>MACS, g:west, hrs:3</code></li>
+            <li>Online: <code>MACS, western, is:online</code></li>
+            <li>First eight weeks: <code>macs, western, pot:a</code></li></ul></div></div></div></label></label></section>
 <section class="pt-20">
   
   
@@ -155,14 +182,14 @@
 </div>
 
 
-		<script type="module" data-sveltekit-hydrate="vkw06r">
-			import { start } from "./_app/immutable/start-6c2e3ba7.js";
+		<script type="module" data-sveltekit-hydrate="1wytl5k">
+			import { start } from "./_app/immutable/start-d8ae226d.js";
 
 			start({
 				assets: "",
 				env: {},
-				target: document.querySelector('[data-sveltekit-hydrate="vkw06r"]').parentNode,
-				version: "1682825730825",
+				target: document.querySelector('[data-sveltekit-hydrate="1wytl5k"]').parentNode,
+				version: "1682835880854",
 				hydrate: {
 					node_ids: [0, 2],
 					data: [null,null],
