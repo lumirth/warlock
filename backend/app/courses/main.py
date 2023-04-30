@@ -333,6 +333,8 @@ def parse_simple_course(course: ElementTree.Element) -> Course:
         course.genEdAttributes = []
         for gen_ed in SECTION_DEGREE_ATTRIBUTES_GEN_EDS:
             if gen_ed in sectionDegreeAttributes:
+                if gen_ed == "Quantitative Reasoning I" and "Quantitative Reasoning II" in sectionDegreeAttributes:
+                    continue
                 sectionDegreeAttributes = sectionDegreeAttributes.replace(gen_ed, "")
                 course.genEdAttributes.append(GenEd(id=SECTION_DEGREE_ATTRIBUTES_GEN_EDS[gen_ed], name=gen_ed))
     return course
