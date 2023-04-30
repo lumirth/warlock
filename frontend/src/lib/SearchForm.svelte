@@ -24,6 +24,7 @@
     "2005, mathematics, hrs:2",
     "hrs:3, phil, nonwestern",
     "pot:b, us minority",
+    "bus 3, is:open",
     "astronomy",
     "prof: cole",
   ];
@@ -49,7 +50,7 @@
   const queryBackend = async () => {
     try {
       const response = await fetch(
-        "https://warlock-backend.fly.dev/search/simple?query=" + query
+        "http://localhost:8000/search/simple?query=" + query
       );
       const data = await response.json();
       results = data;

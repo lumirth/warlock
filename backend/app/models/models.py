@@ -118,7 +118,6 @@ class Parameters(BaseModel):
     keyword: Optional[str]  # substantive
     keyword_type: Optional[str]  # NOT substantive, but required if keyword is present
     instructor: Optional[str]  # substantive
-    # college: Optional[str]  # substantive
     subject: Optional[str]  # substantive
     course_id: Optional[int]  # NOT substantive
     crn: Optional[int]  # substantive, but disregards other parameters
@@ -131,7 +130,6 @@ class Parameters(BaseModel):
     # but this or match_all_gened_reqs is required if gened_reqs is present. If both, match_all_gened_reqs takes precedence
     part_of_term: Optional[str]  # substantive
     online: Optional[bool]  # substantive
-    # on_campus: Optional[bool]  # substantive
     open_sections: Optional[bool]  # NOT substantive
 
     def __str__(self) -> str:
@@ -141,7 +139,6 @@ class Parameters(BaseModel):
             "keyword",
             "keyword_type",
             "instructor",
-            "college",
             "subject",
             "course_id",
             "crn",
@@ -151,7 +148,6 @@ class Parameters(BaseModel):
             "match_any_gened_reqs",
             "part_of_term",
             "online",
-            "on_campus",
             "open_sections",
         ]
         max_attr_length = max(len(attr) for attr in attributes)

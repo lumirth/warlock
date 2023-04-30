@@ -11,6 +11,8 @@ from .filter import (
     filter_courses_by_keyword,
 )
 
+# TODO: write a way to filter for open sections that only downloads the sections when needed
+
 # from .xml import get_course_xml, parse_simple_course
 from typing import List, Union, Tuple
 import asyncio
@@ -45,8 +47,8 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
     simple_courses = []
     
     if search_params.course_id is not None and len(str(search_params.course_id)) != 3:
-        search_params.course_id = None
         search_params.course_level = str(search_params.course_id)[0]
+        search_params.course_id = None
 
     if search_params.crn is not None:
         course_xml = await get_section_xml_from_crn(search_params)
@@ -374,6 +376,7 @@ async def prepare_query_params(search_params: Parameters) -> dict:
         "instructor": search_params.instructor if search_params.instructor else None,
         "sessionId": search_params.part_of_term,
         "sectionTypeCode": "ONL" if search_params.online else None,
+        "enrollmentStatus": "Open" if search_params.open_sections else None,
         # TODO: replace "on campus" with "section type code" in parameters
         "qs": search_params.keyword if search_params.keyword_type == "qs" else None,
         "qp": search_params.keyword if search_params.keyword_type == "qp" else None,
