@@ -168,8 +168,8 @@ def _parse_subject_and_course_number(token: str, advanced_query: Parameters, dat
     return advanced_query
 
 def _parse_optional_digits_pattern(token: str, advanced_query: Parameters, data: dict) -> Parameters:
-    subj_match = process.extractOne(token, data["subjects"].keys(), scorer=fuzz.token_set_ratio, score_cutoff=FUZZ_THRESH)
-    gened_match = process.extractOne(token, data["gen_eds"].keys(), scorer=fuzz.token_set_ratio, score_cutoff=FUZZ_THRESH)
+    subj_match = process.extractOne(token, data["subjects"].keys(), scorer=fuzz.token_sort_ratio, score_cutoff=FUZZ_THRESH)
+    gened_match = process.extractOne(token, data["gen_eds"].keys(), scorer=fuzz.token_sort_ratio, score_cutoff=FUZZ_THRESH)
 
     subj_score = subj_match[1] if subj_match is not None else 0
     gened_score = gened_match[1] if gened_match is not None else 0
