@@ -85,7 +85,7 @@
     <Help />
   </Modal>
 </section>
-<section class="pt-20">
+<section class="pt-2">
   {#if returned_results && results.length == 0}
     <div class="flex justify-center">
       <p class="text-2xl font-mono uppercase">No results found</p>
@@ -94,15 +94,15 @@
   <!-- for each result-->
   {#if results.length > 0}
     <!-- sort by GPA-->
-    <div class="flex justify-end">
+    <div class="flex justify-end gap-1">
       <button
-        class="flex justify-end btn btn-sm bg-transparent border-transparent underline mb-5"
+        class="btn btn-xs mt-4 font-normal bg-base-100 border-none h-3 underline"
         on:click={() => (results = sortByField(results, "gpa_average", "id"))}
       >
         Sort by GPA
       </button>
       <button
-        class="flex justify-end btn btn-sm bg-transparent border-transparent underline mb-5"
+        class="btn btn-xs mt-4 font-normal bg-base-100 border-none h-3 underline mb-4"
         on:click={() => (results = sortByField(results, "creditHours", "id"))}
       >
         Sort by Credit Hours
