@@ -365,7 +365,7 @@ async def prepare_query_params(search_params: Parameters) -> dict:
         "year": search_params.year,
         "term": search_params.term,
         "subject": search_params.subject,
-        "collegeCode": search_params.college,
+        # "collegeCode": search_params.college,
         "creditHours": search_params.credit_hours,
         "gened": " ".join(search_params.gened_reqs) if search_params.gened_reqs and not search_params.match_any_gened_reqs else None,
         "instructor": search_params.instructor if search_params.instructor else None,
