@@ -11,7 +11,7 @@ example_queries = [
     "pysch 101",
     "MACS, western",
     "hrs:1, is:online",
-    "gen:HUM, is:campus",
+    "gen:HUM",
     "adv comp, pot:b",
     "prof: wade",
     "keyword: data",
