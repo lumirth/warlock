@@ -15,7 +15,7 @@
 </script>
 
 <div class="grid grid-cols-[auto,1fr,auto] items-center gap-x-2 mx-2 h-10">
-  <div class="text-2xl font-semibold whitespace-nowrap border-r border-neutral pr-3 pl-1 h-full flex flex-col justify-center">
+  <div class="text-2xl font-semibold whitespace-nowrap border-r border-neutral pr-3 pl-1 h-full flex flex-col justify-center decoration-1 underline underline-offset-2 transition-all hover:underline-offset-4 hover:text-primary">
     <a class="cursor-pointer" href={link}>{course_id}</a>
   </div>
   <div class="relative overflow-x-scroll pl-1 pr-1">

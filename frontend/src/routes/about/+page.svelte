@@ -7,14 +7,10 @@
 	<h1>ABOUT THIS APP</h1>
 
 	<p>
-		Course Warlock brings together RateMyProfessor ratings, historic GPA data, and the University of Illinois's courses API together to give one straightforward and comprehensive tool for understanding whether a course is worth taking. 
+		Course Warlock brings together the University of Illinois' course catalog, historic GPA data, and RateMyProfessor ratings(coming soon) together to give the most straightforward and comprehensive tool for understanding whether a course is worth taking. 
 	</p>
 
 	<p>
-		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. It was created by running:
-	</p>
-
-	<pre class="!rounded-none bg-base-200">npm create svelte@latest</pre>
-
+		A <a class="decoration-1 underline underline-offset-2 transition-all hover:underline-offset-4 hover:text-primary" href="https://mirth.cc">lumirth</a> tool. Made for students, by students.
 
 </div>
