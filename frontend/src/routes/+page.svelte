@@ -90,8 +90,8 @@
 </section>
 <section class="pt-2">
   {#if returned_results && results.length == 0}
-    <div class="flex justify-center">
-      <p class="text-2xl font-mono uppercase text-neutral">No results found</p>
+    <div class="flex justify-center bg-base-200 my-5 py-2 border border-neutral opacity-50">
+      <p class="text-2xl font-mono uppercase text-neutral ">No results found</p>
     </div>
   {/if}
   <!-- for each result-->
