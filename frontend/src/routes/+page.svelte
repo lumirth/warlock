@@ -30,14 +30,15 @@
   $: {
     console.log("Results updated:", results);
     if (results.length > 0) {
-      updateLoading(false);
       closeAdvancedSearchModal();
+      updateLoading(false);
     }
   }
 
   // Watch for adv_params updates
   $: {
     if (adv_params) {
+      closeAdvancedSearchModal();
       queryBackend();
     }
   }
@@ -55,6 +56,8 @@
     );
     const data = await response.json();
     results = data;
+    returned_results = true;
+    updateLoading(false);
   };
 
   onMount(() => {
@@ -88,7 +91,7 @@
 <section class="pt-2">
   {#if returned_results && results.length == 0}
     <div class="flex justify-center">
-      <p class="text-2xl font-mono uppercase">No results found</p>
+      <p class="text-2xl font-mono uppercase text-neutral">No results found</p>
     </div>
   {/if}
   <!-- for each result-->
