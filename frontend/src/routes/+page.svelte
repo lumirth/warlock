@@ -124,7 +124,13 @@
       description={result.description}
       average_gpa={result.gpa_average ? result.gpa_average : 0}
       tags_text={result.genEdAttributes
-        ? result.genEdAttributes.map((genEd) => genEd.id)
+        ? result.genEdAttributes.map((genEd) => {
+            if (genEd.id[0] == "1") {
+              return genEd.id.slice(1);
+            } else {
+              return genEd.id;
+            }
+          })
         : []}
       href={result.href}
     />
