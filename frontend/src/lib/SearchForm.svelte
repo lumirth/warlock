@@ -36,10 +36,10 @@
   const handleSubmit = (event: Event) => {
     results = [];
     returned_results = false;
+    loading = true;
     queryBackend();
     event.preventDefault();
     dispatch("submit", query);
-    loading = true;
   };
 
   const queryBackend = async () => {
