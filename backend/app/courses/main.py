@@ -72,10 +72,11 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
         flag = "both"
         if search_params.online:
             flag = "online"
-        if search_params.on_campus:
-            flag = "campus"
-        if search_params.online and search_params.on_campus:
-            flag = "both"
+        # TODO: filtering by on campus is no longer supported across the board
+        # if search_params.on_campus:
+        #     flag = "campus"
+        # if search_params.online and search_params.on_campus:
+        #     flag = "both"
 
         if search_params.gened_reqs is not None:
             detailed_courses = filter_courses_by_gen_eds(detailed_courses, search_params.gened_reqs, search_params.match_any_gened_reqs)
