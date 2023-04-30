@@ -10,14 +10,46 @@
   let query = "";
   let loading = false;
   let results: any = [];
+  let returned_results: boolean = false;
+  let adv_params: any;
 
   $: {
     console.log("Results updated:", results);
     // update loading to false if results are not empty
+  }
+  $: {
     if (results.length > 0) {
       loading = false;
+      // close advanced search modal
+      // toggle checkbox with id="modal-advanced"
+      // @ts-ignore
+      document.getElementById("modal-advanced").checked = false;
     }
   }
+
+  $: {
+    // console.log("Advanced params updated:", adv_params);
+    if (adv_params) {
+      queryBackend();
+    }
+  }
+
+  const queryBackend = async () => {
+    const response = await fetch(
+      "https://warlock-backend.fly.dev/search/advanced",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(adv_params),
+      }
+    );
+    const data = await response.json();
+    results = data;
+  };
+
+
   const sortByGPA = () => {
     // if already sorted by GPA, reverse the array
     let isAlreadySorted = true;
@@ -65,7 +97,7 @@
 </svelte:head>
 
 <section>
-  <SearchForm bind:loading bind:query bind:results />
+  <SearchForm bind:loading bind:query bind:results bind:returned_results />
   <ModalButton modalId="modal-advanced" label="ADVANCED" />
   <ModalButton modalId="modal-syntax" label="SYNTAX" />
   <ModalButton modalId="modal-examples" label="EXAMPLES" />
@@ -76,7 +108,7 @@
     <p class="pb-2 text-xs text-neutral">
       • Fields with an <code>*</code> must be combined with at least 1 other field.
     </p>
-    <AdvancedSearch />
+    <AdvancedSearch bind:adv_params bind:loading/>
   </Modal>
 
   <Modal modalId="modal-syntax" title="QUERY SYNTAX">
@@ -140,6 +172,11 @@
   </Modal>
 </section>
 <section class="pt-20">
+  {#if returned_results && results.length == 0}
+    <div class="flex justify-center">
+      <p class="text-2xl font-mono uppercase">No results found</p>
+    </div>
+  {/if}
   <!-- for each result-->
   {#if results.length > 0}
     <!-- sort by GPA-->
@@ -169,6 +206,7 @@
       tags_text={result.genEdAttributes
         ? result.genEdAttributes.map((genEd) => genEd.id)
         : []}
+      href = {result.href}
     />
   {/each}
 </section>

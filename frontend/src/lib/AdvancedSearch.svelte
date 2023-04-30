@@ -8,6 +8,7 @@
   type Term = "fall" | "spring" | "summer" | "winter";
   type YearObject = { [year: string]: Term[] };
   type TermsObject = { [year: string]: Term[] };
+  export let adv_params: any;
 
   import yearsJson from "../data/years.json";
   import termsJson from "../data/terms.json";
@@ -15,6 +16,8 @@
   import subjectsJson from "../data/subjects_display.json";
   import genEdsJson from "../data/gen_eds_display.json";
   import potsJson from "../data/pots.json";
+
+
 
   // Helper function to generate options objects
   function createOptions(data: object) {
@@ -126,9 +129,10 @@
   }
 
   let error_message: string = "";
-  let loading: boolean = false;
+  export let loading: boolean = false;
 
   function handleSubmit(event: Event): void {
+    adv_params = null;
     // if only year and semester are selected, then do not submit
     if (
       !selectedCollege &&
@@ -172,32 +176,32 @@
     let courseLevel = selectedCourseLevel ? selectedCourseLevel : null;
     let AdvancedSearchAllVals = {
       year: selectedYear,
-      semester: selectedSemester,
+      term: selectedSemester,
       keyword: keywordValue,
-      keywordType: keywordType,
+      keyword_type: keywordType,
       instructor: instructorValue,
-      courseId: courseIdValue,
+      course_id: courseIdValue,
       crn: crnValue,
-      creditHours: creditHoursValue,
-      college: college,
+      credit_hours: creditHoursValue,
       subject: subject,
-      partOfTerm: partOfTerm,
-      genedReqs: genedReqs,
-      matchAllGenedReqs: matchAllGenedReqsValue,
-      matchAnyGenedReqs: matchAnyGenedReqsValue,
+      part_of_term: partOfTerm,
+      gened_reqs: genedReqs,
+      match_all_gened_reqs: matchAllGenedReqsValue,
+      match_any_gened_reqs: matchAnyGenedReqsValue,
       online: online,
-      onCampus: onCampus,
-      openSections: openSections,
+      open_sections: openSections,
       // evenings: evenings,
-      courseLevel: courseLevel,
+      course_level: courseLevel,
     };
     // filter out empty values
     let AdvancedSearchFiltered = Object.fromEntries(
       Object.entries(AdvancedSearchAllVals).filter(([_, v]) => v != null)
     );
-
-    console.log(AdvancedSearchFiltered);
+    console.log(AdvancedSearchFiltered)
+    adv_params = AdvancedSearchFiltered;
+    // console.log(AdvancedSearchFiltered);
   }
+
 </script>
 
 <form class="space-y-4 mt-5" on:submit|preventDefault={handleSubmit}>
@@ -216,7 +220,7 @@
     addEmptyOption={false}
   />
   <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-base-100" />
-  <TextInput id="keyword" label="Keyword" value={keywordValue} />
+  <TextInput id="keyword" label="Keyword" bind:value={keywordValue} />
   <Dropdown
     id="keywordType"
     label="Keyword Type"
@@ -225,22 +229,23 @@
     addEmptyOption={false}
   />
   <hr class="block !mt-6 !mb-1 !mx-8 p-1 border-t-1 border-base-100" />
-  <TextInput id="instructor" label="Instructor (Last Name)" value={instructorValue} />
-  <Dropdown
+  <TextInput id="instructor" label="Instructor (Last Name)" bind:value={instructorValue} />
+  <!-- not feasible to search for given the current API -->
+  <!-- <Dropdown
     id="college"
     label="College"
     options={collegeOptions}
     bind:selectedValue={selectedCollege}
-  />
+  /> -->
   <Dropdown
     id="subject"
     label="Subject"
     options={subjectOptions}
     bind:selectedValue={selectedSubject}
   />
-  <NumberInput id="courseId" label="Course ID*" value={courseIdValue} />
-  <NumberInput id="crn" label="CRN" value={crnValue} />
-  <NumberInput id="creditHours" label="Credit Hours" value={creditHoursValue} />
+  <NumberInput id="courseId" label="Course ID*" bind:value={courseIdValue} />
+  <NumberInput id="crn" label="CRN" bind:value={crnValue} />
+  <NumberInput id="creditHours" label="Credit Hours" bind:value={creditHoursValue} />
   <!-- TODO: add section attributes back. this would require adding maintenance
   scripts to fetch attributes. the query parameter for it is not documented. it
   is degreeAtt -->
@@ -300,7 +305,8 @@
     bind:selectedValue={selectedPartOfTerm}
   />
   <Checkbox id="online" label="Online" bind:checked={online} />
-  <Checkbox id="onCampus" label="On Campus" bind:checked={onCampus} />
+  <!-- We're removing this option because it's impossible to sufficiently implement with the current API -->
+  <!-- <Checkbox id="onCampus" label="On Campus" bind:checked={onCampus} /> -->
   <Checkbox
     id="openSections"
     label="Open Sections*"

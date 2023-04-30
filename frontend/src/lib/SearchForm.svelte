@@ -3,6 +3,7 @@
 
   export let query = "";
   export let loading = false;
+  export let returned_results: boolean = false;
   export let results: any = [];
 
   const examples = [
@@ -34,6 +35,7 @@
 
   const handleSubmit = (event: Event) => {
     results = [];
+    returned_results = false;
     queryBackend();
     event.preventDefault();
     dispatch("submit", query);
@@ -46,6 +48,8 @@
     );
     const data = await response.json();
     results = data;
+    returned_results = true;
+    loading = false;
   };
 
   export { placeholder_example };
