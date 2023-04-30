@@ -95,7 +95,9 @@
     <Help />
   </Modal>
 </section>
-<hr class="border-neutral border-t my-4"/>
+{#if results.length > 0}
+  <hr class="border-neutral border-t my-4"/>
+{/if}
 <section class="">
   {#if returned_results && results.length == 0}
     <div class="flex justify-center bg-base-200 my-5 py-2 border border-neutral opacity-50">
@@ -107,13 +109,13 @@
     <!-- sort by GPA-->
     <div class="flex justify-end gap-1">
       <button
-        class="btn btn-xs mt-4 font-normal bg-base-100 border-none h-3 underline"
+        class="btn btn-xs font-normal bg-base-100 border-none h-3 underline"
         on:click={() => (results = sortByField(results, "gpa_average", "id"))}
       >
         Sort by GPA
       </button>
       <button
-        class="btn btn-xs mt-4 font-normal bg-base-100 border-none h-3 underline mb-4"
+        class="btn btn-xs font-normal bg-base-100 border-none h-3 underline mb-4"
         on:click={() => (results = sortByField(results, "creditHours", "id"))}
       >
         Sort by Credit Hours
