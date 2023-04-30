@@ -127,13 +127,3 @@
     />
   {/each}
 </section>
-
-<style>
-  .no-scrollbar {
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important; /* IE and Edge */
-  }
-  .no-scrollbar::-webkit-scrollbar {
-    display: none !important;
-  }
-</style>

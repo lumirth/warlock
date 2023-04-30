@@ -95,7 +95,7 @@
     throw new Error("No year with fall or spring term found");
   }
 
-  console.log(`The default year is ${defaultYear}`);
+  // console.log(`The default year is ${defaultYear}`);
 
   const defaultSemester = semesterOptions[0].value;
   const defaultKeywordType = keywordTypeOptions[0].value;

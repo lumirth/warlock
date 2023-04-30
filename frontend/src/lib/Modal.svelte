@@ -4,7 +4,6 @@
   
   export let modalId = "";
   export let title = "";
-  export let content = null;
 </script>
 
 <input type="checkbox" id={modalId} class="modal-toggle" />
