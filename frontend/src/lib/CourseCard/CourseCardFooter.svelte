@@ -39,7 +39,7 @@
       {/if}
     </div>
   </div>
-  <div class="flex gap-2 flex-nowrap">
+  <div class="flex gap-2 flex-nowrap !overflow-scroll ml-3 no-scrollbar relative overflow-x-scroll">
     <!-- TODO: add tooltips for full name of gened -->
     {#each tags_text as tag}
       <div
@@ -48,6 +48,8 @@
         {tag}
       </div>
     {/each}
+    <!-- show gradient if there is overflow -->
+    <!-- <div class="absolute top-0 right-0 h-full w-4 bg-gradient-to-l from-base-200 to-transparent"></div> -->
   </div>
 </div>
 
@@ -58,5 +60,16 @@
     border-top-right-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none !important; /* Firefox */
   }
 </style>
