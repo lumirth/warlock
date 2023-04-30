@@ -13,7 +13,7 @@ from .filter import (
 import logging
 
 # TODO: spring cleaning. it's a mess in here
-# TODO: write a way to filter for open sections that only downloads the sections when needed
+# TODO: fix searching for gen ed categories (because filtering only works on subcategories)
 
 # from .xml import get_course_xml, parse_simple_course
 from typing import List, Union, Tuple
@@ -66,42 +66,42 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
         courses = add_gpa_data(courses, gpa_data)
         return courses
 
-    if search_params.subject is not None and search_params.open_sections is None:
-        course_xml = await get_course_xml_from_dept(search_params)
-        detailed_courses = parse_simple_courses_from_dept(course_xml)
-        if search_params.course_id is not None:
-            simple_courses_filtered = filter_courses_by_id(detailed_courses, search_params.course_id)
-            detailed_courses = simple_courses_filtered
-        if search_params.course_level is not None:
-            simple_courses_filtered = filter_courses_by_level(detailed_courses, search_params.course_level)
-            detailed_courses = simple_courses_filtered
+    # if search_params.subject is not None and search_params.open_sections is None:
+    #     course_xml = await get_course_xml_from_dept(search_params)
+    #     detailed_courses = parse_simple_courses_from_dept(course_xml)
+    #     if search_params.course_id is not None:
+    #         simple_courses_filtered = filter_courses_by_id(detailed_courses, search_params.course_id)
+    #         detailed_courses = simple_courses_filtered
+    #     if search_params.course_level is not None:
+    #         simple_courses_filtered = filter_courses_by_level(detailed_courses, search_params.course_level)
+    #         detailed_courses = simple_courses_filtered
 
-        flag = "both"
-        if search_params.online:
-            flag = "online"
-        # TODO: filtering by on campus is no longer supported across the board
-        # if search_params.on_campus:
-        #     flag = "campus"
-        # if search_params.online and search_params.on_campus:
-        #     flag = "both"
+    #     flag = "both"
+    #     if search_params.online:
+    #         flag = "online"
+    #     # TODO: filtering by on campus is no longer supported across the board
+    #     # if search_params.on_campus:
+    #     #     flag = "campus"
+    #     # if search_params.online and search_params.on_campus:
+    #     #     flag = "both"
 
-        if search_params.gened_reqs is not None:
-            detailed_courses = filter_courses_by_gen_eds(detailed_courses, search_params.gened_reqs, search_params.match_any_gened_reqs)
-        if search_params.credit_hours is not None:
-            detailed_courses = filter_courses_by_credit_hours(detailed_courses, search_params.credit_hours)
-        if search_params.instructor is not None:
-            detailed_courses = filter_courses_by_instructor_last_name(detailed_courses, search_params.instructor)
-        if search_params.part_of_term is not None:
-            detailed_courses = filter_courses_by_part_of_term(detailed_courses, search_params.part_of_term)
-        if search_params.keyword is not None:
-            if search_params.keyword_type is None:
-                if len(search_params.keyword.split()) == 1:
-                    search_params.keyword_type = "qs"
-                else:
-                    search_params.keyword_type = "qp"
-            detailed_courses = filter_courses_by_keyword(detailed_courses, search_params.keyword, search_params.keyword_type)
-        detailed_courses = add_gpa_data(detailed_courses, gpa_data)
-        return detailed_courses
+    #     if search_params.gened_reqs is not None:
+    #         detailed_courses = filter_courses_by_gen_eds(detailed_courses, search_params.gened_reqs, search_params.match_any_gened_reqs)
+    #     if search_params.credit_hours is not None:
+    #         detailed_courses = filter_courses_by_credit_hours(detailed_courses, search_params.credit_hours)
+    #     if search_params.instructor is not None:
+    #         detailed_courses = filter_courses_by_instructor_last_name(detailed_courses, search_params.instructor)
+    #     if search_params.part_of_term is not None:
+    #         detailed_courses = filter_courses_by_part_of_term(detailed_courses, search_params.part_of_term)
+    #     if search_params.keyword is not None:
+    #         if search_params.keyword_type is None:
+    #             if len(search_params.keyword.split()) == 1:
+    #                 search_params.keyword_type = "qs"
+    #             else:
+    #                 search_params.keyword_type = "qp"
+    #         detailed_courses = filter_courses_by_keyword(detailed_courses, search_params.keyword, search_params.keyword_type)
+    #     detailed_courses = add_gpa_data(detailed_courses, gpa_data)
+    #     return detailed_courses
 
     # the slow way
     start = time.time()

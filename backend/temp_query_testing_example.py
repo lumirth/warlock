@@ -25,7 +25,8 @@ example_queries = [
     "math, quant 1",
     "math, quant 2",
     "cs 2",
-    "k: data structures"
+    "k: data structures",
+    "math, quant",
     # "crn: 12345, gen ed: Humanities - Hist & Phil",
     # "id: 101, subj: ece, pot: first, instructor: John Smith",
 ]
