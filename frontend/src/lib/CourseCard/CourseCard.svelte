@@ -19,7 +19,7 @@
     <CourseCardHeader
       {course_id}
       {course_detail}
-      bind:href
+      {href}
     />
     <div class="border-t border-neutral w-full mx-auto"></div>
     <CourseCardContent

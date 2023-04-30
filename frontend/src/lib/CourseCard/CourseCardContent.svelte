@@ -25,7 +25,7 @@
         {/if}
       </div>
       {#if isDescriptionExpanded}
-        <div class="w-full flex justify-end mt-1">
+        <div class="w-full flex justify-end mt-3">
           <button
             class="w-full text-xs p-1 h-6 flex items-center justify-center cursor-pointer focus:outline-none border border-neutral hover:bg-neutral transition-colors duration-150 ease-in-out "
             on:click={toggleDescription}

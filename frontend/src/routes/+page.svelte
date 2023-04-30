@@ -122,7 +122,7 @@
       </button>
     </div>
   {/if}
-  {#each results as result}
+  {#each results as result (result.id)}
     <CourseCard
       course_id={result.id}
       course_detail={result.label}
