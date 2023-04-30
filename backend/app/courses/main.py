@@ -35,7 +35,6 @@ SECTION_DEGREE_ATTRIBUTES_GEN_EDS = {
     "Social & Beh Sci - Beh Sci": "1BSC",
 }
 
-
 async def search_courses(search_params: Parameters, professor_cache: dict, gpa_data: pl.DataFrame) -> List[Course]:
     print("searching courses")
     # turn the received search parameters into a AdvancedSearchParameters object if it isn't already
@@ -44,6 +43,10 @@ async def search_courses(search_params: Parameters, professor_cache: dict, gpa_d
 
     detailed_courses = []
     simple_courses = []
+    
+    if search_params.course_id is not None and len(str(search_params.course_id)) != 3:
+        search_params.course_id = None
+        search_params.course_level = str(search_params.course_id)[0]
 
     if search_params.crn is not None:
         course_xml = await get_section_xml_from_crn(search_params)

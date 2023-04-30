@@ -12,6 +12,8 @@ DEFAULT_SEMESTER = "fall" if time.localtime().tm_mon > 3 else "spring"
 
 FUZZ_THRESH = 85
 
+#TODO: fix keyword in parsing and in search
+
 def load_pickles(pickles_dir: str) -> dict:
     files = glob.glob(os.path.join(pickles_dir, '*.pkl'))
     pickles = {}

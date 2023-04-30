@@ -7,21 +7,25 @@
   export let results: any = [];
 
   const examples = [
+    "comp sci",
     "CS 222",
     "math257",
-    "pysch 101",
+    "pysch 100",
+    "mus",
     "MACS, western",
-    "hrs:1, is:online",
-    "gen:HUM, is:campus",
-    "adv comp, pot:b",
-    "prof: wade",
-    "keyword: data",
+    "is:online, hrs:2",
+    "gen:ADVCOMP, is:online",
+    "prof: fagen-ulmschneider",
     "life sciences",
-    "natural sciences, quant1",
-    "PSYC, non-western",
-    "fall, 2021, cs 128",
+    "gened: QR2, gened: NAT",
+    "PSYC, behavioral science",
+    "fall, 2004, phil",
     "anthropology, 2019",
     "2005, mathematics, hrs:2",
+    "hrs:3, phil, nonwestern",
+    "pot:b, us minority",
+    "astronomy",
+    "prof: cole",
   ];
 
   let placeholder_example = "";
