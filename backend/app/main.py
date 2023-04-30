@@ -67,7 +67,7 @@ def search_simple(query: str):
 def search_advanced(params: Parameters):
     if PROFESSOR_CACHE is {} or GPA_DATAFRAME is None or PICKLES is None:
         time.sleep(10)
-    results = asyncio.run(search_courses(params, professor_cache=PROFESSOR_CACHE, gpa_data=GPA_DATAFRAME))
+    results = asyncio.run(search_courses(params, gpa_data=GPA_DATAFRAME))
     return results
 
 @app.post("/course/sections", response_model=Course)
