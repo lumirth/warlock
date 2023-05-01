@@ -1,5 +1,5 @@
 from .courses import search_courses, get_single_course_xml
-from .datautils import load_gpa_data, initialize_professor_cache, save_professor_cache
+from .load import load_gpa_data, initialize_professor_cache, save_professor_cache
 from .models import Course, Parameters
 from .models import parse_string_into_parameters, load_pickles
 from .utils import log_time_sync
