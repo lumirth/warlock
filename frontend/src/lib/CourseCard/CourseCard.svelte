@@ -15,7 +15,7 @@
     export let tags_text: Array<string> = ["MIN", "HUM"];
   </script>
   
-  <div class="bg-base-200 border-neutral border-[1px] flex flex-col mb-6">
+  <div class="bg-base-200 border-neutral border-[1px] flex flex-col">
     <CourseCardHeader
       {course_id}
       {course_detail}
@@ -36,4 +36,4 @@
       />
       <!-- {/if} -->
   </div>
-  <!-- <CourseCardSections/> -->
+  <CourseCardSections/>

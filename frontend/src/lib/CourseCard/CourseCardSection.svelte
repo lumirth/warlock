@@ -1,23 +1,50 @@
 <script lang="ts">
-  export let openStatus: string = "";
-  export let crn: string = "";
-  export let type: string = "";
-  export let section: string = "";
-  export let time: string = "";
-  export let day: string = "";
-  export let location: string = "";
-  export let instructor: string = "";
+  export let openStatus: string = "Open";
+  export let crn: string = "12345";
+  export let type: string = "LCD";
+  export let section: string = "AY2";
+  export let time: string = "3:40";
+  export let day: string = "MWF";
+  export let location: string = "David Kinley Hall 200";
+  export let instructor: string = "Fagen-Ulmschneider, W";
 </script>
 
-<tr
-  class="bg-white dark:bg-gray-900 border dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-light"
->
-  <td class="border-r dark:border-gray-600 p-1 text-center">{openStatus}</td>
-  <td class="border-r dark:border-gray-600 p-1 text-center">{crn}</td>
-  <td class="border-r dark:border-gray-600 p-1 text-center">{type}</td>
-  <td class="border-r dark:border-gray-600 p-1 text-center">{section}</td>
-  <td class="border-r dark border-gray-600 p-1 text-center">{time}</td>
-  <td class="border-r dark:border-gray-600 p-1 text-center">{day}</td>
-  <td class="border-r dark:border-gray-600 p-1 text-center">{location}</td>
-  <td class="p-1 text-center">{instructor}</td>
+<tr class="text-xs font-light">
+  <td>
+    {#if openStatus == "Open"}
+      <div class="flex justify-start">
+        <input
+          type="radio"
+          class="flex justify-center radio radio-sm radio-success !border-neutral"
+          checked
+        />
+      </div>
+    {:else}
+      <div class="flex justify-start">
+        <input
+          type="radio"
+          class="flex justify-center radio radio-sm radio-error !border-neutral"
+          checked
+        />
+      </div>
+    {/if}
+  </td>
+  <td>{section}</td>
+  <td>{crn}</td>
+  <td>{type}</td>
+  <td>
+    
+    <span class="badge bg-base-200 border-none rounded-full">{time}</span>
+  </td>
+  <td>{day}</td>
+  <td>{location}</td>
+  <td>{instructor}</td>
 </tr>
+
+<style>
+  .radio:checked,
+  .radio[aria-checked="true"] {
+    box-shadow: 0 0 0 4px hsl(var(--b2)) inset, 0 0 0 4px hsl(var(--b2)) inset;
+  }
+
+</style>

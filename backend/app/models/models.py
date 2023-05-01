@@ -24,7 +24,9 @@ class Meeting(BaseModel):
 class Section(BaseModel):
     id: str
     sectionNumber: Optional[str]
+    sectionInfo: Optional[str]
     statusCode: Optional[str]
+    restrictions: Optional[str]
     partOfTerm: Optional[str]
     sectionStatusCode: Optional[str]
     enrollmentStatus: Optional[str]
