@@ -13,6 +13,7 @@
       "Design and implementation of novel software solutions. Problem identification and definition; idea generation and evaluation; and software implementation, testing, and deployment. Emphasizes software development best practices—including framework selection, code review, documentation, appropriate library usage, project management, continuous integration and testing, and teamwork. Prerequisite: CS 128; credit or concurrent registration in CS 225. Restricted to majors in Computer Science undergraduate curricula only.";
     export let average_gpa: number = 3.1;
     export let tags_text: Array<string> = ["MIN", "HUM"];
+    export let sections: any = [];
   </script>
   
   <div class="bg-base-200 border-neutral border-[1px] flex flex-col">
@@ -36,4 +37,6 @@
       />
       <!-- {/if} -->
   </div>
-  <CourseCardSections/>
+  <CourseCardSections
+    {sections}
+  />

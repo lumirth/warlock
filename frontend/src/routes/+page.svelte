@@ -143,6 +143,7 @@
           })
         : []}
       href={result.href}
+      sections={result.sections}
     />
   {/each}
 </section>
