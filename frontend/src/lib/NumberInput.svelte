@@ -4,12 +4,12 @@
   export let value: number;
 </script>
 
-<div class="mb-1 !mt-0">
-  <label for="{id}" class="label-text-alt text-neutral !select-none">{label}</label>
+<div class="mb-1 !mt-1 md:!mt-0">
+  <label for="{id}" class="label-text-alt text-neutral !select-none text-base md:text-xs">{label}</label>
   <input
     type="number"
     id="{id}"
     bind:value="{value}"
-    class="input input-sm input-bordered w-full font-normal placeholder-neutral focus:outline-none focus:border-primary focus:placeholder-transparent hover:border-primary"
+    class="input md:text-sm md:input-sm text-base input-bordered w-full font-normal placeholder-neutral focus:outline-none focus:border-primary focus:placeholder-transparent hover:border-primary"
   />
 </div>

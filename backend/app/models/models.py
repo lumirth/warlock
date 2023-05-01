@@ -28,7 +28,6 @@ class Section(BaseModel):
     statusCode: Optional[str]
     restrictions: Optional[str]
     partOfTerm: Optional[str]
-    sectionStatusCode: Optional[str]
     enrollmentStatus: Optional[str]
     startDate: Optional[str]
     endDate: Optional[str]

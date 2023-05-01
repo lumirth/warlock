@@ -2,7 +2,7 @@
   import CourseCardSection from "./CourseCardSection.svelte";
   let isCourseSectionsVisible = false;
   function toggleCourseSections() {
-    isCourseSectionsVisible = !isCourseSectionsVisible;
+    if (sections && sections.length > 0) isCourseSectionsVisible = !isCourseSectionsVisible;
   }
 
   let sleft = 0;
@@ -33,7 +33,7 @@
         : 'opacity-0'}"
     />
     <div
-      class="bg-base-100 overflow-x-auto no-scrollbar scroll relative"
+      class="bg-base-100 overflow-x-auto no-scrollbar scroll relative pl-2 py-2"
       class:hidden={!isCourseSectionsVisible}
       bind:this={tableElem}
       on:scroll={() => (sleft = tableElem.scrollLeft)}
@@ -50,17 +50,31 @@
           <th class="!rounded-none">Favorite Color</th>
         </tr>
       </thead> -->
-        {#each sections as section}
-          <CourseCardSection
-            section={section.sectionNumber}
-            crn={section.id}
-            type={section.meetings[0].typeCode}
-            time={section.meetings[0].start}
-            day={section.meetings[0].daysOfTheWeek}
-            location={section.meetings[0].buildingName}
-            instructor={section.meetings[0].instructors[0].lastName + ", " + section.meetings[0].instructors[0].firstName}
-          />
-        {/each}
+        {#if sections && sections.length > 0}
+          {#each sections as section}
+            <CourseCardSection
+              openStatus={section.enrollmentStatus}
+              sectionStatus={section.statusCode}
+              section={section.sectionNumber}
+              crn={section.id}
+              type={section.meetings[0].typeCode}
+              time={section.meetings[0].start}
+              day={section.meetings[0].daysOfTheWeek
+                ? section.meetings[0].daysOfTheWeek
+                : ""}
+              location={section.meetings[0].buildingName
+                ? section.meetings[0].buildingName +
+                  " " +
+                  section.meetings[0].roomNumber
+                : ""}
+              instructor={section.meetings[0].instructors.length
+                ? section.meetings[0].instructors[0].lastName +
+                  ", " +
+                  section.meetings[0].instructors[0].firstName
+                : ""}
+            />
+          {/each}
+        {/if}
         <!-- <CourseCardSection crn="54321" />
         <CourseCardSection crn="12345" openStatus="Closed" /> -->
       </table>
@@ -77,7 +91,7 @@
   class="flex w-20 h-4 items-center justify-center ml-auto p-1 text-xs cursor-pointer mt-1 transition-colors duration-150 ease-in-out bg-base-200 border border-neutral hover:bg-neutral mb-4"
   on:click={toggleCourseSections}
 >
-  {#if isCourseSectionsVisible}
+  {#if isCourseSectionsVisible && sections && sections.length > 0}
     &#x25B2;
   {:else}
     &#x25BC;

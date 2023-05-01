@@ -53,3 +53,5 @@ dist/
 *.pid.lock
 
 # Add any other files or directories you want to exclude here
+
+rmpy/

@@ -8,8 +8,17 @@
   // export let sem_code: string;
   export let href: string;
 
-  let link = convertCourseURL(href);
+  let link = "";
 
+  onMount(() => {
+    try {
+      link = convertCourseURL(href);
+    } catch (e) {
+      link = href;
+      console.error(e);
+      console.error(href);
+    }
+  });
   let sleft = 0;
   let headerMiddleText: HTMLElement;
 </script>
