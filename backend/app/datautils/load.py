@@ -1,5 +1,4 @@
-from .rmp import fetch_all_professors
-import asyncio
+from rmpy import fetch_all_professors # type: ignore
 import glob
 import os
 import pickle 
