@@ -29,8 +29,8 @@
       </div>
     {/if}
   </td>
-  <td>{section}</td>
-  <td>{crn}</td>
+  <!-- <td>{section}</td> -->
+  <!-- <td>{crn}</td> -->
   <td>{type}</td>
   <td>
     
