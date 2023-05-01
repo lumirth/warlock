@@ -4,10 +4,11 @@
   export let type: string = "LCD";
   export let section: string = "AY2";
   export let sectionStatus: string = "";
-  export let time: string = "3:40";
+  export let startTime: string = "3:40";
+  export let endTime: string = "4:30";
   export let day: string = "MWF";
-  export let location: string = "David Kinley Hall 200";
-  export let instructor: string = "Fagen-Ulmschneider, W";
+  export let locations: any = [];
+  export let instructors: any = [];
 </script>
 
 <tr class="text-xs font-light">
@@ -57,19 +58,33 @@
   <!-- <td>{section}</td> -->
   <!-- <td>{crn}</td> -->
   <td>{type}</td>
-  <td>
-    
-    <span class="badge bg-base-200 border-none rounded-full">{time}</span>
-  </td>
-  <td>{day}</td>
-  <td class="whitespace-pre">
-    <div class="flex !flex-col">
-      <div>
-        {location}
-      </div>
+  <td class="w-fit pr-0">
+    <div class="flex !flex-col gap-1 align-middle justify-center">
+        <span class="badge bg-base-200 border-none rounded-full">{startTime}</span>
+        {#if endTime}
+        <span class="badge bg-base-200 border-none rounded-full">{endTime}</span>
+        {/if}
     </div>
   </td>
-  <td>{instructor}</td>
+  <td class="!pl-1">{day}</td>
+  <td >
+    <div class="flex !flex-row">
+      {#each locations as location}
+      <span>
+        {location}
+      </span>
+      {/each}
+    </div>
+  </td>
+  <td >
+    <div class="flex !flex-row">
+      {#each instructors as instructor}
+      <span>
+        {instructor}
+      </span>
+      {/each}
+    </div>
+  </td>
 </tr>
 
 <style>

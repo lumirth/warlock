@@ -58,20 +58,30 @@
               section={section.sectionNumber}
               crn={section.id}
               type={section.meetings[0].typeCode}
-              time={section.meetings[0].start}
+              startTime={section.meetings[0].start}
+              endTime={section.meetings[0].end ? section.meetings[0].end : ""}
               day={section.meetings[0].daysOfTheWeek
                 ? section.meetings[0].daysOfTheWeek
                 : ""}
-              location={section.meetings[0].buildingName
-                ? section.meetings[0].buildingName +
-                  " " +
-                  section.meetings[0].roomNumber
-                : ""}
-              instructor={section.meetings[0].instructors.length
-                ? section.meetings[0].instructors[0].lastName +
-                  ", " +
-                  section.meetings[0].instructors[0].firstName
-                : ""}
+              locations={
+                section.meetings
+                  .map((meeting) => 
+                    meeting.buildingName
+                      ? meeting.buildingName  + " " + meeting.roomNumber
+                      : ""
+                  )
+                  .join(", ")
+              }
+              instructors={
+                section.meetings
+                  .map((meeting) => meeting.instructors)
+                  .map((instructors) =>
+                    instructors
+                      .map((instructor) => instructor.lastName + ", " + instructor.firstName)
+                      .join("; ")
+                  )
+                  .join(", ")
+              }
             />
           {/each}
         {/if}
