@@ -1,18 +1,70 @@
 <script lang="ts">
   import CourseCardSection from "./CourseCardSection.svelte";
+  import { dev } from "$app/environment";
   let isCourseSectionsVisible = false;
-  // TODO: make this download course sections if none are found in the object. this may require restructuring how this component gets values
-  function toggleCourseSections() {
-    if (sections && sections.length > 0)
-      isCourseSectionsVisible = !isCourseSectionsVisible;
-  }
 
+  export let year: string;
+  export let term: string;
+  export let course_id: string;
+  let subj = course_id.split(" ")[0];
+  let course_num = course_id.split(" ")[1];
+
+  let adv_params: any = {
+    course_id: course_num,
+    subject: subj,
+    year: year,
+    term: term,
+  };
   let sleft = 0;
   let tableElem: HTMLElement;
   let tableWidth: number;
   let tableContainerWidth: number;
   let showRightGradient: boolean = false;
   export let sections: any = [];
+
+  // TODO: make this download course sections if none are found in the object. this may require restructuring how this component gets values
+  function toggleCourseSections() {
+    isCourseSectionsVisible = !isCourseSectionsVisible;
+
+    if (!sections || sections.length === 0) {
+      adv_params.course_id = course_num;
+      adv_params.subject = subj;
+      adv_params.year = year;
+      adv_params.term = term;
+      queryBackend();
+    }
+  }
+
+  function loadSections() {
+    if (!sections || sections.length === 0) {
+      adv_params.course_id = course_num;
+      adv_params.subject = subj;
+      adv_params.year = year;
+      adv_params.term = term;
+      queryBackend();
+    }
+  }
+
+  const queryBackend = async () => {
+    console.log("querying backend");
+    try {
+      let url = "";
+      if (dev) url = "http://localhost:8000/search/advanced";
+      else url = "https://warlock-backend.fly.dev/search/advanced";
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(adv_params),
+      });
+      const data = await response.json();
+      sections = data[0].sections;
+    } catch (error) {
+      console.error(error);
+      sections = [];
+    }
+  };
 
   $: {
     if (tableElem) {
@@ -25,7 +77,7 @@
   }
 </script>
 
-{#if isCourseSectionsVisible}
+{#if isCourseSectionsVisible && sections && sections.length > 0}
   <div class="relative overflow-x-auto mt-1 border border-neutral">
     <div
       class="absolute top-0 left-0 h-full w-4 bg-gradient-to-r from-base-100 to-transparent transition-opacity ease-in-out z-50 {sleft >
@@ -64,8 +116,10 @@
 <button
   class="flex h-6 md:h-4 w-20 items-center justify-center ml-auto p-1 text-xs cursor-pointer mt-1 transition-colors duration-150 ease-in-out bg-base-200 border border-neutral hover:bg-neutral"
   on:click={toggleCourseSections}
+  on:mouseenter={loadSections}
+  on:focus={loadSections}
 >
-  {#if isCourseSectionsVisible && sections && sections.length > 0}
+  {#if isCourseSectionsVisible}
     &#x25B2;
   {:else}
     &#x25BC;

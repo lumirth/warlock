@@ -1,46 +1,48 @@
 <script lang="ts">
-    import CourseCardHeader from "./CourseCardHeader.svelte";
-    import CourseCardContent from "./CourseCardContent.svelte";
-    import CourseCardFooter from "./CourseCardFooter.svelte";
-    import CourseCardSections from "./CourseCardSections.svelte";
-    // Define type for props
-    export let href: string = "https://example.com";
-    export let course_id: string = "CS 222";
-    export let course_detail: string = "Software Programming Lab";
-    export let sem_code: string = "SP23";
-    export let credit_hours: string = "1";
-    export let description: string =
-      "Design and implementation of novel software solutions. Problem identification and definition; idea generation and evaluation; and software implementation, testing, and deployment. Emphasizes software development best practices—including framework selection, code review, documentation, appropriate library usage, project management, continuous integration and testing, and teamwork. Prerequisite: CS 128; credit or concurrent registration in CS 225. Restricted to majors in Computer Science undergraduate curricula only.";
-    export let average_gpa: number = 3.1;
-    export let tags_text: Array<string> = ["MIN", "HUM"];
-    export let sections: any = [];
-  </script>
-  
-  <div class="mb-4">
-    <div class="bg-base-200 border-neutral border-[1px] flex flex-col">
-      <CourseCardHeader
+  import CourseCardHeader from "./CourseCardHeader.svelte";
+  import CourseCardContent from "./CourseCardContent.svelte";
+  import CourseCardFooter from "./CourseCardFooter.svelte";
+  import CourseCardSections from "./CourseCardSections.svelte";
+
+  export let course: any;
+  let course_id: string = course.id;
+  let sem_code: string =
+    course.term[0] + course.term[1] + course.year[2] + course.year[3];
+  let tags_text = course.genEdAttributes
+    ? course.genEdAttributes.map((genEd: any) => {
+        if (genEd.id[0] == "1") {
+          return genEd.id.slice(1);
+        } else {
+          return genEd.id;
+        }
+      })
+    : [];
+</script>
+
+<div class="mb-4">
+  <div class="bg-base-200 border-neutral border-[1px] flex flex-col">
+    <CourseCardHeader
       {course_id}
-      {course_detail}
-      {href}
-      />
-      <div class="border-t border-neutral w-full mx-auto"></div>
-      <CourseCardContent
-      {description}
-      />
-      <!-- show if either tags_text has a length or if gpa_average isnt 0-->
-      <!-- {#if tags_text.length > 0 || average_gpa != 0} -->
-      <div class="border-t border-neutral w-full mx-auto"></div>
-      <CourseCardFooter
-      {credit_hours}
-      {sem_code}
-      {average_gpa}
-      {tags_text}
-      />
-      <!-- {/if} -->
-    </div>
-    {#if sections && sections.length > 0}
-    <CourseCardSections
-    {sections}
+      course_detail={course.label}
+      href={course.href}
     />
-    {/if}
+    <div class="border-t border-neutral w-full mx-auto" />
+    <CourseCardContent description={course.description} />
+    <!-- show if either tags_text has a length or if gpa_average isnt 0-->
+    <!-- {#if tags_text.length > 0 || average_gpa != 0} -->
+    <div class="border-t border-neutral w-full mx-auto" />
+    <CourseCardFooter
+      credit_hours={course.creditHours}
+      {sem_code}
+      average_gpa={course.gpa_average ? course.gpa_average : 0}
+      {tags_text}
+    />
+    <!-- {/if} -->
   </div>
+  <CourseCardSections
+    sections={course.sections}
+    year={course.year}
+    term={course.term}
+    course_id={course.id}
+  />
+</div>

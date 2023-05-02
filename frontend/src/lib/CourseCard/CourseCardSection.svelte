@@ -22,7 +22,6 @@
     );
   };
 
-  console.log(section.meetings[section.meetings.length - 1]);
 </script>
 
 {#each section.meetings as meeting}
@@ -34,7 +33,7 @@
         <OpenIndicator {openStatus} {sectionStatus} />
       </td>
     {/if}
-    {#if meeting === section.meetings[0]}
+    {#if meeting === section.meetings[0] && section.sectionNumber}
       <td rowspan={section.meetings.length}>
         <span class="p-1 my-0.5 rounded-2xl bg-base-200 px-2">
           <span class="pr-0">

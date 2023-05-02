@@ -65,13 +65,3 @@ def search_advanced(params: Parameters):
         time.sleep(10)
     results = asyncio.run(search_courses(params, gpa_data=GPA_DATAFRAME, professor_cache=PROFESSOR_CACHE))
     return results
-
-@app.post("/course/sections", response_model=Course)
-def get_course_sections(course: Course):
-    Parameters = Parameters(
-        year=course.year,
-        term=course.term,
-        subject=course.id.split(' ')[0],
-        course_id=course.id
-    )
-    xml = asyncio.run(get_single_course_xml(Parameters))

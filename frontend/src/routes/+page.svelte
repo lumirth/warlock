@@ -128,26 +128,7 @@
   {/if}
   {#each results as result (result.id)}
     <CourseCard
-      course_id={result.id}
-      course_detail={result.label}
-      sem_code={result.term[0] +
-        result.term[1] +
-        result.year[2] +
-        result.year[3]}
-      credit_hours={result.creditHours}
-      description={result.description}
-      average_gpa={result.gpa_average ? result.gpa_average : 0}
-      tags_text={result.genEdAttributes
-        ? result.genEdAttributes.map((genEd) => {
-            if (genEd.id[0] == "1") {
-              return genEd.id.slice(1);
-            } else {
-              return genEd.id;
-            }
-          })
-        : []}
-      href={result.href}
-      sections={result.sections}
+      course={result}
     />
   {/each}
 </section>
