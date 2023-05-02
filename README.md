@@ -155,7 +155,7 @@ You'll have to programatically find the information you need within the XML resp
 
 ## On RateMyProfessor
 
-The below has been completely replaced with a handwritten module, now sourced separately at [lumirth/rmpy](https://github.com/lumirth/rmpy]. It interacts with the RMP GraphQL API directly. It was inspired heavily by the [@mtucourses/rate-my-professors](https://www.npmjs.com/package/@mtucourses/rate-my-professors) npm module. It is cloned and `pip install`'d manually in the docker container and tests and locally.
+The below has been completely replaced with a handwritten module, now sourced separately at [lumirth/rmpy](https://github.com/lumirth/rmpy). It interacts with the RMP GraphQL API directly. It was inspired heavily by the [@mtucourses/rate-my-professors](https://www.npmjs.com/package/@mtucourses/rate-my-professors) npm module. It is cloned and `pip install`'d manually in the docker container and tests and locally.
 
 ~~The RateMyProfessor NPM module I linked is, of course, a Node module. Thus, we'll have to figure out a way to use JS in Python, because this module looks actively maintained and fulfills our use-case spectacularly. I'm not sure how to do this, but I'm sure it's possible.~~
 
