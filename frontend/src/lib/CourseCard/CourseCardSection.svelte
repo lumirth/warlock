@@ -1,14 +1,50 @@
 <script lang="ts">
+  import RadialRating from "./RadialRating.svelte";
   // TODO: just pass the whole section object to this component and let it handle the rest
-  export let openStatus: string = "Open";
-  export let crn: string = "12345";
-  export let section: string = "AY2";
-  export let sectionStatus: string = "";
-  export let times: any = [];
-  export let days: any = [];
-  export let types: any = [];
-  export let locations: any = [];
-  export let instructors: any = [];
+  export let section;
+
+  let openStatus = section.enrollmentStatus;
+  let sectionStatus = section.statusCode;
+  let sectionNumber = section.sectionNumber;
+  let crn = section.id;
+  let types = section.meetings.map((meeting: any) => {
+    const type = meeting.typeCode ?? "";
+    return type.charAt(0).toUpperCase() + type.slice(1);
+  });
+  let times = section.meetings.map((meeting: any) => {
+    const startTime = meeting.start ?? "";
+    const endTime = meeting.end ?? "";
+    if (startTime == "" && endTime == "") return "";
+    if (endTime == "") return `${startTime}`.trim();
+    return `${startTime} - ${endTime}`.trim();
+  });
+  let days = section.meetings.map((meeting: any) => {
+    const days = meeting.daysOfTheWeek ?? "";
+    return days;
+  });
+  let locations = section.meetings.map((meeting: any) => {
+    const buildingName = meeting.buildingName ?? "";
+    const roomNumber = meeting.roomNumber ?? "";
+    return `${buildingName} ${roomNumber}`.trim();
+  });
+  let instructors = section.meetings.map((meeting: any) =>
+    meeting.instructors
+      .map(
+        (instructor: any) =>
+          `${instructor.firstName} ${instructor.lastName}`
+      )
+      .join(", ")
+  );
+  // for each list of instructors, average their ratings
+  let ratings = section.meetings.map((meeting: any) => {
+    const instructors = meeting.instructors;
+    if (instructors.length == 0) return 0;
+    const ratings = instructors.map(
+      (instructor: any) => instructor.avg_rating
+    );
+    const sum = ratings.reduce((a: any, b: any) => a + b, 0);
+    return sum / ratings.length;
+  });
 </script>
 
 <tr class="text-xs font-light">
@@ -109,6 +145,20 @@
       <span>
         {instructor}&nbsp;
       </span>
+      {/each}
+    </div>
+  </td>
+  <td >
+    <div class="flex !flex-col">
+      {#each ratings as rating}
+      {#if rating != 0}
+      <span>
+        <RadialRating value={rating} maxValue={5.0}/>
+        <span>
+          &nbsp;{rating}
+        </span>
+      </span>
+      {/if}
       {/each}
     </div>
   </td>

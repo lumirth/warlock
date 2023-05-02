@@ -38,8 +38,9 @@
       />
       <!-- {/if} -->
     </div>
-    
-    <!-- <CourseCardSections
+    {#if sections && sections.length > 0}
+    <CourseCardSections
     {sections}
-    /> -->
+    />
+    {/if}
   </div>

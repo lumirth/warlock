@@ -1,6 +1,7 @@
 from ..models import Course
 from typing import List
 import polars as pl
+from ..utils import logger
 
 def get_list_of_instructors(simple_course: Course) -> List[str]:
     instructors = set()
@@ -25,11 +26,24 @@ def add_gpa_data(simple_courses: List[Course], gpa_data) -> List[Course]:
 def get_professor_data_from_cache(professor_cache: dict, instructor_name: str) -> dict:
     return professor_cache.get(instructor_name)
 
-async def add_prof_ratings(simple_courses: List[Course], professor_cache: dict) -> List[Course]:
-    for course in simple_courses:
+async def add_prof_ratings(courses: List[Course], professor_cache: dict) -> List[Course]:
+    for course in courses:
+        for section in course.sections:
+            for meeting in section.meetings:
+                for instructor in meeting.instructors:
+                    # logger.info(f"Size of professor cache: {len(professor_cache)}")
+                    # logger.info(f"Getting data for {instructor.firstName} {instructor.lastName}")
+                    instructor_data = get_professor_data_from_cache(professor_cache, f"{instructor.firstName} {instructor.lastName}")
+                    if instructor_data is not None:
+                        instructor.avg_rating = instructor_data["avgRating"]
+                        instructor.num_ratings = instructor_data["numRatings"]
+                        # logger.info(f"Professor {instructor.firstName} {instructor.lastName} has {instructor.avg_rating} average rating and {instructor.num_ratings} ratings")
+                    else:
+                        instructor.avg_rating = None
+                        instructor.num_ratings = None
+        
         instructor_names = get_list_of_instructors(course)
         instructor_data = [get_professor_data_from_cache(professor_cache, name) for name in instructor_names]
-
         total_rating = 0
         num_ratings = 0
 
@@ -43,4 +57,4 @@ async def add_prof_ratings(simple_courses: List[Course], professor_cache: dict) 
         else:
             course.prof_average = None
 
-    return simple_courses
+    return courses

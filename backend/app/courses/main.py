@@ -1,6 +1,6 @@
 from ..models import Course, Parameters, Section, Meeting, Instructor, GenEd
 from ..utils import logger, log_time_func, log_time_async
-from .data import add_gpa_data
+from .data import add_gpa_data, add_prof_ratings
 from .filter import (
     filter_courses_by_id,
     filter_courses_by_level,
@@ -30,9 +30,9 @@ SECTION_DEGREE_ATTRIBUTES_GEN_EDS = {
     "Social & Beh Sci - Beh Sci": "1BSC",
 }
 
-async def search_courses(search_params: Parameters, gpa_data: pl.DataFrame) -> List[Course]:
+async def search_courses(search_params: Parameters, gpa_data: pl.DataFrame, professor_cache:dict) -> List[Course]:
     search_params = validate_and_prepare_search_params(search_params)
-    courses = await get_courses_based_on_search_params(search_params, gpa_data)
+    courses = await get_courses_based_on_search_params(search_params, gpa_data, professor_cache)
     return courses
 
 
@@ -47,12 +47,16 @@ def validate_and_prepare_search_params(search_params: Parameters) -> Parameters:
     return search_params
 
 
-async def get_courses_based_on_search_params(search_params: Parameters, gpa_data: pl.DataFrame) -> List[Course]:
+async def get_courses_based_on_search_params(search_params: Parameters, gpa_data: pl.DataFrame, professor_cache:dict) -> List[Course]:
     if search_params.crn is not None:
-        return await get_courses_by_crn(search_params, gpa_data)
+        courses = await get_courses_by_crn(search_params, gpa_data)
+        await add_prof_ratings(courses, professor_cache)
+        return courses
 
     if search_params.course_id is not None and search_params.subject is not None:
-        return await get_single_course(search_params, gpa_data)
+        courses = await get_single_course(search_params, gpa_data)
+        await add_prof_ratings(courses, professor_cache)
+        return courses
 
     return await get_courses_by_query_params(search_params, gpa_data)
 

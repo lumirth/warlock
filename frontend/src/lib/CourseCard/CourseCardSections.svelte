@@ -54,39 +54,7 @@
         {#if sections && sections.length > 0}
           {#each sections as section}
             <CourseCardSection
-              openStatus={section.enrollmentStatus}
-              sectionStatus={section.statusCode}
-              section={section.sectionNumber}
-              crn={section.id}
-              types={section.meetings.map((meeting) => {
-                const type = meeting.typeCode ?? "";
-                return type.charAt(0).toUpperCase() + type.slice(1);
-              })
-              }
-              times={section.meetings.map((meeting) => {
-                const startTime = meeting.start ?? "";
-                const endTime = meeting.end ?? "";
-                if (startTime == "" && endTime == "") return "";
-                if (endTime == "") return `${startTime}`.trim();
-                return `${startTime} - ${endTime}`.trim();
-              })}
-              days={section.meetings.map((meeting) => {
-                const days = meeting.daysOfTheWeek ?? "";
-                return days;
-              })}
-              locations={section.meetings.map((meeting) => {
-                const buildingName = meeting.buildingName ?? "";
-                const roomNumber = meeting.roomNumber ?? "";
-                return `${buildingName} ${roomNumber}`.trim();
-              })}
-              instructors={section.meetings.map((meeting) =>
-                meeting.instructors
-                  .map(
-                    (instructor) =>
-                      `${instructor.firstName} ${instructor.lastName}`
-                  )
-                  .join(", ")
-              )}
+              section = {section}
             />
           {/each}
         {/if}
