@@ -36,9 +36,9 @@
     </td>
     {/if}
     {#if meeting === section.meetings[0]}
-    <td rowspan={section.meetings.length} class="!pr-1">
-      <span class="rounded-xl bg-base-200 p-1 my-0.5">
-        <span class="p-1">
+    <td rowspan={section.meetings.length} >
+      <span class="p-1 my-0.5 rounded-2xl bg-base-200 px-2">
+        <span class="pr-0">
         {section.sectionNumber}
       </span>
       </span>
@@ -50,7 +50,7 @@
       </span>
     </Cell>
     <Cell>
-      <span class="rounded-xl bg-base-200 p-1 my-0.5 flex flex-col w-fit">
+      <span class="p-1 my-0.5 flex flex-col w-fit">
         {#if meeting.start && meeting.end}
             <span class="flex flex-col p-1">
               <span class="leading-3 flex-nowrap">
@@ -58,12 +58,12 @@
               </span>
             </span>
         {:else if meeting.start}
-          <span>
-            &nbsp;{meeting.start}&nbsp;
+          <span class="flex flex-col p-1 leading-3 flex-nowrap">
+            {meeting.start}
           </span>
         {:else if meeting.end}
-          <span>
-            &nbsp;{meeting.end}&nbsp;
+          <span class="flex flex-col p-1 leading-3 flex-nowrap">
+            {meeting.end}
           </span>
         {/if}
       </span>
@@ -90,13 +90,13 @@
         {#each meeting.instructors as instructor}
         <tr>
           <td class="!pl-1 !pr-1 leading-3">
-            {instructor.firstName}
-            {instructor.lastName}
+              {instructor.firstName}
+              {instructor.lastName}
           </td>
           <td class="text-right leading-3 align-middle flex flex-row gap-2">
             {#if instructor.avg_rating}
               <RadialRating value={instructor.avg_rating} maxValue={5.0} />
-              <span class="self-center font-mono !pr-0">
+              <span class="self-center !pr-0">
                 {parseFloat(instructor.avg_rating).toFixed(1)}
               </span>
             {:else}
@@ -104,7 +104,7 @@
                 class="radial-progress bg-neutral text-neutral border-2 border-neutral"
                 style="--value:0; --size:1rem; --thickness:3px;"
               />
-              <span class="text-neutral self-center font-mono"> N/A </span>
+              <span class="text-neutral self-center"> N/A </span>
             {/if}
           </td>
         </tr>
@@ -126,6 +126,17 @@
         <tr>
           <td>CRN:</td>
           <td>{section.id}</td>
+        </tr>
+        <tr>
+          <td>Type{#if section.meetings.length > 1}s{/if}:</td>
+          <td>
+          {#each section.meetings as meeting}
+          {#if meeting === section.meetings[section.meetings.length - 1]}
+            {meeting.typeDesc} 
+          {:else}
+            {meeting.typeDesc},&nbsp;
+          {/if}
+          {/each}
         </tr>
         {#if section.startDate && section.endDate}
           <tr>

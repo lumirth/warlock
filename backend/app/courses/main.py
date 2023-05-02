@@ -147,6 +147,7 @@ def parse_course_from_full_course(course: ElementTree.Element) -> Course:
         
         for meeting in section.findall(".//meeting"):
             type_code = meeting.find("type").get("code") if meeting.find("type") is not None else None
+            type_desc = meeting.find("type").text if meeting.find("type") is not None else None
             days_of_the_week = meeting.find("daysOfTheWeek").text if meeting.find("daysOfTheWeek") is not None else None
             room_number = meeting.find("roomNumber").text if meeting.find("roomNumber") is not None else None
             building_name = meeting.find("buildingName").text if meeting.find("buildingName") is not None else None
@@ -159,7 +160,7 @@ def parse_course_from_full_course(course: ElementTree.Element) -> Course:
                 first_name = instructor.get("firstName")
                 instructors.append(Instructor(lastName=last_name, firstName=first_name))
 
-            meetings.append(Meeting(typeCode=type_code, start=start, end=end, daysOfTheWeek=days_of_the_week, roomNumber=room_number, buildingName=building_name, instructors=instructors))
+            meetings.append(Meeting(typeCode=type_code, start=start, end=end, typeDesc=type_desc, daysOfTheWeek=days_of_the_week, roomNumber=room_number, buildingName=building_name, instructors=instructors))
 
         sections.append(Section(id=section_id, statusCode=status_code, sectionText=section_text, sectionNotes=section_notes, startDate=start_date, endDate=end_date, sectionNumber=section_number, meetings=meetings, partOfTerm=part_of_term, enrollmentStatus=enrollment_status))
 
