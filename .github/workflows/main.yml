@@ -28,7 +28,7 @@ jobs:
         git clone https://github.com/lumirth/rmpy.git
         cd rmpy
         python setup.py sdist
-        sudo -H pip install .
+        pip install -e  .
     # run tests
     - name: Run tests
       run: pytest
