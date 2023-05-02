@@ -24,24 +24,16 @@
   export let sections: any = [];
 
   // TODO: make this download course sections if none are found in the object. this may require restructuring how this component gets values
-  function toggleCourseSections() {
-    loadSections();
-    isCourseSectionsVisible = !isCourseSectionsVisible;
-  }
-
-  function loadSections() {
-    if (!sections || sections.length === 0) {
-      adv_params.course_id = course_num;
-      adv_params.subject = subj;
-      adv_params.year = year;
-      adv_params.term = term;
-      loading = true;
-      queryBackend();
+  const queryAndToggle = async () => {
+    await queryBackend();
+    if (sections && sections.length > 0) {
+      isCourseSectionsVisible = !isCourseSectionsVisible;
     }
-  }
+  };
 
   const queryBackend = async () => {
-    console.log("querying backend");
+    if (sections && sections.length > 0) return;
+    loading = true;
     try {
       let url = "";
       if (dev) url = "http://localhost:8000/search/advanced";
@@ -114,8 +106,7 @@
   class="flex btn btn-xs !min-h-0 leading-3 !h-6 md:!h-4 w-20 items-center justify-center ml-auto text-xs cursor-pointer mt-1 transition-colors duration-150 ease-in-out bg-base-200 border border-neutral hover:bg-neutral transition-none {loading
     ? 'loading'
     : ''}"
-  on:click={toggleCourseSections}
-  on:mouseenter={loadSections}
+  on:click={queryAndToggle}
 >
 <!-- The above does some secret loading to make desktop experience smoother -->
   {#if !loading}
