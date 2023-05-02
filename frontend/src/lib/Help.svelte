@@ -20,8 +20,8 @@
       the fall.
     </li> 
     <li>
-      <code>"phil, humanities & the arts, 2021"</code> will return all courses in the PHIL
-      department that satisfy the humanities & the arts gened and are offered in
+      <code>"phil, nonwestern, 2021"</code> will return all courses in the PHIL
+      department that satisfy the cultural studies - nonwestern gened and are offered in (fall) 
       2021.
     </li>
     <li>
