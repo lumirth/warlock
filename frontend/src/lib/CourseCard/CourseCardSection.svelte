@@ -42,9 +42,9 @@
     const ratings = instructors.map(
       (instructor: any) => instructor.avg_rating
     );
-    // sum all non-zero ratings and divide by the number of non-zero ratings
-    const sum = ratings.reduce((a: any, b: any) => a + b, 0);
-    const count = ratings.filter((rating: any) => rating != 0).length;
+    const no_zero_ratings = ratings.filter((rating: any) => rating != 0 && rating != null && rating != undefined);
+    const sum = no_zero_ratings.reduce((a: any, b: any) => a + b, 0);
+    const count = no_zero_ratings.filter((rating: any) => rating != 0).length;
     return sum / count;
   });
 </script>
