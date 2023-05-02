@@ -21,6 +21,7 @@ jobs:
       run: pip install -r backend/requirements.txt
     - name: Install rmpy
       run: |
+        cd backend
         git clone https://github.com/lumirth/rmpy.git
         cd rmpy
         python setup.py sdist
