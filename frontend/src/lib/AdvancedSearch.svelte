@@ -197,7 +197,7 @@
     let AdvancedSearchFiltered = Object.fromEntries(
       Object.entries(AdvancedSearchAllVals).filter(([_, v]) => v != null)
     );
-    console.log(AdvancedSearchFiltered)
+    // console.log(AdvancedSearchFiltered)
     adv_params = AdvancedSearchFiltered;
     // console.log(AdvancedSearchFiltered);
   }

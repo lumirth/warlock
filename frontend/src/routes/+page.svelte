@@ -28,7 +28,7 @@
 
   // Watch for results updates
   $: {
-    console.log("Results updated:", results);
+    // console.log("Results updated:", results);
     if (results.length > 0) {
       closeAdvancedSearchModal();
       updateLoading(false);
