@@ -155,7 +155,7 @@
       <span>
         <RadialRating value={rating} maxValue={5.0}/>
         <span>
-          &nbsp;{rating}
+          &nbsp;{rating}&nbsp;&nbsp;
         </span>
       </span>
       {/if}
