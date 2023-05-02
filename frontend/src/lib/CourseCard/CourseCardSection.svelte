@@ -28,14 +28,7 @@
 {#each section.meetings as meeting}
   <tr
     on:click={toggleDetails}
-    class="text-xs font-light cursor-pointer [&>td]:py-0 {JSON.stringify(
-      meeting
-    ) === JSON.stringify(section.meetings[section.meetings.length - 1]) &&
-    section.meetings.length !== 1 &&
-    !last
-      ? '[&>td]:!pb-2'
-      : ''}"
-  >
+    class="text-xs font-light cursor-pointer [&>td]:py-0">
     {#if meeting === section.meetings[0]}
       <td rowspan={section.meetings.length}>
         <OpenIndicator {openStatus} {sectionStatus} />
