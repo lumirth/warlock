@@ -50,7 +50,7 @@
   const queryBackend = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8000/search/simple?query=" + query
+        "http://localhost:8000/search/simple?query=" + encodeURIComponent(query)
       );
       const data = await response.json();
       results = data;
