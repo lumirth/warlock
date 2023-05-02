@@ -10,9 +10,12 @@
       department that satisfy the advanced composition gened.
     </li>
       <li>
-
         <code>"cs, machine learning"</code> will return all courses in the CS
         department that have the key phrase "machine learning" in their title or
+        description.
+      </li>
+      <li>
+        <code>"descartes"</code> will return all courses that have the keyword "descarte" in their title or
         description.
       </li>
   </ul>
