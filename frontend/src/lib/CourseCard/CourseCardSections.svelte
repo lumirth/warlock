@@ -25,9 +25,8 @@
 
   // TODO: make this download course sections if none are found in the object. this may require restructuring how this component gets values
   function toggleCourseSections() {
-    isCourseSectionsVisible = !isCourseSectionsVisible;
-
     loadSections();
+    isCourseSectionsVisible = !isCourseSectionsVisible;
   }
 
   function loadSections() {
