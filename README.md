@@ -1,12 +1,8 @@
 ```
-Last updated on 2023-04-23
+Last updated on 2023-05-02
 
 Changes include:
-- Add #Errors subsection under #Usage
-- Add text on outside-of-container development under #Prerequisites
-- Update #Structure to reflect current project frameworks
-- Add note on feather files in regards to databases
-- Remove commit reference for RateMyProfessor and give example in README
+- Added notes indicating sections are outdated and need further update.
 ```
 
 # Table of Contents
@@ -69,7 +65,9 @@ Testing is with pytest. [FastAPI's testing documentation](https://fastapi.tiango
   - TailwindCSS: CSS utility class framework. See [documentation](https://tailwindcss.com/docs/)
   - DaisyUI: tailwind CSS components. See [documentation](https://daisyui.com/components/)
 
-The idea is simple. You have a Svelte app deployed as a static site, and a FastAPI backend REST API providing data to the frontend. The frontend is served from a CDN, and the backend is served from a web server(that is, when finally deployed).
+The idea is simple. You have a Svelte app deployed as a static site, and a FastAPI backend REST API providing data to the frontend. The frontend is served from a CDN, and the backend is served from a web server (~~that is, when finally deployed~~).
+
+Currently deployed with [fly.io](https://fly.io/) in the backend and [Github Pages](pages.github.com) in the frontend.
 
 The backend is used to grab data from the [University's Course API](https://courses.illinois.edu/cisdocs/api), [RateMyProfessor](https://www.npmjs.com/package/@mtucourses/rate-my-professors), and [Waf's GPA Datasets](https://github.com/wadefagen/datasets). 
 
@@ -78,18 +76,25 @@ Note:
 | Component | How frequently it updates |
 | --- | --- |
 | Course API | Every 10 minutes |
-| RateMyProfessor | as reviews come in |
+| RateMyProfessor | as reviews come in(assumed) |
 | Waf's GPA Datasets | Every semester |
 
-Thus, it may be advantageous to store Waf's GPA Datasets in a database(or maybe a feather file?), and update it every semester, but query the Course API and RateMyProfessor every time the frontend is loaded.
+~~Thus, it may be advantageous to store Waf's GPA Datasets in a database(or maybe a feather file?), and update it every semester, but query the Course API and RateMyProfessor every time the frontend is loaded.~~
+
+Datasets are stored in a Polars Dataframe in-memory. The dataset is updated using a maintenance script(which downloads the latest CSV, converts it to feather, and moves it to the ideal location). The maintenance script also gets the latest years/semesters/etc. from the university.
 
 ## On Parsing Queries
-There's a draft of the format by which to parse queries available in [PARSE_QUERIES.md](info/PARSE_QUERIES.md)
+There's a draft of the format by which to parse queries available in [PARSE_QUERIES.md](info/PARSE_QUERIES.md). It's based off of the actual query parsing, but may need to be updated to fit the actual state of the code.
+
 ## On Data Formatting
 
-A basic idea of the format for the frontend to receive the data in(and for the backend to construct the data into) can be seen in the [DATA_FORMAT.md](info/DATA_FORMAT.md) file.
+~~A basic idea of the format for the frontend to receive the data in(and for the backend to construct the data into) can be seen in the [DATA_FORMAT.md](info/DATA_FORMAT.md) file.~~
+
+The Pydantic models can be found defined in [models.py](backend/app/models/models.py)
 
 ## On the course API
+
+Note: the below description is generally accurate, but we've discovered more unseen traits about the API, including new errors. See [backend/app/courses/main.py](backend/app/courses/main.py), at the bottom of the file where the query params function is defined.
 
 The CIS API documentation can be found [here](https://courses.illinois.edu/cisdocs/). CIS stands for Course Information Suite. 
 
@@ -145,10 +150,14 @@ You'll have to programatically find the information you need within the XML resp
 </details>
 
 ## On RateMyProfessor
-The RateMyProfessor NPM module I linked is, of course, a Node module. Thus, we'll have to figure out a way to use JS in Python, because this module looks actively maintained and fulfills our use-case spectacularly. I'm not sure how to do this, but I'm sure it's possible.
 
-Update: I've figured out how to do this. Here is a working example:
+The below has been completely replaced with a handwritten module, now sourced separately at [lumirth/rmpy](https://github.com/lumirth/rmpy]. It interacts with the RMP GraphQL API directly. It was inspired heavily by the [@mtucourses/rate-my-professors](https://www.npmjs.com/package/@mtucourses/rate-my-professors) npm module. It is cloned and `pip install`'d manually in the docker container and tests and locally.
 
+~~The RateMyProfessor NPM module I linked is, of course, a Node module. Thus, we'll have to figure out a way to use JS in Python, because this module looks actively maintained and fulfills our use-case spectacularly. I'm not sure how to do this, but I'm sure it's possible.~~
+
+~~Update: I've figured out how to do this. Here is a working example:~~
+
+For posterity's sake, here's how we used to use the npm module in the backend using [JSPyBridge](https://github.com/extremeheat/JSPyBridge)
 ```python
 import javascript
 
@@ -173,4 +182,4 @@ for result in results:
 ```
 
 ## On Waf's GPA Datasets
-[Waf's GPA Datasets](https://github.com/wadefagen/datasets/blob/master/gpa/README.md) are a CSV file that contains the GPA of every course offered at the University of Illinois. It's updated every semester. We'll need some system for updating this neatly.
+[Waf's GPA Datasets](https://github.com/wadefagen/datasets/blob/master/gpa/README.md) are a CSV file that contains the GPA of every course offered at the University of Illinois. It's updated every semester. ~~We'll need some system for updating this neatly.~~
