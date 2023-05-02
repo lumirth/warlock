@@ -7,8 +7,8 @@
   import CourseCard from "../lib/CourseCard/CourseCard.svelte";
   import Help from "../lib/Help.svelte";
   import { sortByField } from "../sorting";
+  import { dev } from "$app/environment";
 
-  let x = 0;
   let query = "";
   let loading = false;
   let results: any = [];
@@ -43,10 +43,14 @@
     }
   }
 
+  // this happens in two different places. here and in SearchForm.svelte. this needs to be fixed
   const queryBackend = async () => {
     try {
+      let url = "";
+      if (dev) url = "http://localhost:8000/search/advanced";
+      else url = "https://warlock-backend.fly.dev/search/advanced";
       const response = await fetch(
-        "https://warlock-backend.fly.dev/search/advanced",
+        "url",
         {
           method: "POST",
           headers: {

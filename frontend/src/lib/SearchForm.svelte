@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from "svelte";
+  import { dev } from '$app/environment';
 
   export let query = "";
   export let loading = false;
@@ -49,8 +50,11 @@
 
   const queryBackend = async () => {
     try {
+      let url: string = "";
+      if (dev) url = "http://localhost:8000/search/simple?query=";
+      else url = "https://warlock-backend.fly.dev/search/simple?query=";
       const response = await fetch(
-        "https://warlock-backend.fly.dev/search/simple?query=" + encodeURIComponent(query)
+        url + encodeURIComponent(query)
       );
       const data = await response.json();
       results = data;
