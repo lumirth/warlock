@@ -8,6 +8,7 @@
   export let course_id: string;
   let subj = course_id.split(" ")[0];
   let course_num = course_id.split(" ")[1];
+  let loading = false;
 
   let adv_params: any = {
     course_id: course_num,
@@ -26,13 +27,7 @@
   function toggleCourseSections() {
     isCourseSectionsVisible = !isCourseSectionsVisible;
 
-    if (!sections || sections.length === 0) {
-      adv_params.course_id = course_num;
-      adv_params.subject = subj;
-      adv_params.year = year;
-      adv_params.term = term;
-      queryBackend();
-    }
+    loadSections();
   }
 
   function loadSections() {
@@ -41,6 +36,7 @@
       adv_params.subject = subj;
       adv_params.year = year;
       adv_params.term = term;
+      loading = true;
       queryBackend();
     }
   }
@@ -60,9 +56,11 @@
       });
       const data = await response.json();
       sections = data[0].sections;
+      loading = false;
     } catch (error) {
       console.error(error);
       sections = [];
+      loading = false;
     }
   };
 
@@ -114,15 +112,19 @@
 {/if}
 
 <button
-  class="flex h-6 md:h-4 w-20 items-center justify-center ml-auto p-1 text-xs cursor-pointer mt-1 transition-colors duration-150 ease-in-out bg-base-200 border border-neutral hover:bg-neutral"
+  class="flex btn btn-xs !min-h-0 leading-3 !h-6 md:!h-4 w-20 items-center justify-center ml-auto text-xs cursor-pointer mt-1 transition-colors duration-150 ease-in-out bg-base-200 border border-neutral hover:bg-neutral transition-none {loading
+    ? 'loading'
+    : ''}"
   on:click={toggleCourseSections}
   on:mouseenter={loadSections}
-  on:focus={loadSections}
 >
-  {#if isCourseSectionsVisible}
-    &#x25B2;
-  {:else}
-    &#x25BC;
+<!-- The above does some secret loading to make desktop experience smoother -->
+  {#if !loading}
+    {#if isCourseSectionsVisible}
+      &#x25B2;
+    {:else}
+      &#x25BC;
+    {/if}
   {/if}
 </button>
 
