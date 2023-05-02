@@ -45,7 +45,7 @@
   </ul>
   <br/>
 
-<div class="collapse collapse-plus">
+<div class="collapse collapse-arrow">
     <input type="checkbox" />
     <div class="collapse-title text-lg font-bold bg-base-200">
         ADVANCED QUERIES
