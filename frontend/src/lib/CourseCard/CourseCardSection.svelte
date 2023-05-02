@@ -49,6 +49,34 @@
       </span>
     </Cell>
     <Cell>
+      <span class="rounded-xl bg-base-200 flex flex-col p-1 my-0.5 w-fit mr-2">
+        <table class="[&>tr>td]:py-0">
+          {#each meeting.instructors as instructor}
+            <tr>
+              <td class="!pl-1 !pr-1 leading-3">
+                {instructor.firstName}
+                {instructor.lastName}
+              </td>
+              <td class="text-right leading-3 align-middle flex flex-row gap-2">
+                {#if instructor.avg_rating}
+                  <RadialRating value={instructor.avg_rating} maxValue={5.0} />
+                  <span class="self-center !pr-0">
+                    {parseFloat(instructor.avg_rating).toFixed(1)}
+                  </span>
+                {:else}
+                  <div
+                    class="radial-progress bg-neutral text-neutral border-2 border-neutral"
+                    style="--value:0; --size:1rem; --thickness:3px;"
+                  />
+                  <span class="text-neutral self-center"> N/A </span>
+                {/if}
+              </td>
+            </tr>
+          {/each}
+        </table>
+      </span>
+    </Cell>
+    <Cell>
       <span class="p-1 my-0.5 flex flex-col w-fit">
         {#if meeting.start && meeting.end}
           <span class="flex flex-col p-1">
@@ -79,34 +107,6 @@
         {#if meeting.buildingName}
           {meeting.buildingName} {meeting.roomNumber}&nbsp;
         {/if}
-      </span>
-    </Cell>
-    <Cell>
-      <span class="rounded-xl bg-base-200 flex flex-col p-1 my-0.5 w-fit mr-2">
-        <table class="[&>tr>td]:py-0">
-          {#each meeting.instructors as instructor}
-            <tr>
-              <td class="!pl-1 !pr-1 leading-3">
-                {instructor.firstName}
-                {instructor.lastName}
-              </td>
-              <td class="text-right leading-3 align-middle flex flex-row gap-2">
-                {#if instructor.avg_rating}
-                  <RadialRating value={instructor.avg_rating} maxValue={5.0} />
-                  <span class="self-center !pr-0">
-                    {parseFloat(instructor.avg_rating).toFixed(1)}
-                  </span>
-                {:else}
-                  <div
-                    class="radial-progress bg-neutral text-neutral border-2 border-neutral"
-                    style="--value:0; --size:1rem; --thickness:3px;"
-                  />
-                  <span class="text-neutral self-center"> N/A </span>
-                {/if}
-              </td>
-            </tr>
-          {/each}
-        </table>
       </span>
     </Cell>
   </tr>
