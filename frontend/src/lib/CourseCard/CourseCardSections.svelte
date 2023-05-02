@@ -34,7 +34,7 @@
         : 'opacity-0'}"
     />
     <div
-      class="bg-base-100 overflow-x-auto scroll relative pl-2 py-2"
+      class="bg-base-100 overflow-x-scroll scroll relative pl-2 py-2"
       class:hidden={!isCourseSectionsVisible}
       bind:this={tableElem}
       on:scroll={() => (sleft = tableElem.scrollLeft)}
