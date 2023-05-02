@@ -159,6 +159,8 @@ The below has been completely replaced with a handwritten module, now sourced se
 
 ~~Update: I've figured out how to do this. Here is a working example:~~
 
+---
+
 For posterity's sake, here's how we used to use the npm module in the backend using [JSPyBridge](https://github.com/extremeheat/JSPyBridge)
 ```python
 import javascript
