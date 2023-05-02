@@ -49,6 +49,7 @@
       </span>
     </Cell>
     <Cell>
+      {#if meeting.instructors.length > 0}
       <span class="rounded-xl bg-base-200 flex flex-col p-1 my-0.5 w-fit mr-2">
         <table class="[&>tr>td]:py-0">
           {#each meeting.instructors as instructor}
@@ -75,6 +76,7 @@
           {/each}
         </table>
       </span>
+      {/if}
     </Cell>
     <Cell>
       <span class="p-1 my-0.5 flex flex-col w-fit">
