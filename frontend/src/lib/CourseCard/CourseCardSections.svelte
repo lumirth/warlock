@@ -42,31 +42,15 @@
       <table
         class="bg-transparent table table-compact !border-neutral !rounded-none w-full"
       >
-        <!-- <thead class="!rounded-tl-none !rounded-tr-none">
-        <tr class="!rounded-none">
-          <th class="!rounded-none">Open</th>
-          <th>Code</th>
-          <th>CRN</th>
-          <th>Type</th>
-          <th class="!rounded-none">Favorite Color</th>
-        </tr>
-      </thead> -->
         {#if sections && sections.length > 0}
           {#each sections as section, i}
             {#if i === sections.length - 1}
-            <CourseCardSection
-              section = {section}
-              last = {true}
-            />
+              <CourseCardSection {section} last={true} />
             {:else}
-            <CourseCardSection
-              section = {section}
-            />
+              <CourseCardSection {section} />
             {/if}
           {/each}
         {/if}
-        <!-- <CourseCardSection crn="54321" />
-        <CourseCardSection crn="12345" openStatus="Closed" /> -->
       </table>
     </div>
     {#if showRightGradient}
