@@ -2,8 +2,8 @@
   import RadialRating from "./RadialRating.svelte";
   import OpenIndicator from "./OpenIndicator.svelte";
   import Cell from "./Cell.svelte";
-  import { validate_each_keys } from "svelte/internal";
   export let section: any;
+  export let last: boolean = false;
   let showDetails: boolean = false;
 
   let openStatus = section.enrollmentStatus;
@@ -26,10 +26,7 @@
 </script>
 
 {#each section.meetings as meeting}
-<!-- {console.log(JSON.stringify(meeting))}
-{console.log(JSON.stringify(section.meetings[section.meetings.length]))}
-{console.log(JSON.stringify(meeting) === JSON.stringify(section.meetings[section.meetings.length]))} -->
-<tr on:click={toggleDetails} class="text-xs font-light cursor-pointer [&>td]:py-0 {(JSON.stringify(meeting) === JSON.stringify(section.meetings[section.meetings.length - 1])) && section.meetings.length !== 1 ? "[&>td]:!pb-2": ""}">
+<tr on:click={toggleDetails} class="text-xs font-light cursor-pointer [&>td]:py-0 {(JSON.stringify(meeting) === JSON.stringify(section.meetings[section.meetings.length - 1])) && (section.meetings.length !== 1) && !last ? "[&>td]:!pb-2": ""}">
    {#if meeting === section.meetings[0]}
     <td rowspan={section.meetings.length}>
       <OpenIndicator {openStatus} {sectionStatus} />

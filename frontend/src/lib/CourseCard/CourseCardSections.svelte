@@ -52,10 +52,17 @@
         </tr>
       </thead> -->
         {#if sections && sections.length > 0}
-          {#each sections as section}
+          {#each sections as section, i}
+            {#if i === sections.length - 1}
+            <CourseCardSection
+              section = {section}
+              last = {true}
+            />
+            {:else}
             <CourseCardSection
               section = {section}
             />
+            {/if}
           {/each}
         {/if}
         <!-- <CourseCardSection crn="54321" />
