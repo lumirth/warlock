@@ -13,7 +13,9 @@
   onMount(() => {
     try {
       link = href.replace('http://cis.local', 'https://courses.illinois.edu')
-      link = fixDocumentationURL(link);
+      if (link.includes('cisapi')) {
+          link = fixDocumentationURL(link);
+      }
       link = convertCourseURL(link);
     } catch (e) {
       link = href;
