@@ -12,6 +12,8 @@ async def initialize_professor_cache(pickles_dir: str, load_pickles=True):
         if len(pickle_files) == 0:
             # initialize the professor cache
             professor_cache = await fetch_all_professors()
+            # TODO: Expand this out into a solution for a list of name errors
+            professor_cache['W Fagen-Ulmschneider'] = professor_cache.pop("W Fagen")
         else:
             # load the latest professor cache
             pickle_files.sort(key=os.path.getmtime)
