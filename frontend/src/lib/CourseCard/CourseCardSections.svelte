@@ -71,7 +71,7 @@
 {/if}
 
 <button
-  class="flex w-24 h-6 md:h-4 md:w-20 items-center justify-center ml-auto p-1 text-xs cursor-pointer mt-1 transition-colors duration-150 ease-in-out bg-base-200 border border-neutral hover:bg-neutral"
+  class="flex  h-4 w-20 items-center justify-center ml-auto p-1 text-xs cursor-pointer mt-1 transition-colors duration-150 ease-in-out bg-base-200 border border-neutral hover:bg-neutral"
   on:click={toggleCourseSections}
 >
   {#if isCourseSectionsVisible && sections && sections.length > 0}
