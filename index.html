@@ -9,11 +9,11 @@
 		<meta http-equiv="content-security-policy" content="">
 		<link href="./_app/immutable/assets/_layout-0102091b.css" rel="stylesheet">
 		<link href="./_app/immutable/assets/_page-7c43fefe.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/start-f17bef70.js">
+		<link rel="modulepreload" href="./_app/immutable/start-f0dd50c8.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/index-1d3d6a45.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/singletons-86d6af26.js">
 		<link rel="modulepreload" href="./_app/immutable/components/pages/_layout.svelte-a4774e57.js">
-		<link rel="modulepreload" href="./_app/immutable/components/pages/_page.svelte-803fdb38.js">
+		<link rel="modulepreload" href="./_app/immutable/components/pages/_page.svelte-a794b39f.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/environment-9aa685ef.js">
 		<link rel="modulepreload" href="./_app/immutable/modules/pages/_page.ts-dc85b7cd.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/_page-da46b06b.js"><title>Course Warlock</title><!-- HEAD_svelte-1nd7cdc_START --><meta name="description" content="Svelte demo app"><!-- HEAD_svelte-1nd7cdc_END -->
@@ -108,6 +108,9 @@
   <p>You can also combine search terms using commas. For example:</p>
   <ul><li><code>&quot;comp sci, adv comp&quot;</code> will return all courses in the CS
       department that satisfy the advanced composition gened.
+      <code>&quot;cs, machine learning&quot;</code> will return all courses in the CS
+      department that have the key phrase &quot;machine learning&quot; in their title or
+      description.
     </li></ul>
   <p>You can also specify a term, year, or CRN:
   </p>
@@ -181,14 +184,14 @@
 </div>
 
 
-		<script type="module" data-sveltekit-hydrate="7gzznh">
-			import { start } from "./_app/immutable/start-f17bef70.js";
+		<script type="module" data-sveltekit-hydrate="1odfejp">
+			import { start } from "./_app/immutable/start-f0dd50c8.js";
 
 			start({
 				assets: "",
 				env: {},
-				target: document.querySelector('[data-sveltekit-hydrate="7gzznh"]').parentNode,
-				version: "1683006503168",
+				target: document.querySelector('[data-sveltekit-hydrate="1odfejp"]').parentNode,
+				version: "1683006710751",
 				hydrate: {
 					node_ids: [0, 2],
 					data: [null,null],
