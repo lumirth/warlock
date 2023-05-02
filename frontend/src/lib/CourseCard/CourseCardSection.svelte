@@ -158,7 +158,7 @@
         {#if section.sectionText}
         <tr class="box-content">
           <td class="!py-0 align-top">Section Info:</td>
-          <td class="!py-0 whitespace-pre-wrap max-w-[230px] sm:max-w-[350px] md:max-w-[450px]">
+          <td class="!py-0 whitespace-pre-wrap max-w-[220px] sm:max-w-[350px] md:max-w-[450px]">
             {section.sectionText}
           </td>
         </tr>
@@ -166,7 +166,7 @@
         {#if section.sectionNotes}
           <tr class="box-content">
             <td class="!py-0 align-top">Restrictions:</td>
-            <td class="!py-0 whitespace-pre-wrap max-w-[230px] sm:max-w-[350px] md:max-w-[450px] text-justify">
+            <td class="!py-0 whitespace-pre-wrap max-w-[220px] sm:max-w-[350px] md:max-w-[450px]">
               {section.sectionNotes}
             </td>
           </tr>
