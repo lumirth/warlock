@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { convertCourseURL } from "cisurls";
+  import { convertCourseURL, fixDocumentationURL } from "cisurls";
 
   export let course_id: string;
   export let course_detail: string;
@@ -12,7 +12,9 @@
 
   onMount(() => {
     try {
-      link = convertCourseURL(href);
+      link = href.replace('http://cis.local', 'https://courses.illinois.edu')
+      link = fixDocumentationURL(link);
+      link = convertCourseURL(link);
     } catch (e) {
       link = href;
       console.error(e);
