@@ -6,6 +6,10 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  PYTHONPATH: "${PYTHONPATH}:${{ github.workspace }}/rmpy"
+
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
