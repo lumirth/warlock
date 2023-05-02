@@ -109,7 +109,7 @@
     </div>
   {/if}
   <!-- for each result-->
-  {#if results.length > 0}
+  {#if results.length > 1}
     <!-- sort by GPA-->
     <div class="flex justify-end gap-1">
       <button
