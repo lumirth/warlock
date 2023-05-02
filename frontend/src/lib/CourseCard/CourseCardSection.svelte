@@ -1,175 +1,176 @@
 <script lang="ts">
   import RadialRating from "./RadialRating.svelte";
-  // TODO: just pass the whole section object to this component and let it handle the rest
-  export let section;
+  import OpenIndicator from "./OpenIndicator.svelte";
+  import Cell from "./Cell.svelte";
+  import { validate_each_keys } from "svelte/internal";
+  export let section: any;
+  let showDetails: boolean = false;
 
   let openStatus = section.enrollmentStatus;
   let sectionStatus = section.statusCode;
-  let sectionNumber = section.sectionNumber;
-  let crn = section.id;
-  let types = section.meetings.map((meeting: any) => {
-    const type = meeting.typeCode ?? "";
-    return type.charAt(0).toUpperCase() + type.slice(1);
-  });
-  let times = section.meetings.map((meeting: any) => {
-    const startTime = meeting.start ?? "";
-    const endTime = meeting.end ?? "";
-    if (startTime == "" && endTime == "") return "";
-    if (endTime == "") return `${startTime}`.trim();
-    return `${startTime} - ${endTime}`.trim();
-  });
-  let days = section.meetings.map((meeting: any) => {
-    const days = meeting.daysOfTheWeek ?? "";
-    return days;
-  });
-  let locations = section.meetings.map((meeting: any) => {
-    const buildingName = meeting.buildingName ?? "";
-    const roomNumber = meeting.roomNumber ?? "";
-    return `${buildingName} ${roomNumber}`.trim();
-  });
-  let instructors = section.meetings.map((meeting: any) =>
-    meeting.instructors
-      .map(
-        (instructor: any) =>
-          `${instructor.firstName} ${instructor.lastName}`
-      )
-      .join(", ")
-  );
-  // for each list of instructors, average their ratings
-  let ratings = section.meetings.map((meeting: any) => {
-    const instructors = meeting.instructors;
-    if (instructors.length == 0) return 0;
-    const ratings = instructors.map(
-      (instructor: any) => instructor.avg_rating
+
+  const toggleDetails = () => {
+    showDetails = !showDetails;
+  };
+
+  const convertTZ = (date: string, tzString: string) => {
+    return new Date(
+      (typeof date === "string"
+        ? new Date(date.substring(0, date.length - 1))
+        : date
+      ).toLocaleString("en-US", { timeZone: tzString })
     );
-    const no_zero_ratings = ratings.filter((rating: any) => rating != 0 && rating != null && rating != undefined);
-    const sum = no_zero_ratings.reduce((a: any, b: any) => a + b, 0);
-    const count = no_zero_ratings.filter((rating: any) => rating != 0).length;
-    return sum / count;
-  });
+  };
+
+  console.log(section.meetings[section.meetings.length - 1])
 </script>
 
-<tr class="text-xs font-light">
-  <!-- TODO: add explanation somewhere of what different colors mean-->
-  <td>
-    {#if openStatus == "Open"}
-      <div class="flex justify-start">
-        <input
-          type="radio"
-          class="flex justify-center radio radio-sm radio-success cursor-default"
-          checked
-        />
-      </div>
-    {:else if openStatus == "Open (Restricted)" || openStatus == "CrossListOpen (Restricted)"}
-    <div class="flex justify-start">
-      <input
-        type="radio"
-        class="flex justify-center radio radio-sm radio-warning cursor-default"
-        checked
-      />
-    </div>
-    {:else if openStatus == "UNKNOWN"}
-    <div class="flex justify-start">
-      <input
-        type="radio"
-        class="flex justify-center radio radio-sm !bg-base-100 !text-base-100 !border-neutral cursor-default"
-        checked
-      />
-    </div>
-    {:else if sectionStatus == "P"}
-    <div class="flex justify-start">
-      <input
-        type="radio"
-        class="flex justify-center radio radio-sm radio-primary !bg-base-100 !text-base-100 cursor-default"
-        checked
-      />
-    </div>
-    {:else}      
-    <div class="flex justify-start">
-        <input
-          type="radio"
-          class="flex justify-center radio radio-sm radio-error cursor-default"
-          checked
-        />
-      </div>
+{#each section.meetings as meeting}
+<!-- {console.log(JSON.stringify(meeting))}
+{console.log(JSON.stringify(section.meetings[section.meetings.length]))}
+{console.log(JSON.stringify(meeting) === JSON.stringify(section.meetings[section.meetings.length]))} -->
+<tr on:click={toggleDetails} class="text-xs font-light cursor-pointer [&>td]:py-0 {(JSON.stringify(meeting) === JSON.stringify(section.meetings[section.meetings.length - 1])) && section.meetings.length !== 1 ? "[&>td]:!pb-2": ""}">
+   {#if meeting === section.meetings[0]}
+    <td rowspan={section.meetings.length}>
+      <OpenIndicator {openStatus} {sectionStatus} />
+    </td>
     {/if}
-  </td>
-  <!-- <td>{section}</td> -->
-  <!-- <td>{crn}</td> -->
-  <td >
-    <div class="flex !flex-col">
-      {#each types as type}
+    {#if meeting === section.meetings[0]}
+    <td rowspan={section.meetings.length} class="!pr-1">
+      <span class="rounded-xl bg-base-200 p-1 my-0.5">
+        <span class="p-1">
+        {section.sectionNumber}
+      </span>
+      </span>
+    </td>
+    {/if}
+    <Cell>
       <span>
-        {type}&nbsp;
+        {meeting.typeCode}
       </span>
-      {/each}
-    </div>
-  </td>
-  <td >
-    <div class="flex !flex-col">
-      {#each times as time}
-      <span >
-        {time}
-      </span>
-      {/each}
-    </div>
-  </td>
-  <!-- <td class="w-fit pr-0">
-    <div class="flex !flex-col gap-1 align-middle justify-center">
-        <span class="badge bg-base-200 border-none rounded-full">{startTime}</span>
-        {#if endTime}
-        <span class="badge bg-base-200 border-none rounded-full">{endTime}</span>
+    </Cell>
+    <Cell>
+      <span class="rounded-xl bg-base-200 p-1 my-0.5 flex flex-col w-fit">
+        {#if meeting.start && meeting.end}
+            <span class="flex flex-col p-1">
+              <span class="leading-3 flex-nowrap">
+                {meeting.start} - {meeting.end}
+              </span>
+            </span>
+        {:else if meeting.start}
+          <span>
+            &nbsp;{meeting.start}&nbsp;
+          </span>
+        {:else if meeting.end}
+          <span>
+            &nbsp;{meeting.end}&nbsp;
+          </span>
         {/if}
-    </div>
-  </td> -->
-  <!-- todo fix the fact that spaces are gone -->
-  <td >
-    <div class="flex !flex-col">
-      {#each days as day}
-      <span>
-        {day}&nbsp;
       </span>
-      {/each}
-    </div>
-  </td>
-  <td >
-    <div class="flex !flex-col">
-      {#each locations as location}
+    </Cell>
+    <Cell>
       <span>
-        {location}&nbsp;
+        {#if meeting.daysOfTheWeek}
+          {meeting.daysOfTheWeek}
+        {/if}
       </span>
-      {/each}
-    </div>
-  </td>
-  <td >
-    <div class="flex !flex-col">
-      {#each instructors as instructor}
+    </Cell>
+    <Cell>
       <span>
-        {instructor}&nbsp;
+        {#if meeting.buildingName}
+          {meeting.buildingName} {meeting.roomNumber}&nbsp;
+        {/if}
       </span>
-      {/each}
-    </div>
-  </td>
-  <td >
-    <div class="flex !flex-col">
-      {#each ratings as rating}
-      {#if rating != 0}
-      <span>
-        <RadialRating value={rating} maxValue={5.0}/>
-        <span>
-          &nbsp;{rating}&nbsp;&nbsp;
-        </span>
+    </Cell>
+    <Cell>
+      <span
+        class="rounded-xl bg-base-200 flex flex-col p-1 my-0.5 w-fit mr-2"
+      >
+      <table class="[&>tr>td]:py-0">
+        {#each meeting.instructors as instructor}
+        <tr>
+          <td class="!pl-1 !pr-1 leading-3">
+            {instructor.firstName}
+            {instructor.lastName}
+          </td>
+          <td class="text-right leading-3 align-middle flex flex-row gap-2">
+            {#if instructor.avg_rating}
+              <RadialRating value={instructor.avg_rating} maxValue={5.0} />
+              <span class="self-center font-mono !pr-0">
+                {parseFloat(instructor.avg_rating).toFixed(1)}
+              </span>
+            {:else}
+              <div
+                class="radial-progress bg-neutral text-neutral border-2 border-neutral"
+                style="--value:0; --size:1rem; --thickness:3px;"
+              />
+              <span class="text-neutral self-center font-mono"> N/A </span>
+            {/if}
+          </td>
+        </tr>
+        {/each}
+      </table>
       </span>
-      {/if}
-      {/each}
-    </div>
-  </td>
+    </Cell>
 </tr>
+{/each}
+
+{#if showDetails}
+  <tr>
+    <td colspan="100" class="pb-4">
+      <table class="table table-compact [&>tr>td]:!py-0">
+        <tr >
+          <td>Status:</td>
+          <td>{section.enrollmentStatus}{#if section.statusCode === 'P'}(Pending){/if}</td> 
+        </tr>
+        <tr>
+          <td>CRN:</td>
+          <td>{section.id}</td>
+        </tr>
+        {#if section.startDate && section.endDate}
+          <tr>
+            <td>Date:</td>
+            <td
+              >{convertTZ(
+                section.startDate,
+                "America/Chicago"
+              ).toLocaleDateString()} - {convertTZ(
+                section.endDate,
+                "America/Chicago"
+              ).toLocaleDateString()}</td
+            >
+          </tr>
+        {/if}
+        {#if section.partOfTerm}
+          <tr>
+            <td>Part of Term:</td>
+            <td>{section.partOfTerm}</td>
+          </tr>
+        {/if}
+        {#if section.sectionText}
+        <tr class="box-content">
+          <td class="!py-0 align-top">Section Info:</td>
+          <td class="!py-0 whitespace-pre-wrap max-w-[450px]">
+            {section.sectionText}
+          </td>
+        </tr>
+        {/if}
+        {#if section.sectionNotes}
+          <tr class="box-content">
+            <td class="!py-0 align-top">Restrictions:</td>
+            <td class="!py-0 whitespace-pre-wrap max-w-fit text-justify">
+              {section.sectionNotes}
+            </td>
+          </tr>
+        {/if}
+      </table>
+    </td>
+  </tr>
+{/if}
 
 <style>
   .radio:checked,
   .radio[aria-checked="true"] {
     box-shadow: 0 0 0 4px hsl(var(--b1)) inset, 0 0 0 4px hsl(var(--b1)) inset;
   }
-
 </style>

@@ -140,7 +140,8 @@ def parse_course_from_full_course(course: ElementTree.Element) -> Course:
         enrollment_status = section.find("enrollmentStatus").text if section.find("enrollmentStatus") is not None else None
         start_date = section.find("startDate").text if section.find("startDate") is not None else None
         end_date = section.find("endDate").text if section.find("endDate") is not None else None
-        section_info = section.find("sectionText").text if section.find("sectionText") is not None else None
+        section_text = section.find("sectionText").text if section.find("sectionText") is not None else None
+        section_notes = section.find("sectionNotes").text if section.find("sectionNotes") is not None else None
         status_code = section.find("statusCode").text if section.find("statusCode") is not None else None
         meetings = []
         
@@ -160,7 +161,7 @@ def parse_course_from_full_course(course: ElementTree.Element) -> Course:
 
             meetings.append(Meeting(typeCode=type_code, start=start, end=end, daysOfTheWeek=days_of_the_week, roomNumber=room_number, buildingName=building_name, instructors=instructors))
 
-        sections.append(Section(id=section_id, statusCode=status_code, sectionInfo=section_info, startDate=start_date, endDate=end_date, sectionNumber=section_number, meetings=meetings, partOfTerm=part_of_term, enrollmentStatus=enrollment_status))
+        sections.append(Section(id=section_id, statusCode=status_code, sectionText=section_text, sectionNotes=section_notes, startDate=start_date, endDate=end_date, sectionNumber=section_number, meetings=meetings, partOfTerm=part_of_term, enrollmentStatus=enrollment_status))
 
     # get gen ed attributes
     gen_ed_attributes = []
