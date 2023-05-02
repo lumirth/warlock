@@ -1,8 +1,10 @@
 <script lang="ts">
   import CourseCardSection from "./CourseCardSection.svelte";
   let isCourseSectionsVisible = false;
+  // TODO: make this download course sections if none are found in the object. this may require restructuring how this component gets values
   function toggleCourseSections() {
-    if (sections && sections.length > 0) isCourseSectionsVisible = !isCourseSectionsVisible;
+    if (sections && sections.length > 0)
+      isCourseSectionsVisible = !isCourseSectionsVisible;
   }
 
   let sleft = 0;
@@ -10,7 +12,6 @@
   let tableWidth: number;
   let tableContainerWidth: number;
   let showRightGradient: boolean = false;
-  let innerWidth: number;
   export let sections: any = [];
 
   $: {
@@ -57,31 +58,35 @@
               sectionStatus={section.statusCode}
               section={section.sectionNumber}
               crn={section.id}
-              type={section.meetings[0].typeCode}
-              startTime={section.meetings[0].start}
-              endTime={section.meetings[0].end ? section.meetings[0].end : ""}
-              day={section.meetings[0].daysOfTheWeek
-                ? section.meetings[0].daysOfTheWeek
-                : ""}
-              locations={
-                section.meetings
-                  .map((meeting) => 
-                    meeting.buildingName
-                      ? meeting.buildingName  + " " + meeting.roomNumber
-                      : ""
+              types={section.meetings.map((meeting) => {
+                const type = meeting.typeCode ?? "";
+                return type.charAt(0).toUpperCase() + type.slice(1);
+              })
+              }
+              times={section.meetings.map((meeting) => {
+                const startTime = meeting.start ?? "";
+                const endTime = meeting.end ?? "";
+                if (startTime == "" && endTime == "") return "";
+                if (endTime == "") return `${startTime}`.trim();
+                return `${startTime} - ${endTime}`.trim();
+              })}
+              days={section.meetings.map((meeting) => {
+                const days = meeting.daysOfTheWeek ?? "";
+                return days;
+              })}
+              locations={section.meetings.map((meeting) => {
+                const buildingName = meeting.buildingName ?? "";
+                const roomNumber = meeting.roomNumber ?? "";
+                return `${buildingName} ${roomNumber}`.trim();
+              })}
+              instructors={section.meetings.map((meeting) =>
+                meeting.instructors
+                  .map(
+                    (instructor) =>
+                      `${instructor.firstName} ${instructor.lastName}`
                   )
                   .join(", ")
-              }
-              instructors={
-                section.meetings
-                  .map((meeting) => meeting.instructors)
-                  .map((instructors) =>
-                    instructors
-                      .map((instructor) => instructor.lastName + ", " + instructor.firstName)
-                      .join("; ")
-                  )
-                  .join(", ")
-              }
+              )}
             />
           {/each}
         {/if}

@@ -1,17 +1,18 @@
 <script lang="ts">
+  // TODO: just pass the whole section object to this component and let it handle the rest
   export let openStatus: string = "Open";
   export let crn: string = "12345";
-  export let type: string = "LCD";
   export let section: string = "AY2";
   export let sectionStatus: string = "";
-  export let startTime: string = "3:40";
-  export let endTime: string = "4:30";
-  export let day: string = "MWF";
+  export let times: any = [];
+  export let days: any = [];
+  export let types: any = [];
   export let locations: any = [];
   export let instructors: any = [];
 </script>
 
 <tr class="text-xs font-light">
+  <!-- TODO: add explanation somewhere of what different colors mean-->
   <td>
     {#if openStatus == "Open"}
       <div class="flex justify-start">
@@ -57,30 +58,56 @@
   </td>
   <!-- <td>{section}</td> -->
   <!-- <td>{crn}</td> -->
-  <td>{type}</td>
-  <td class="w-fit pr-0">
+  <td >
+    <div class="flex !flex-col">
+      {#each types as type}
+      <span>
+        {type}&nbsp;
+      </span>
+      {/each}
+    </div>
+  </td>
+  <td >
+    <div class="flex !flex-col">
+      {#each times as time}
+      <span >
+        {time}
+      </span>
+      {/each}
+    </div>
+  </td>
+  <!-- <td class="w-fit pr-0">
     <div class="flex !flex-col gap-1 align-middle justify-center">
         <span class="badge bg-base-200 border-none rounded-full">{startTime}</span>
         {#if endTime}
         <span class="badge bg-base-200 border-none rounded-full">{endTime}</span>
         {/if}
     </div>
-  </td>
-  <td class="!pl-1">{day}</td>
+  </td> -->
+  <!-- todo fix the fact that spaces are gone -->
   <td >
-    <div class="flex !flex-row">
-      {#each locations as location}
+    <div class="flex !flex-col">
+      {#each days as day}
       <span>
-        {location}
+        {day}&nbsp;
       </span>
       {/each}
     </div>
   </td>
   <td >
-    <div class="flex !flex-row">
+    <div class="flex !flex-col">
+      {#each locations as location}
+      <span>
+        {location}&nbsp;
+      </span>
+      {/each}
+    </div>
+  </td>
+  <td >
+    <div class="flex !flex-col">
       {#each instructors as instructor}
       <span>
-        {instructor}
+        {instructor}&nbsp;
       </span>
       {/each}
     </div>
