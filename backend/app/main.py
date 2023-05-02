@@ -2,7 +2,7 @@ from .courses import search_courses, get_single_course_xml
 from .load import load_gpa_data, initialize_professor_cache, save_professor_cache
 from .models import Course, Parameters
 from .models import parse_string_into_parameters, load_pickles
-from .utils import log_time_sync
+from .utils import log_time_sync, logger
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
@@ -52,6 +52,7 @@ def search_simple(query: str):
         time.sleep(10)
     with log_time_sync("parse_string_into_parameters"):
         query_obj = parse_string_into_parameters(query, PICKLES)
+        logger.info(f"Query:\n{query_obj}")
     with log_time_sync("search_courses"):
         results = search_advanced(query_obj)
     return results
