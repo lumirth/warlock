@@ -9,6 +9,8 @@ from typing import List, Optional
 import asyncio
 import time
 
+# TODO: add per-section credit hours
+
 PROFESSOR_CACHE = {}
 GPA_DATAFRAME = None
 PICKLES = None
