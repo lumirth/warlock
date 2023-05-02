@@ -16,18 +16,19 @@
     export let sections: any = [];
   </script>
   
-  <div class="bg-base-200 border-neutral border-[1px] flex flex-col">
-    <CourseCardHeader
+  <div class="mb-4">
+    <div class="bg-base-200 border-neutral border-[1px] flex flex-col">
+      <CourseCardHeader
       {course_id}
       {course_detail}
       {href}
-    />
-    <div class="border-t border-neutral w-full mx-auto"></div>
-    <CourseCardContent
+      />
+      <div class="border-t border-neutral w-full mx-auto"></div>
+      <CourseCardContent
       {description}
       />
-    <!-- show if either tags_text has a length or if gpa_average isnt 0-->
-    <!-- {#if tags_text.length > 0 || average_gpa != 0} -->
+      <!-- show if either tags_text has a length or if gpa_average isnt 0-->
+      <!-- {#if tags_text.length > 0 || average_gpa != 0} -->
       <div class="border-t border-neutral w-full mx-auto"></div>
       <CourseCardFooter
       {credit_hours}
@@ -36,7 +37,9 @@
       {tags_text}
       />
       <!-- {/if} -->
-  </div>
-  <CourseCardSections
+    </div>
+    
+    <!-- <CourseCardSections
     {sections}
-  />
+    /> -->
+  </div>
