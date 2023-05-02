@@ -33,7 +33,7 @@
   </div>
   <div class="relative overflow-x-auto pl-1 pr-1 box-content">
     <div class="absolute top-0 left-1 h-full w-4 bg-gradient-to-r from-base-200 to-transparent transition-opacity ease-in-out {sleft > 0 ? 'opacity-100' : 'opacity-0'}"></div>
-    <div class="whitespace-nowrap overflow-x-scroll no-scrollbar scroll" bind:this={headerMiddleText} on:scroll={() => (sleft = headerMiddleText.scrollLeft)}>
+    <div class="whitespace-nowrap overflow-x-auto no-scrollbar scroll" bind:this={headerMiddleText} on:scroll={() => (sleft = headerMiddleText.scrollLeft)}>
       <div class="text-lg text-neutral font-light uppercase">{course_detail}&nbsp;&nbsp;&nbsp;</div>
     </div>
     <div class="absolute top-0 right-1 h-full w-4 bg-gradient-to-l from-base-200 to-transparent"></div>

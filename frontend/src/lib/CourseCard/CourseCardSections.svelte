@@ -26,7 +26,7 @@
 </script>
 
 {#if isCourseSectionsVisible}
-  <div class="relative overflow-x-scroll mt-1 border border-neutral">
+  <div class="relative overflow-x-auto mt-1 border border-neutral">
     <div
       class="absolute top-0 left-0 h-full w-4 bg-gradient-to-r from-base-100 to-transparent transition-opacity ease-in-out z-50 {sleft >
       0
@@ -34,7 +34,7 @@
         : 'opacity-0'}"
     />
     <div
-      class="bg-base-100 overflow-x-auto scroll relative pl-2 py-2"
+      class="bg-base-100 overflow-x-auto no-scrollbar scroll relative pl-2 py-2"
       class:hidden={!isCourseSectionsVisible}
       bind:this={tableElem}
       on:scroll={() => (sleft = tableElem.scrollLeft)}
