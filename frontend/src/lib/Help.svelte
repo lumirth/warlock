@@ -8,6 +8,9 @@
     <li>
       <code>"comp sci, adv comp"</code> will return all courses in the CS
       department that satisfy the advanced composition gened.
+      <code>"cs, machine learning"</code> will return all courses in the CS
+      department that have the key phrase "machine learning" in their title or
+      description.
     </li>
   </ul>
   <p>
