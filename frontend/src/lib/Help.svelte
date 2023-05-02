@@ -94,7 +94,7 @@
               Part of Term (<code>pot:first; p: whole; part-of-term:all</code>)
             </li>
             <li>
-              Keyword (<code>q: minds and machines; keyword: advanced applications</code
+              Keyword (<code>q: minds & machines; keyword: advanced applications</code
               >)
             </li>
           </ul>
