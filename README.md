@@ -96,6 +96,8 @@ The Pydantic models can be found defined in [models.py](backend/app/models/model
 
 Note: the below description is generally accurate, but we've discovered more unseen traits about the API, including new errors. See [backend/app/courses/main.py](backend/app/courses/main.py), at the bottom of the file where the query params function is defined.
 
+Notably, the really useful piece of information we found is that by checking the `id=` attribute of the `<option>` elements in the university's official [courses.illinois.edu/search/form](https://courses.illinois.edu/search/form) search form. The way we fetch this can be found in [scripts/utils/find_pot_codes.py](scripts/utils/find_pot_codes.py) and [scripts/utils/find_college_codes.py](scripts/utils/find_college_codes.py) (though college codes are currently unused in the app).
+
 The CIS API documentation can be found [here](https://courses.illinois.edu/cisdocs/). CIS stands for Course Information Suite. 
 
 The CIS API's documentation is out of date. To use it, you'll have to combine some stuff from the [Data Explorer page](https://courses.illinois.edu/cisdocs/explorer) and the [CIS API documentation](https://courses.illinois.edu/cisdocs/api). Below is an example of how to fix the example links in the CIS API documentation.
