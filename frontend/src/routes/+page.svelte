@@ -50,7 +50,7 @@
       if (dev) url = "http://localhost:8000/search/advanced";
       else url = "https://warlock-backend.fly.dev/search/advanced";
       const response = await fetch(
-        "url",
+        url,
         {
           method: "POST",
           headers: {
