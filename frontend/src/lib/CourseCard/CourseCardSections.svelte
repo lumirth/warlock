@@ -34,7 +34,7 @@
         : 'opacity-0'}"
     />
     <div
-      class="bg-base-100 overflow-x-auto no-scrollbar scroll relative pl-2 py-2"
+      class="bg-base-100 overflow-x-auto scroll relative pl-2 py-2"
       class:hidden={!isCourseSectionsVisible}
       bind:this={tableElem}
       on:scroll={() => (sleft = tableElem.scrollLeft)}
@@ -78,7 +78,7 @@
 {/if}
 
 <button
-  class="flex  h-4 w-20 items-center justify-center ml-auto p-1 text-xs cursor-pointer mt-1 transition-colors duration-150 ease-in-out bg-base-200 border border-neutral hover:bg-neutral"
+  class="flex h-6 md:h-4 w-20 items-center justify-center ml-auto p-1 text-xs cursor-pointer mt-1 transition-colors duration-150 ease-in-out bg-base-200 border border-neutral hover:bg-neutral"
   on:click={toggleCourseSections}
 >
   {#if isCourseSectionsVisible && sections && sections.length > 0}
