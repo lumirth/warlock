@@ -3,13 +3,13 @@ Last updated on 2023-05-03
 
 Changes include:
 - Added screenshot
+- Remove table of contents from table of contents
 ```
 
 <img width="1369" alt="SCR-20230503-pwex" src="https://user-images.githubusercontent.com/65358837/236069991-e7bc5749-f40b-4d4e-8846-f946a7cfe614.png">
 
 # Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Getting started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
