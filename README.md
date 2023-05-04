@@ -16,8 +16,6 @@ Course Warlock aims to be a comprehensive tool for streamlining the process of s
   - [Frontend](#frontend)
   - [Backend](#backend)
     - [Endpoints](#endpoints)
-      - [GET /search/simple](#get-searchsimple)
-      - [POST /search/advanced](#post-searchadvanced)
   - [Architecture](#architecture)
   - [Testing](#testing)
   - [Deployment](#deployment)
