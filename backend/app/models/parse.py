@@ -264,8 +264,8 @@ COLON_ARGS = {
 }
 
 IS_ARGS = {
-    "online": ("online", "onl", "on", "o"),
-    "open_sections": ("open", "o"),
+    "online": ("online", "onl", "on"),
+    "open_sections": ("open", "os"),
 }
 
 SEMESTER = {
