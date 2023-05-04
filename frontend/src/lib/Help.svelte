@@ -2,6 +2,9 @@
   <p>
     To search, type the name of a department, course, or GenEd. For example, "comp sci", "adv comp", "math257".
   </p>
+  <p>
+    Results are always in the most recent fall/spring semester unless you specify otherwise.
+  </p>
   <p>You can also combine search terms using commas. For example:</p>
   <ul>
     <li>
