@@ -1,7 +1,6 @@
 <div class="prose text-sm pt-2 select-text cursor-text">
   <p>
-    To search, simply type a department name (with or without a course number),
-    or a gened. For example, "comp sci" or "adv comp".
+    To search, type the name of a department, course, or GenEd. For example, "comp sci", "adv comp", "math257".
   </p>
   <p>You can also combine search terms using commas. For example:</p>
   <ul>
@@ -15,14 +14,20 @@
         description.
       </li>
       <li>
-        <code>"descartes"</code> will return all courses that have the keyword "descarte" in their title or
+        <code>"descartes"</code> will return all courses that have the keyword "descartes" in their title or
         description.
       </li>
   </ul>
   <p>
-    You can also specify a term, year, or CRN:
+    You can also narrow your search:
   </p>
   <ul>
+    <li>
+      <code>"phil, is:online"</code> will return all courses in the philosophy department which have at least one online section.
+   </li>
+   <li>
+    <code>"hrs:3, is:open, anthro 3"</code> will return all 300-level courses in the anthropology department which have at least one open section and worth three credit hours. 
+  </li>
     <li>
       <code>"macs, western, fall"</code> will return all courses in the MACS
       department that satisfy the cultural studies - western gened and are offered in
@@ -42,12 +47,16 @@
     valid value. For example, during the latter spring semester, searching "macs, western, 2021"
     will return courses offered in the <i>fall</i> of 2021. 
   </p>
-  <div class="text-lg font-bold text-gray-200" >TIPS</div>
+  <div class="text-lg font-bold text-gray-200" >IN SHORT</div>
   <ul>
     <li><code>"hrs:X"</code> can be used to specify an amount of credit hours</li>
     <li><code>"pot:X"</code> can be used to specify a part of term (A, B, full)</li>
     <!-- TODO: make sure this is implemented in the backend -->
     <li><code>"CS 3"</code> you can get a specific level of courses (300, 200, etc)</li>
+    <li><code>"is:online"</code> find courses that are online</li>
+    <li><code>"is:open"</code> find courses that are open</li>
+    <li><code>"fall"</code> specify a semester </li>
+    <li><code>"2021"</code> specify a year </li>
   </ul>
   <br/>
 
