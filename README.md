@@ -163,7 +163,7 @@ A list of `Course` objects (refer to the response model in the `/search/simple` 
 
 ## Architecture 
 
-
+<img width="1113" alt="image" src="https://user-images.githubusercontent.com/65358837/236198931-48d9bf0a-b173-48bc-ae4d-6b9fadc62b78.png">
 
 ## Testing
 
