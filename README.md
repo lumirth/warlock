@@ -34,7 +34,7 @@ Course Warlock aims to be a comprehensive tool for streamlining the process of s
 
 # Technical Architecture
 
-The project is divided into two main components: the frontend and the backend.
+The project is divided into two main components: the frontend and the backend. The initial proposal can be found at [info/PROPOSAL.md](info/PROPOSAL.md).
 
 ## Frontend
 
