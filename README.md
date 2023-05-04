@@ -10,8 +10,6 @@ Course Warlock aims to be a comprehensive tool for streamlining the process of s
 
 ## Table of Contents
 
-- [Course Warlock](#course-warlock)
-  - [Table of Contents](#table-of-contents)
 - [Technical Architecture](#technical-architecture)
   - [Frontend](#frontend)
   - [Backend](#backend)
