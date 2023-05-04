@@ -17,7 +17,7 @@ Course Warlock aims to solve this—when a course *explorer* won't do, look to a
 - **View course details:** Display detailed information for each course, including descriptions, schedules, and requirements.
 - **View GPA data:** Present historic GPA data for courses, helping students assess course difficulty.
   - Match a course with its own historic GPA data, even when the data lags behind current course information.
-  - Display GPA data for specific semesters when looking at older course offerings.
+  - Potentially display GPA data for specific semesters when looking at older course offerings.
 - **View RateMyProfessor ratings:** Integrate RateMyProfessor ratings for courses, providing insights into professor quality and course experiences.
   - Address potential challenges in obtaining RMP data, such as the lack of a clean public-facing developer API, by considering options like periodic scraping or live scraping with a modular frontend component.
 
