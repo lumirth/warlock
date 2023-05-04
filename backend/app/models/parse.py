@@ -12,8 +12,7 @@ DEFAULT_SEMESTER = "fall" if time.localtime().tm_mon > 3 else "spring"
 
 FUZZ_THRESH = 80
 
-#TODO: fix keyword in parsing and in search
-# TODO: fix match all match any
+# TODO: reimplement the ability to 'match all' and 'match any' geneds
 
 def load_pickles(pickles_dir: str) -> dict:
     files = glob.glob(os.path.join(pickles_dir, '*.pkl'))
