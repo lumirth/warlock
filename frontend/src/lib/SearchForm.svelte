@@ -10,28 +10,32 @@
 
   const examples = [
     'Try typing a course title',
-    'Try typing a course ID',
+    'Try typing a course',
     'Try typing a CRN',
-    'Try typing the name of a GenEd',
+    'Try typing a GenEd',
     'Try typing a keyword',
+    'Try typing a subject',
+    'Try typing a department',
+    '"philosophy of mind"',
+    '"data structures"',
     '"comp sci"',
     '"CS 222"',
     '"math257"',
     '"pysch 100"',
-    '"mus"',
-    '"MACS, western"',
+    '"music"',
+    '"macs, western"',
     '"is:online, hrs:2"',
-    '"gen:ADVCOMP, is:online"',
+    '"adv comp, is:onl"',
     '"prof: fagen-ulmschneider"',
-    '"life sciences"',
-    '"gen: QR2, gen: NAT"',
-    '"PSYC, behavioral science"',
+    '"life sci"',
+    '"g:QR2, g:NAT"',
+    '"psych, behavioral sci"',
     '"fall, 2004, phil"',
-    '"anthropology, 2019"',
-    '"2005, mathematics, hrs:2"',
-    '"hrs:3, phil, nonwestern"',
-    '"pot:b, us minority"',
-    '"bus 3, is:open"',
+    '"anthro, 2019"',
+    '"math, hrs:2"',
+    '"nonwestern, philosophy"',
+    '"minority, pot:b"',
+    '"BUS 3, is:open"',
     '"astronomy"',
     '"prof: cole"',
   ];
@@ -39,8 +43,13 @@
   let placeholder_example = '';
 
   const randomExample = () => {
+    let previous = placeholder_example;
     placeholder_example =
       examples[Math.floor(Math.random() * examples.length)];
+    while (placeholder_example === previous) {
+      placeholder_example =
+        examples[Math.floor(Math.random() * examples.length)];
+    }
   };
 
   const dispatch = createEventDispatcher();
@@ -81,7 +90,7 @@
     // code to execute when the component is mounted
     setInterval(() => {
       randomExample();
-    }, 2000);
+    }, 1500);
   });
 </script>
 
