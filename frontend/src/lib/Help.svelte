@@ -17,6 +17,9 @@
         <code>"descartes"</code> will return all courses that have the keyword "descartes" in their title or
         description.
       </li>
+      <li>
+        <code>"macs 356"</code> will return the single course in the media and cinema studies department with the course number 356.
+      </li>
   </ul>
   <p>
     You can also narrow your search:
