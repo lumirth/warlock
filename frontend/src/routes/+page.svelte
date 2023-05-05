@@ -78,7 +78,7 @@
 
 <svelte:head>
   <title>Course Warlock</title>
-  <meta name="description" content="Svelte demo app" />
+  <meta name="description" content="UIUC Course Search Engine" />
 </svelte:head>
 
 <section>
