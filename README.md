@@ -10,6 +10,8 @@ Course Warlock aims to be a comprehensive tool for streamlining the process of s
 
 ## Table of Contents
 
+- [Course Warlock](#course-warlock)
+  - [Table of Contents](#table-of-contents)
 - [Technical Architecture](#technical-architecture)
   - [Frontend](#frontend)
   - [Backend](#backend)
@@ -106,7 +108,7 @@ Testing is with pytest. [FastAPI's testing documentation](https://fastapi.tiango
 
 # Group Members
 
-Every single line of both the frontend and backend, as it currently exists, was written entirely by Lukas Unguraitis. Bangyan Shi helped develop the frontend interface. Tiancheng Shi and Parth Tyagi did not contribute.
+Every single line of both the frontend and backend, as it currently exists, was written entirely by Lukas Unguraitis.
 
 # Functionality 
 
