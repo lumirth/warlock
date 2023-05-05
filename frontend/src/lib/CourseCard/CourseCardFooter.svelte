@@ -33,7 +33,7 @@
           <div    class="radial-progress bg-neutral text-neutral border-2 border-neutral" style="--value:0; --size:1rem; --thickness:3px;"/>
         </div>
         <p class="pl-2 mb-[0.6px] text-lg leading-4 flex items-center text-neutral flex-nowrap whitespace-nowrap flex-shrink-0 self-center">
-          NO GPA
+          N/A GPA
         </p>
       </div>
       {/if}
