@@ -2,7 +2,7 @@
     export let openStatus: string;
     export let sectionStatus: string;
 </script>
-{#if openStatus == "Open"}
+{#if openStatus == "Open" || openStatus == "CrossListOpen"}
 <div class="flex justify-start">
   <input
     type="radio"
