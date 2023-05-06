@@ -37,8 +37,8 @@ async def get_single_course_xml(search_params: Parameters) -> ElementTree.Elemen
     endpoint = "{base_url}/{year}/{term}/{subject}/{course_id}.xml?mode=cascade".format(
         base_url=base_url,
         year=search_params.year,
-        term=search_params.term,
-        subject=search_params.subject,
+        term=search_params.term.lower(),
+        subject=search_params.subject.upper(),
         course_id=search_params.course_id,
     )
     async with aiohttp.ClientSession() as session:
