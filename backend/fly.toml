@@ -1,13 +1,20 @@
-# fly.toml app configuration file generated for warlock-backend on 2023-05-06T02:36:41-05:00
+# fly.toml app configuration file generated for warlock-backend on 2024-03-05T15:26:36-06:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "warlock-backend"
-primary_region = "ord"
+app = 'warlock-backend'
+primary_region = 'ord'
+
+[build]
 
 [http_service]
   internal_port = 8000
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

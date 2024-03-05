@@ -6,54 +6,54 @@ import textwrap
 class Instructor(BaseModel):
     lastName: str
     firstName: str
-    department: Optional[str]
-    avg_rating: Optional[float]
-    avg_difficulty: Optional[float]
-    num_ratings: Optional[int]
+    department: Optional[str] = None
+    avg_rating: Optional[float] = None
+    avg_difficulty: Optional[float] = None
+    num_ratings: Optional[int] = None
 
 class Meeting(BaseModel):
-    typeCode: Optional[str]
-    typeDesc: Optional[str]
-    start: Optional[str]
-    end: Optional[str]
-    daysOfTheWeek: Optional[str]
-    roomNumber: Optional[str]
-    buildingName: Optional[str]
+    typeCode: Optional[str] = None
+    typeDesc: Optional[str] = None
+    start: Optional[str] = None
+    end: Optional[str] = None
+    daysOfTheWeek: Optional[str] = None
+    roomNumber: Optional[str] = None
+    buildingName: Optional[str] = None
     instructors: List[Instructor]
 
 class Section(BaseModel):
     id: str
-    sectionNumber: Optional[str]
-    sectionText: Optional[str]
-    sectionNotes: Optional[str]
-    statusCode: Optional[str]
-    restrictions: Optional[str]
-    partOfTerm: Optional[str]
-    enrollmentStatus: Optional[str]
-    startDate: Optional[str]
-    endDate: Optional[str]
+    sectionNumber: Optional[str] = None
+    sectionText: Optional[str] = None
+    sectionNotes: Optional[str] = None
+    statusCode: Optional[str] = None
+    restrictions: Optional[str] = None
+    partOfTerm: Optional[str] = None
+    enrollmentStatus: Optional[str] = None
+    startDate: Optional[str] = None
+    endDate: Optional[str] = None
     meetings: List[Meeting]
     
 class GenEd(BaseModel):
-    id: Optional[str]
-    name: Optional[str]    
+    id: Optional[str] = None
+    name: Optional[str] = None    
 
 class Course(BaseModel):
-    year: Optional[str]
-    term: Optional[str]
-    subject: Optional[str]
-    id: Optional[str]
-    label: Optional[str]
-    description: Optional[str]
-    creditHours: Optional[str]
-    gpa_average: Optional[float]
-    prof_average: Optional[float]
-    href: Optional[str] 
-    sections: Optional[List[Section]]
-    sectionRegistrationNotes: Optional[str]
-    sectionDegreeAttributes: Optional[str]
-    courseSectionInformation: Optional[str]
-    genEdAttributes: Optional[List[GenEd]]
+    year: Optional[str] = None
+    term: Optional[str] = None
+    subject: Optional[str] = None
+    id: Optional[str] = None
+    label: Optional[str] = None
+    description: Optional[str] = None
+    creditHours: Optional[str] = None
+    gpa_average: Optional[float] = None
+    prof_average: Optional[float] = None
+    href: Optional[str]  = None
+    sections: Optional[List[Section]] = None
+    sectionRegistrationNotes: Optional[str] = None
+    sectionDegreeAttributes: Optional[str] = None
+    courseSectionInformation: Optional[str] = None
+    genEdAttributes: Optional[List[GenEd]] = None
     
     def __hash__(self):
         return hash(self.href)
@@ -115,24 +115,24 @@ class Course(BaseModel):
         return course_str
 
 class Parameters(BaseModel):
-    year: Optional[int]  # required
-    term: Optional[str]  # required
-    keyword: Optional[str]  # substantive
-    keyword_type: Optional[str]  # NOT substantive, but required if keyword is present
-    instructor: Optional[str]  # substantive
-    subject: Optional[str]  # substantive
-    course_id: Optional[int]  # NOT substantive
-    crn: Optional[int]  # substantive, but disregards other parameters
-    credit_hours: Optional[str]  # substantive
-    course_level: Optional[str]  # NOT substantive
-    gened_reqs: Optional[List[str]]  # substantive
-    match_all_gened_reqs: Optional[bool]  # NOT substantive
+    year: Optional[int] = None  # required
+    term: Optional[str] = None  # required
+    keyword: Optional[str] = None  # substantive
+    keyword_type: Optional[str] = None  # NOT substantive, but required if keyword is present
+    instructor: Optional[str] = None  # substantive
+    subject: Optional[str] = None  # substantive
+    course_id: Optional[int] = None  # NOT substantive
+    crn: Optional[int] = None  # substantive, but disregards other parameters
+    credit_hours: Optional[str] = None  # substantive
+    course_level: Optional[str] = None  # NOT substantive
+    gened_reqs: Optional[List[str]] = None  # substantive
+    match_all_gened_reqs: Optional[bool] = None  # NOT substantive
     # but this or match_any_gened_reqs is required if gened_reqs is present. This is the default
-    match_any_gened_reqs: Optional[bool]  # NOT substantive
+    match_any_gened_reqs: Optional[bool] = None  # NOT substantive
     # but this or match_all_gened_reqs is required if gened_reqs is present. If both, match_all_gened_reqs takes precedence
-    part_of_term: Optional[str]  # substantive
-    online: Optional[bool]  # substantive
-    open_sections: Optional[bool]  # NOT substantive
+    part_of_term: Optional[str] = None  # substantive
+    online: Optional[bool] = None  # substantive
+    open_sections: Optional[bool] = None  # NOT substantive
 
     def __str__(self) -> str:
         attributes = [
