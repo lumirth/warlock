@@ -1,0 +1,37 @@
+name: export pinned Wibo debug binary
+
+on:
+  push:
+    branches:
+      - experiment/wibo-debug-export-20260811
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download pinned Wibo debug build
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p wibo-debug
+          curl -L --fail --retry 3 \
+            https://github.com/decompals/wibo/releases/download/1.2.0/wibo-x86_64-debug \
+            -o wibo-debug/wibo-x86_64-debug
+          echo '6a58f06a18026e1bb065b1c109c98e5c20f9216cf6af2296cc4e2cd7bb8e37a3  wibo-debug/wibo-x86_64-debug' \
+            | sha256sum -c -
+          chmod +x wibo-debug/wibo-x86_64-debug
+          file wibo-debug/wibo-x86_64-debug > wibo-debug/file.txt
+          wibo-debug/wibo-x86_64-debug --version > wibo-debug/version.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wibo-x86_64-debug-1.2.0
+          path: wibo-debug/
+          retention-days: 7
+          compression-level: 0
+          if-no-files-found: error
